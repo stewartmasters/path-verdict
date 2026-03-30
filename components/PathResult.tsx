@@ -4,10 +4,11 @@ import { useState } from "react";
 import {
   type PathResult,
   VERDICT_CONFIG,
-  INCOME_BANDS,
   AGE_BANDS,
   getInsightLine,
+  formatAmount,
 } from "@/lib/savings-data";
+import { getCountry } from "@/lib/countries";
 import { track } from "@/lib/analytics";
 
 interface Props {
@@ -22,8 +23,8 @@ function ordinal(n: number): string {
   return n + (s[(v - 20) % 10] ?? s[v] ?? s[0]);
 }
 
-function buildShareText(result: PathResult): string {
-  const incomeBand = INCOME_BANDS.find((b) => b.slug === result.incomeBandSlug);
+function buildShareText(result: PathResult, incomeBandLabel?: string): string {
+  const incomeBand = incomeBandLabel ? { label: incomeBandLabel } : null;
   const pctLine =
     result.percentile >= 50
       ? `Top ${100 - result.percentile}% of savers`
@@ -55,9 +56,11 @@ export default function PathResultComponent({ result, onReset, onEdit }: Props) 
 
   const config = VERDICT_CONFIG[result.verdict];
   const insightLine = getInsightLine(result);
-  const shareText = buildShareText(result);
-  const incomeBandLabel = INCOME_BANDS.find((b) => b.slug === result.incomeBandSlug)?.label;
+  const country = getCountry(result.countrySlug);
+  const incomeBandLabel = country?.incomeBands.find((b) => b.slug === result.incomeBandSlug)?.label;
+  const shareText = buildShareText(result, incomeBandLabel);
   const ageBandLabel = result.ageBandSlug ? AGE_BANDS.find((b) => b.slug === result.ageBandSlug)?.label : null;
+  const fmt = (n: number) => formatAmount(n, result.currencySymbol, result.currencyPosition);
 
   const barPos = Math.max(4, Math.min(94, result.percentile));
   const isNegative = result.verdict === "critical";
@@ -176,12 +179,12 @@ export default function PathResultComponent({ result, onReset, onEdit }: Props) 
           <h3 className="font-bold text-gray-900 text-base">Your financial picture</h3>
           <div className="space-y-2">
             {[
-              { label: "Monthly income",  value: `$${result.monthlyIncome.toLocaleString()}`,              color: "text-gray-900" },
-              { label: "Rent / mortgage", value: `-$${result.monthlyRent.toLocaleString()}`,               color: "text-gray-600" },
-              { label: "Other expenses",  value: `-$${result.monthlyOtherExpenses.toLocaleString()}`,      color: "text-gray-600" },
+              { label: "Monthly income",  value: fmt(result.monthlyIncome),         color: "text-gray-900" },
+              { label: "Rent / mortgage", value: `−${fmt(result.monthlyRent)}`,       color: "text-gray-600" },
+              { label: "Other expenses",  value: `−${fmt(result.monthlyOtherExpenses)}`, color: "text-gray-600" },
               { label: "Monthly surplus", value: result.monthlySurplus >= 0
-                  ? `$${result.monthlySurplus.toLocaleString()}`
-                  : `-$${Math.abs(result.monthlySurplus).toLocaleString()}`,
+                  ? fmt(result.monthlySurplus)
+                  : `−${fmt(Math.abs(result.monthlySurplus))}`,
                 color: result.monthlySurplus >= 0 ? "text-teal-600" : "text-red-600" },
             ].map(({ label, value, color }) => (
               <div key={label} className="flex items-center justify-between text-sm">

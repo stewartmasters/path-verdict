@@ -1,9 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { COUNTRIES, type CountryConfig } from "@/lib/countries";
 import {
-  INCOME_BANDS,
-  EXPENSE_BANDS,
   AGE_BANDS,
   calculatePath,
   type PathResult,
@@ -19,13 +18,25 @@ const INVEST_OPTIONS: { value: InvestsOption; label: string }[] = [
 ];
 
 export default function PathTool() {
-  const [incomeBand, setIncomeBand]   = useState("");
-  const [monthlyRent, setMonthlyRent] = useState(1500);
-  const [expenseBand, setExpenseBand] = useState("");
-  const [ageBand, setAgeBand]         = useState("");
-  const [invests, setInvests]         = useState<InvestsOption | "">("");
-  const [result, setResult]           = useState<PathResult | null>(null);
-  const [error, setError]             = useState("");
+  const [countrySlug, setCountrySlug]   = useState("us");
+  const [incomeBand, setIncomeBand]     = useState("");
+  const [monthlyRent, setMonthlyRent]   = useState<number | null>(null);
+  const [expenseBand, setExpenseBand]   = useState("");
+  const [ageBand, setAgeBand]           = useState("");
+  const [invests, setInvests]           = useState<InvestsOption | "">("");
+  const [result, setResult]             = useState<PathResult | null>(null);
+  const [error, setError]               = useState("");
+
+  const country: CountryConfig = COUNTRIES.find((c) => c.slug === countrySlug) ?? COUNTRIES[0];
+  const rentValue = monthlyRent ?? country.rentSliderDefault;
+
+  const handleCountryChange = (slug: string) => {
+    setCountrySlug(slug);
+    setIncomeBand("");
+    setMonthlyRent(null);
+    setExpenseBand("");
+    setError("");
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,21 +45,22 @@ export default function PathTool() {
     if (!expenseBand) return setError("Please select your monthly expenses.");
 
     const res = calculatePath({
+      countrySlug,
       incomeBandSlug: incomeBand,
-      monthlyRent,
+      monthlyRent: rentValue,
       expenseBandSlug: expenseBand,
       ageBandSlug: ageBand || undefined,
       invests: (invests as InvestsOption) || undefined,
     });
 
     setResult(res);
-    track("salary_calculated", { verdict: res.verdict, percentile: res.percentile });
+    track("salary_calculated", { verdict: res.verdict, percentile: res.percentile, country: countrySlug });
   };
 
   const handleReset = () => {
     setResult(null);
     setIncomeBand("");
-    setMonthlyRent(1500);
+    setMonthlyRent(null);
     setExpenseBand("");
     setAgeBand("");
     setInvests("");
@@ -66,21 +78,46 @@ export default function PathTool() {
     return <PathResultComponent result={result} onReset={handleReset} onEdit={handleEdit} />;
   }
 
+  const sym = country.currencySymbol;
+  const pos = country.currencyPosition;
+
+  const fmtRent = (n: number) => {
+    const s = n.toLocaleString();
+    return pos === "before" ? `${sym}${s}/mo` : `${s}${sym}/mo`;
+  };
+
+  const rentMax = country.rentSliderMax;
+  const isAtMax = rentValue >= rentMax;
+
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
 
+      {/* Country */}
+      <div className="space-y-1.5">
+        <label className="block text-sm font-semibold text-gray-700">Country</label>
+        <select
+          value={countrySlug}
+          onChange={(e) => handleCountryChange(e.target.value)}
+          className="w-full border border-gray-200 rounded-xl px-4 py-3 text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent appearance-none cursor-pointer"
+        >
+          {COUNTRIES.map((c) => (
+            <option key={c.slug} value={c.slug}>
+              {c.flag}  {c.label}
+            </option>
+          ))}
+        </select>
+      </div>
+
       {/* Income */}
       <div className="space-y-1.5">
-        <label className="block text-sm font-semibold text-gray-700">
-          Annual income (gross)
-        </label>
+        <label className="block text-sm font-semibold text-gray-700">Annual income (gross)</label>
         <select
           value={incomeBand}
           onChange={(e) => setIncomeBand(e.target.value)}
           className="w-full border border-gray-200 rounded-xl px-4 py-3 text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent appearance-none cursor-pointer"
         >
           <option value="">Select your income range...</option>
-          {INCOME_BANDS.map((b) => (
+          {country.incomeBands.map((b) => (
             <option key={b.slug} value={b.slug}>{b.label}</option>
           ))}
         </select>
@@ -89,42 +126,38 @@ export default function PathTool() {
       {/* Rent slider */}
       <div className="space-y-2">
         <div className="flex justify-between items-center">
-          <label className="block text-sm font-semibold text-gray-700">
-            Monthly rent or mortgage
-          </label>
+          <label className="block text-sm font-semibold text-gray-700">Monthly rent or mortgage</label>
           <span className="text-sm font-bold text-teal-600">
-            {monthlyRent >= 5000 ? "$5,000+" : `$${monthlyRent.toLocaleString()}/mo`}
+            {isAtMax ? `${fmtRent(rentMax).replace("/mo", "")}+/mo` : fmtRent(rentValue)}
           </span>
         </div>
         <input
           type="range"
-          min={0}
-          max={5000}
-          step={100}
-          value={monthlyRent}
+          min={country.rentSliderMin}
+          max={rentMax}
+          step={country.rentSliderStep}
+          value={rentValue}
           onChange={(e) => setMonthlyRent(parseInt(e.target.value))}
           className="w-full accent-teal-600 cursor-pointer"
         />
         <div className="flex justify-between text-xs text-gray-400">
-          <span>$0</span><span>$1,000</span><span>$2,500</span><span>$5,000+</span>
+          <span>{pos === "before" ? `${sym}0` : `0${sym}`}</span>
+          <span>{pos === "before" ? `${sym}${(rentMax / 2).toLocaleString()}` : `${(rentMax / 2).toLocaleString()}${sym}`}</span>
+          <span>{pos === "before" ? `${sym}${rentMax.toLocaleString()}+` : `${rentMax.toLocaleString()}+${sym}`}</span>
         </div>
       </div>
 
       {/* Other expenses */}
       <div className="space-y-1.5">
-        <label className="block text-sm font-semibold text-gray-700">
-          Other monthly expenses
-        </label>
-        <p className="text-xs text-gray-400 -mt-0.5">
-          Food, transport, subscriptions, going out — everything except rent
-        </p>
+        <label className="block text-sm font-semibold text-gray-700">Other monthly expenses</label>
+        <p className="text-xs text-gray-400 -mt-0.5">Food, transport, subscriptions, going out — everything except rent</p>
         <select
           value={expenseBand}
           onChange={(e) => setExpenseBand(e.target.value)}
           className="w-full border border-gray-200 rounded-xl px-4 py-3 text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent appearance-none cursor-pointer"
         >
           <option value="">Select your expense range...</option>
-          {EXPENSE_BANDS.map((b) => (
+          {country.expenseBands.map((b) => (
             <option key={b.slug} value={b.slug}>{b.label}</option>
           ))}
         </select>
@@ -138,11 +171,7 @@ export default function PathTool() {
             Age <span className="text-gray-400 font-normal">(optional — improves benchmark)</span>
           </label>
           {ageBand && (
-            <button
-              type="button"
-              onClick={() => setAgeBand("")}
-              className="text-xs text-gray-400 hover:text-gray-600 transition-colors"
-            >
+            <button type="button" onClick={() => setAgeBand("")} className="text-xs text-gray-400 hover:text-gray-600 transition-colors">
               Clear
             </button>
           )}
@@ -197,7 +226,9 @@ export default function PathTool() {
         Get my verdict →
       </button>
 
-      <p className="text-xs text-gray-400 text-center">No signup required. Results are instant and private.</p>
+      <p className="text-xs text-gray-400 text-center">
+        No signup required. Results are instant and private.
+      </p>
     </form>
   );
 }

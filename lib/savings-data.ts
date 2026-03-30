@@ -1,9 +1,12 @@
-// ─── Types ──────────────────────────────────────────────────────────────────
+import { getCountry, getBenchmarkRate, type CountryConfig } from "./countries";
+
+// ─── Types ───────────────────────────────────────────────────────────────────
 
 export type VerdictTier = "critical" | "falling-behind" | "stable" | "on-track" | "ahead";
 export type InvestsOption = "yes" | "sometimes" | "no";
 
 export interface PathInput {
+  countrySlug: string;
   incomeBandSlug: string;
   monthlyRent: number;
   expenseBandSlug: string;
@@ -13,44 +16,27 @@ export interface PathInput {
 
 export interface PathResult {
   verdict: VerdictTier;
-  savingsRate: number;        // actual, as percentage (e.g. 12.5)
-  expectedRate: number;       // benchmark for their profile, as percentage
-  gap: number;                // savingsRate - expectedRate (signed)
-  percentile: number;         // estimated 1–99
+  savingsRate: number;
+  expectedRate: number;
+  gap: number;
+  percentile: number;
   monthlyIncome: number;
   monthlyRent: number;
   monthlyOtherExpenses: number;
   monthlyExpenses: number;
   monthlySurplus: number;
+  countrySlug: string;
   incomeBandSlug: string;
   ageBandSlug?: string;
   invests?: InvestsOption;
+  currency: string;
+  currencySymbol: string;
+  currencyPosition: "before" | "after";
+  dataSource: string;
+  dataYear: number;
 }
 
-// ─── Income bands ────────────────────────────────────────────────────────────
-
-export const INCOME_BANDS = [
-  { slug: "30k-40k",   label: "$30,000 – $40,000",   midpoint: 35000 },
-  { slug: "40k-50k",   label: "$40,000 – $50,000",   midpoint: 45000 },
-  { slug: "50k-65k",   label: "$50,000 – $65,000",   midpoint: 57500 },
-  { slug: "65k-85k",   label: "$65,000 – $85,000",   midpoint: 75000 },
-  { slug: "85k-110k",  label: "$85,000 – $110,000",  midpoint: 97500 },
-  { slug: "110k-150k", label: "$110,000 – $150,000", midpoint: 130000 },
-  { slug: "150k-plus", label: "$150,000+",            midpoint: 180000 },
-] as const;
-
-// ─── Expense bands (non-rent monthly) ────────────────────────────────────────
-
-export const EXPENSE_BANDS = [
-  { slug: "under-1000", label: "Under $1,000",    midpoint: 750 },
-  { slug: "1000-1500",  label: "$1,000 – $1,500", midpoint: 1250 },
-  { slug: "1500-2000",  label: "$1,500 – $2,000", midpoint: 1750 },
-  { slug: "2000-2500",  label: "$2,000 – $2,500", midpoint: 2250 },
-  { slug: "2500-3500",  label: "$2,500 – $3,500", midpoint: 3000 },
-  { slug: "over-3500",  label: "Over $3,500",      midpoint: 4500 },
-] as const;
-
-// ─── Age bands ───────────────────────────────────────────────────────────────
+// ─── Age bands (universal) ───────────────────────────────────────────────────
 
 export const AGE_BANDS = [
   { slug: "under-25", label: "Under 25" },
@@ -61,21 +47,7 @@ export const AGE_BANDS = [
   { slug: "50-plus",  label: "50+" },
 ] as const;
 
-// ─── Benchmarks ──────────────────────────────────────────────────────────────
-
-// Base expected savings rate by income band (% as decimal)
-// Sources: BLS Consumer Expenditure Survey + Fed Survey of Consumer Finances
-const BASE_EXPECTED_RATES: Record<string, number> = {
-  "30k-40k":   0.05,
-  "40k-50k":   0.08,
-  "50k-65k":   0.10,
-  "65k-85k":   0.13,
-  "85k-110k":  0.16,
-  "110k-150k": 0.20,
-  "150k-plus": 0.25,
-};
-
-// Age modifiers (% as decimal, added to base expected rate)
+// Age modifiers — applied on top of country benchmark rates
 // Higher age = higher expectation due to wealth-building pressure
 const AGE_MODIFIERS: Record<string, number> = {
   "under-25": -0.03,
@@ -87,8 +59,8 @@ const AGE_MODIFIERS: Record<string, number> = {
 };
 
 // ─── Percentile estimation ───────────────────────────────────────────────────
-// Derived from BLS CEX data on personal savings rates across US households.
-// Most Americans save very little — median household saves ~5–7%.
+// Based on OECD + national survey data. Most households in developed markets
+// save 5–10%. Distribution is heavily right-skewed.
 
 function estimatePercentile(savingsRate: number): number {
   if (savingsRate < 0)  return 8;
@@ -106,41 +78,46 @@ function estimatePercentile(savingsRate: number): number {
 // ─── Core calculation ────────────────────────────────────────────────────────
 
 export function calculatePath(input: PathInput): PathResult {
-  const incomeBand = INCOME_BANDS.find((b) => b.slug === input.incomeBandSlug);
-  const expenseBand = EXPENSE_BANDS.find((b) => b.slug === input.expenseBandSlug);
+  const country = getCountry(input.countrySlug);
+  if (!country) throw new Error(`Unknown country: ${input.countrySlug}`);
 
-  if (!incomeBand || !expenseBand) {
-    throw new Error("Invalid income or expense band");
-  }
+  const incomeBand = country.incomeBands.find((b) => b.slug === input.incomeBandSlug);
+  const expenseBand = country.expenseBands.find((b) => b.slug === input.expenseBandSlug);
+  if (!incomeBand || !expenseBand) throw new Error("Invalid income or expense band");
 
-  const monthlyIncome = incomeBand.midpoint / 12;
+  const monthlyIncome   = incomeBand.midpoint / 12;
   const monthlyExpenses = input.monthlyRent + expenseBand.midpoint;
-  const monthlySurplus = monthlyIncome - monthlyExpenses;
-  const savingsRate = (monthlySurplus / monthlyIncome) * 100;
+  const monthlySurplus  = monthlyIncome - monthlyExpenses;
+  const savingsRate     = (monthlySurplus / monthlyIncome) * 100;
 
-  const baseExpected = BASE_EXPECTED_RATES[input.incomeBandSlug] ?? 0.10;
-  const ageModifier = input.ageBandSlug ? (AGE_MODIFIERS[input.ageBandSlug] ?? 0) : 0;
+  const baseExpected = getBenchmarkRate(country, input.incomeBandSlug);
+  const ageModifier  = input.ageBandSlug ? (AGE_MODIFIERS[input.ageBandSlug] ?? 0) : 0;
   const expectedRate = (baseExpected + ageModifier) * 100;
 
-  const gap = savingsRate - expectedRate;
-
-  const verdict = deriveVerdict(savingsRate, gap);
+  const gap       = savingsRate - expectedRate;
+  const verdict   = deriveVerdict(savingsRate, gap);
   const percentile = estimatePercentile(savingsRate);
 
   return {
     verdict,
-    savingsRate: Math.round(savingsRate * 10) / 10,
-    expectedRate: Math.round(expectedRate * 10) / 10,
-    gap: Math.round(gap * 10) / 10,
+    savingsRate:          Math.round(savingsRate * 10) / 10,
+    expectedRate:         Math.round(expectedRate * 10) / 10,
+    gap:                  Math.round(gap * 10) / 10,
     percentile,
-    monthlyIncome: Math.round(monthlyIncome),
-    monthlyRent: input.monthlyRent,
+    monthlyIncome:        Math.round(monthlyIncome),
+    monthlyRent:          input.monthlyRent,
     monthlyOtherExpenses: expenseBand.midpoint,
-    monthlyExpenses: Math.round(monthlyExpenses),
-    monthlySurplus: Math.round(monthlySurplus),
-    incomeBandSlug: input.incomeBandSlug,
-    ageBandSlug: input.ageBandSlug,
-    invests: input.invests,
+    monthlyExpenses:      Math.round(monthlyExpenses),
+    monthlySurplus:       Math.round(monthlySurplus),
+    countrySlug:          input.countrySlug,
+    incomeBandSlug:       input.incomeBandSlug,
+    ageBandSlug:          input.ageBandSlug,
+    invests:              input.invests,
+    currency:             country.currency,
+    currencySymbol:       country.currencySymbol,
+    currencyPosition:     country.currencyPosition,
+    dataSource:           country.dataSource,
+    dataYear:             country.dataYear,
   };
 }
 
@@ -150,6 +127,18 @@ function deriveVerdict(savingsRate: number, gap: number): VerdictTier {
   if (gap < -2)        return "stable";
   if (gap < 6)         return "on-track";
   return "ahead";
+}
+
+// ─── Currency formatting ─────────────────────────────────────────────────────
+
+export function formatAmount(
+  amount: number,
+  symbol: string,
+  position: "before" | "after"
+): string {
+  const abs = Math.abs(amount);
+  const formatted = abs.toLocaleString();
+  return position === "before" ? `${symbol}${formatted}` : `${formatted}${symbol}`;
 }
 
 // ─── Verdict config ──────────────────────────────────────────────────────────
@@ -244,7 +233,6 @@ export function getInsightLine(result: PathResult): string {
     }
     return `You're saving ${savingsRate}% — on benchmark. Adding consistent investment would strengthen your position further.`;
   }
-  // ahead
   if (invests === "yes") {
     return "You have strong financial discipline. Your savings rate and investment habit put you in the top tier for your income level.";
   }
