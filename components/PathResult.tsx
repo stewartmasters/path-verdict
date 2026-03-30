@@ -6,6 +6,7 @@ import {
   VERDICT_CONFIG,
   AGE_BANDS,
   getInsightLine,
+  getVerdictCopy,
   formatAmount,
 } from "@/lib/savings-data";
 import { getCountry } from "@/lib/countries";
@@ -24,7 +25,6 @@ function ordinal(n: number): string {
 }
 
 function buildShareText(result: PathResult, incomeBandLabel?: string): string {
-  const incomeBand = incomeBandLabel ? { label: incomeBandLabel } : null;
   const pctLine =
     result.percentile >= 50
       ? `Top ${100 - result.percentile}% of savers`
@@ -33,18 +33,17 @@ function buildShareText(result: PathResult, incomeBandLabel?: string): string {
   const verdictLine: Record<string, string> = {
     "critical":       "My expenses exceed my income.",
     "falling-behind": "I'm falling behind financially.",
-    "stable":         "I'm stable but not building.",
+    "under-saving":   "I'm saving — but not enough.",
     "on-track":       "I'm financially on track.",
     "ahead":          "I'm ahead of my peers financially.",
   };
 
   const lines = [
-    `I checked my financial position on PathVerdict.`,
     verdictLine[result.verdict] ?? "",
     `Savings rate: ${result.savingsRate}% (expected: ${result.expectedRate}%)`,
     pctLine,
-    incomeBand ? `Income: ${incomeBand.label}` : "",
-    "Check yours → pathverdict.com",
+    incomeBandLabel ? `Income: ${incomeBandLabel}` : "",
+    "Checked on PathVerdict → pathverdict.com",
   ].filter(Boolean);
 
   return lines.join("\n");
@@ -55,6 +54,7 @@ export default function PathResultComponent({ result, onReset, onEdit }: Props) 
   const [copiedLink, setCopiedLink] = useState(false);
 
   const config = VERDICT_CONFIG[result.verdict];
+  const verdictCopy = getVerdictCopy(result);
   const insightLine = getInsightLine(result);
   const country = getCountry(result.countrySlug);
   const incomeBandLabel = country?.incomeBands.find((b) => b.slug === result.incomeBandSlug)?.label;
@@ -123,14 +123,14 @@ export default function PathResultComponent({ result, onReset, onEdit }: Props) 
         <p className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">
           Verdict:{" "}
           <span className="text-gray-700 normal-case tracking-normal font-semibold">
-            {config.shortAnswer}
+            {verdictCopy.shortAnswer}
           </span>
         </p>
         <div className="space-y-1 mb-4">
           <h2 className="text-xl sm:text-2xl font-extrabold text-gray-900 leading-tight">
-            {config.headline}
+            {verdictCopy.headline}
           </h2>
-          <p className="text-sm text-gray-600 leading-relaxed">{config.heroSub}</p>
+          <p className="text-sm text-gray-600 leading-relaxed">{verdictCopy.heroSub}</p>
         </div>
 
         {/* 3-stat row */}
@@ -150,7 +150,7 @@ export default function PathResultComponent({ result, onReset, onEdit }: Props) 
           <div className="bg-white/70 rounded-xl p-3 text-center">
             <div className="text-xs text-gray-400 font-medium mb-1">Gap</div>
             <div className={`font-bold text-sm sm:text-base leading-tight ${config.gapColor}`}>
-              {result.gap > 0 ? `+${result.gap}` : result.gap}pp
+              {result.gap > 0 ? `+${result.gap}` : result.gap} pts
             </div>
           </div>
         </div>
@@ -176,7 +176,7 @@ export default function PathResultComponent({ result, onReset, onEdit }: Props) 
 
         {/* ─── SAVINGS RATE BREAKDOWN ─── */}
         <div className="px-5 py-5 space-y-3">
-          <h3 className="font-bold text-gray-900 text-base">Your financial picture</h3>
+          <h3 className="font-bold text-gray-900 text-base">The numbers</h3>
           <div className="space-y-2">
             {[
               { label: "Monthly income",  value: fmt(result.monthlyIncome),         color: "text-gray-900" },
@@ -339,7 +339,7 @@ export default function PathResultComponent({ result, onReset, onEdit }: Props) 
         {/* ─── DISCLAIMER ─── */}
         <div className="px-5 py-3 bg-gray-50">
           <p className="text-xs text-gray-400">
-            Benchmarks derived from BLS Consumer Expenditure Survey and Fed Survey of Consumer Finances. This is a position, not financial advice.{" "}
+            Benchmarks derived from {result.dataSource}. This is a position, not financial advice.{" "}
             <a href="/methodology" className="text-teal-600 hover:underline">Methodology →</a>
           </p>
         </div>

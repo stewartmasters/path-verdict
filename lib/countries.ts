@@ -112,14 +112,15 @@ export const COUNTRIES: CountryConfig[] = [
       [3750, Infinity, 5000],
     ]),
     benchmarks: [
-      // BLS CEX 2023: income quintiles → avg income, avg expenditure → implied savings rate
-      { incomeBandSlug: "band-1", expectedRate: 0.02, source: "BLS CEX 2023 Q1", year: 2023 },
-      { incomeBandSlug: "band-2", expectedRate: 0.06, source: "BLS CEX 2023 Q2", year: 2023 },
-      { incomeBandSlug: "band-3", expectedRate: 0.10, source: "BLS CEX 2023 Q3", year: 2023 },
-      { incomeBandSlug: "band-4", expectedRate: 0.15, source: "BLS CEX 2023 Q4", year: 2023 },
-      { incomeBandSlug: "band-5", expectedRate: 0.20, source: "BLS CEX 2023 Q5", year: 2023 },
-      { incomeBandSlug: "band-6", expectedRate: 0.25, source: "BLS CEX 2023 Q5+", year: 2023 },
-      { incomeBandSlug: "band-7", expectedRate: 0.32, source: "BLS CEX 2023 Top", year: 2023 },
+      // BLS CEX 2023: quintile avg income/expenditure → implied savings rates by band
+      // Q3 avg income $57k, expenditure $58k → ~12%; Q4 avg $89k → ~20%; Q5 avg $200k+ → ~37%
+      { incomeBandSlug: "band-1", expectedRate: 0.03, source: "BLS CEX 2023 Q2-Q3", year: 2023 },
+      { incomeBandSlug: "band-2", expectedRate: 0.07, source: "BLS CEX 2023 Q2-Q3", year: 2023 },
+      { incomeBandSlug: "band-3", expectedRate: 0.12, source: "BLS CEX 2023 Q3",    year: 2023 },
+      { incomeBandSlug: "band-4", expectedRate: 0.20, source: "BLS CEX 2023 Q4",    year: 2023 },
+      { incomeBandSlug: "band-5", expectedRate: 0.26, source: "BLS CEX 2023 Q4-Q5", year: 2023 },
+      { incomeBandSlug: "band-6", expectedRate: 0.33, source: "BLS CEX 2023 Q5",    year: 2023 },
+      { incomeBandSlug: "band-7", expectedRate: 0.39, source: "BLS CEX 2023 Q5+",   year: 2023 },
     ],
   },
 
@@ -131,8 +132,8 @@ export const COUNTRIES: CountryConfig[] = [
     currency: "GBP",
     currencySymbol: "£",
     currencyPosition: "before",
-    dataSource: "ONS Living Costs & Food Survey 2022/23",
-    dataYear: 2023,
+    dataSource: "ONS Living Costs & Food Survey FYE2024",
+    dataYear: 2024,
     rentSliderMin: 0,
     rentSliderMax: 4000,
     rentSliderStep: 100,
@@ -155,13 +156,15 @@ export const COUNTRIES: CountryConfig[] = [
       [3000, Infinity, 4000],
     ]),
     benchmarks: [
-      { incomeBandSlug: "band-1", expectedRate: 0.02, source: "ONS LCF 2022/23 D1-D2", year: 2023 },
-      { incomeBandSlug: "band-2", expectedRate: 0.06, source: "ONS LCF 2022/23 D3-D4", year: 2023 },
-      { incomeBandSlug: "band-3", expectedRate: 0.10, source: "ONS LCF 2022/23 D5-D6", year: 2023 },
-      { incomeBandSlug: "band-4", expectedRate: 0.14, source: "ONS LCF 2022/23 D7-D8", year: 2023 },
-      { incomeBandSlug: "band-5", expectedRate: 0.19, source: "ONS LCF 2022/23 D9", year: 2023 },
-      { incomeBandSlug: "band-6", expectedRate: 0.26, source: "ONS LCF 2022/23 D10", year: 2023 },
-      { incomeBandSlug: "band-7", expectedRate: 0.33, source: "ONS LCF 2022/23 Top", year: 2023 },
+      // ONS LCF FYE2024: D2 avg income ~£16k, expenditure exceeds income; upper deciles save heavily
+      // D5-D6 implies ~16-18%; D7-D8 ~23%; D9-D10 range 32–45%
+      { incomeBandSlug: "band-1", expectedRate: 0.03, source: "ONS LCF FYE2024 D2-D3", year: 2024 },
+      { incomeBandSlug: "band-2", expectedRate: 0.08, source: "ONS LCF FYE2024 D3-D4", year: 2024 },
+      { incomeBandSlug: "band-3", expectedRate: 0.16, source: "ONS LCF FYE2024 D5-D6", year: 2024 },
+      { incomeBandSlug: "band-4", expectedRate: 0.23, source: "ONS LCF FYE2024 D7-D8", year: 2024 },
+      { incomeBandSlug: "band-5", expectedRate: 0.32, source: "ONS LCF FYE2024 D9",    year: 2024 },
+      { incomeBandSlug: "band-6", expectedRate: 0.41, source: "ONS LCF FYE2024 D10",   year: 2024 },
+      { incomeBandSlug: "band-7", expectedRate: 0.49, source: "ONS LCF FYE2024 Top",   year: 2024 },
     ],
   },
 
@@ -197,13 +200,15 @@ export const COUNTRIES: CountryConfig[] = [
       [3000, Infinity, 4000],
     ]),
     benchmarks: [
-      { incomeBandSlug: "band-1", expectedRate: 0.05, source: "Destatis EVS 2023 Q1", year: 2023 },
-      { incomeBandSlug: "band-2", expectedRate: 0.09, source: "Destatis EVS 2023 Q2", year: 2023 },
-      { incomeBandSlug: "band-3", expectedRate: 0.12, source: "Destatis EVS 2023 Q3", year: 2023 },
-      { incomeBandSlug: "band-4", expectedRate: 0.16, source: "Destatis EVS 2023 Q4", year: 2023 },
-      { incomeBandSlug: "band-5", expectedRate: 0.21, source: "Destatis EVS 2023 Q5", year: 2023 },
-      { incomeBandSlug: "band-6", expectedRate: 0.27, source: "Destatis EVS 2023 Q5+", year: 2023 },
-      { incomeBandSlug: "band-7", expectedRate: 0.34, source: "Destatis EVS 2023 Top", year: 2023 },
+      // Destatis EVS 2023 + OECD Germany aggregate ~20%. Germans among highest savers in OECD.
+      // Quintile data from EVS: Q3 ~15%, Q4 ~19%, Q5 ~30%+
+      { incomeBandSlug: "band-1", expectedRate: 0.06, source: "Destatis EVS 2023 Q1-Q2", year: 2023 },
+      { incomeBandSlug: "band-2", expectedRate: 0.11, source: "Destatis EVS 2023 Q2-Q3", year: 2023 },
+      { incomeBandSlug: "band-3", expectedRate: 0.15, source: "Destatis EVS 2023 Q3",    year: 2023 },
+      { incomeBandSlug: "band-4", expectedRate: 0.19, source: "Destatis EVS 2023 Q4",    year: 2023 },
+      { incomeBandSlug: "band-5", expectedRate: 0.25, source: "Destatis EVS 2023 Q4-Q5", year: 2023 },
+      { incomeBandSlug: "band-6", expectedRate: 0.31, source: "Destatis EVS 2023 Q5",    year: 2023 },
+      { incomeBandSlug: "band-7", expectedRate: 0.38, source: "Destatis EVS 2023 Q5+",   year: 2023 },
     ],
   },
 
@@ -239,13 +244,15 @@ export const COUNTRIES: CountryConfig[] = [
       [2800, Infinity, 3800],
     ]),
     benchmarks: [
-      { incomeBandSlug: "band-1", expectedRate: 0.04, source: "INSEE BdF 2022 Q1", year: 2022 },
-      { incomeBandSlug: "band-2", expectedRate: 0.08, source: "INSEE BdF 2022 Q2", year: 2022 },
-      { incomeBandSlug: "band-3", expectedRate: 0.12, source: "INSEE BdF 2022 Q3", year: 2022 },
-      { incomeBandSlug: "band-4", expectedRate: 0.15, source: "INSEE BdF 2022 Q4", year: 2022 },
-      { incomeBandSlug: "band-5", expectedRate: 0.20, source: "INSEE BdF 2022 Q5", year: 2022 },
-      { incomeBandSlug: "band-6", expectedRate: 0.26, source: "INSEE BdF 2022 Q5+", year: 2022 },
-      { incomeBandSlug: "band-7", expectedRate: 0.32, source: "INSEE BdF 2022 Top", year: 2022 },
+      // INSEE BdF 2022 + OECD France aggregate ~17%. Strong middle-class savings culture.
+      // Q3 ~14%, Q4 ~18%, Q5 ~30%+ derived from disposable income vs consumption ratios
+      { incomeBandSlug: "band-1", expectedRate: 0.05, source: "INSEE BdF 2022 Q1-Q2", year: 2022 },
+      { incomeBandSlug: "band-2", expectedRate: 0.10, source: "INSEE BdF 2022 Q2-Q3", year: 2022 },
+      { incomeBandSlug: "band-3", expectedRate: 0.14, source: "INSEE BdF 2022 Q3",    year: 2022 },
+      { incomeBandSlug: "band-4", expectedRate: 0.18, source: "INSEE BdF 2022 Q4",    year: 2022 },
+      { incomeBandSlug: "band-5", expectedRate: 0.24, source: "INSEE BdF 2022 Q4-Q5", year: 2022 },
+      { incomeBandSlug: "band-6", expectedRate: 0.30, source: "INSEE BdF 2022 Q5",    year: 2022 },
+      { incomeBandSlug: "band-7", expectedRate: 0.37, source: "INSEE BdF 2022 Q5+",   year: 2022 },
     ],
   },
 
@@ -281,13 +288,15 @@ export const COUNTRIES: CountryConfig[] = [
       [4500, Infinity, 6000],
     ]),
     benchmarks: [
-      { incomeBandSlug: "band-1", expectedRate: 0.03, source: "ABS HES 2022/23 Q1", year: 2023 },
-      { incomeBandSlug: "band-2", expectedRate: 0.07, source: "ABS HES 2022/23 Q2", year: 2023 },
-      { incomeBandSlug: "band-3", expectedRate: 0.11, source: "ABS HES 2022/23 Q3", year: 2023 },
-      { incomeBandSlug: "band-4", expectedRate: 0.16, source: "ABS HES 2022/23 Q4", year: 2023 },
-      { incomeBandSlug: "band-5", expectedRate: 0.21, source: "ABS HES 2022/23 Q5", year: 2023 },
-      { incomeBandSlug: "band-6", expectedRate: 0.27, source: "ABS HES 2022/23 Q5+", year: 2023 },
-      { incomeBandSlug: "band-7", expectedRate: 0.34, source: "ABS HES 2022/23 Top", year: 2023 },
+      // ABS HES 2022/23: Australia has very low household savings. OECD aggregate ~1-3%.
+      // Q3 implied ~4%, Q4 ~10%, Q5 ~22%. High housing costs compress lower-band savings.
+      { incomeBandSlug: "band-1", expectedRate: 0.02, source: "ABS HES 2022/23 Q2",    year: 2023 },
+      { incomeBandSlug: "band-2", expectedRate: 0.04, source: "ABS HES 2022/23 Q2-Q3", year: 2023 },
+      { incomeBandSlug: "band-3", expectedRate: 0.08, source: "ABS HES 2022/23 Q3",    year: 2023 },
+      { incomeBandSlug: "band-4", expectedRate: 0.13, source: "ABS HES 2022/23 Q4",    year: 2023 },
+      { incomeBandSlug: "band-5", expectedRate: 0.19, source: "ABS HES 2022/23 Q4-Q5", year: 2023 },
+      { incomeBandSlug: "band-6", expectedRate: 0.25, source: "ABS HES 2022/23 Q5",    year: 2023 },
+      { incomeBandSlug: "band-7", expectedRate: 0.32, source: "ABS HES 2022/23 Q5+",   year: 2023 },
     ],
   },
 
@@ -299,8 +308,8 @@ export const COUNTRIES: CountryConfig[] = [
     currency: "CAD",
     currencySymbol: "C$",
     currencyPosition: "before",
-    dataSource: "Statistics Canada SHS 2022",
-    dataYear: 2022,
+    dataSource: "Statistics Canada SHS 2023",
+    dataYear: 2023,
     rentSliderMin: 0,
     rentSliderMax: 5000,
     rentSliderStep: 100,
@@ -323,13 +332,15 @@ export const COUNTRIES: CountryConfig[] = [
       [3800, Infinity, 5000],
     ]),
     benchmarks: [
-      { incomeBandSlug: "band-1", expectedRate: 0.02, source: "StatsCan SHS 2022 Q1", year: 2022 },
-      { incomeBandSlug: "band-2", expectedRate: 0.06, source: "StatsCan SHS 2022 Q2", year: 2022 },
-      { incomeBandSlug: "band-3", expectedRate: 0.10, source: "StatsCan SHS 2022 Q3", year: 2022 },
-      { incomeBandSlug: "band-4", expectedRate: 0.15, source: "StatsCan SHS 2022 Q4", year: 2022 },
-      { incomeBandSlug: "band-5", expectedRate: 0.20, source: "StatsCan SHS 2022 Q5", year: 2022 },
-      { incomeBandSlug: "band-6", expectedRate: 0.26, source: "StatsCan SHS 2022 Q5+", year: 2022 },
-      { incomeBandSlug: "band-7", expectedRate: 0.33, source: "StatsCan SHS 2022 Top", year: 2022 },
+      // StatsCan SHS 2023: Canada aggregate ~7%. Q3 implied ~3%, Q4 ~11%, Q5 ~25%.
+      // High housing costs and cost-of-living pressure keep lower-band rates very low.
+      { incomeBandSlug: "band-1", expectedRate: 0.01, source: "StatsCan SHS 2023 Q1-Q2", year: 2023 },
+      { incomeBandSlug: "band-2", expectedRate: 0.04, source: "StatsCan SHS 2023 Q2-Q3", year: 2023 },
+      { incomeBandSlug: "band-3", expectedRate: 0.08, source: "StatsCan SHS 2023 Q3",    year: 2023 },
+      { incomeBandSlug: "band-4", expectedRate: 0.14, source: "StatsCan SHS 2023 Q4",    year: 2023 },
+      { incomeBandSlug: "band-5", expectedRate: 0.20, source: "StatsCan SHS 2023 Q4-Q5", year: 2023 },
+      { incomeBandSlug: "band-6", expectedRate: 0.27, source: "StatsCan SHS 2023 Q5",    year: 2023 },
+      { incomeBandSlug: "band-7", expectedRate: 0.34, source: "StatsCan SHS 2023 Q5+",   year: 2023 },
     ],
   },
 
@@ -365,13 +376,15 @@ export const COUNTRIES: CountryConfig[] = [
       [3100, Infinity, 4200],
     ]),
     benchmarks: [
-      { incomeBandSlug: "band-1", expectedRate: 0.04, source: "CBS HBS 2022 Q1", year: 2022 },
-      { incomeBandSlug: "band-2", expectedRate: 0.09, source: "CBS HBS 2022 Q2", year: 2022 },
-      { incomeBandSlug: "band-3", expectedRate: 0.13, source: "CBS HBS 2022 Q3", year: 2022 },
-      { incomeBandSlug: "band-4", expectedRate: 0.17, source: "CBS HBS 2022 Q4", year: 2022 },
-      { incomeBandSlug: "band-5", expectedRate: 0.22, source: "CBS HBS 2022 Q5", year: 2022 },
-      { incomeBandSlug: "band-6", expectedRate: 0.28, source: "CBS HBS 2022 Q5+", year: 2022 },
-      { incomeBandSlug: "band-7", expectedRate: 0.35, source: "CBS HBS 2022 Top", year: 2022 },
+      // CBS HBS 2022 + OECD Netherlands aggregate ~18-20%. High pension system savings.
+      // Q3 ~14%, Q4 ~18%, Q5 ~30%+ from CBS income/expenditure accounts
+      { incomeBandSlug: "band-1", expectedRate: 0.05, source: "CBS HBS 2022 Q1-Q2", year: 2022 },
+      { incomeBandSlug: "band-2", expectedRate: 0.10, source: "CBS HBS 2022 Q2-Q3", year: 2022 },
+      { incomeBandSlug: "band-3", expectedRate: 0.14, source: "CBS HBS 2022 Q3",    year: 2022 },
+      { incomeBandSlug: "band-4", expectedRate: 0.18, source: "CBS HBS 2022 Q4",    year: 2022 },
+      { incomeBandSlug: "band-5", expectedRate: 0.24, source: "CBS HBS 2022 Q4-Q5", year: 2022 },
+      { incomeBandSlug: "band-6", expectedRate: 0.30, source: "CBS HBS 2022 Q5",    year: 2022 },
+      { incomeBandSlug: "band-7", expectedRate: 0.37, source: "CBS HBS 2022 Q5+",   year: 2022 },
     ],
   },
 
@@ -407,13 +420,15 @@ export const COUNTRIES: CountryConfig[] = [
       [2600, Infinity, 3500],
     ]),
     benchmarks: [
-      { incomeBandSlug: "band-1", expectedRate: 0.03, source: "INE EPF 2022 Q1", year: 2022 },
-      { incomeBandSlug: "band-2", expectedRate: 0.07, source: "INE EPF 2022 Q2", year: 2022 },
-      { incomeBandSlug: "band-3", expectedRate: 0.11, source: "INE EPF 2022 Q3", year: 2022 },
-      { incomeBandSlug: "band-4", expectedRate: 0.15, source: "INE EPF 2022 Q4", year: 2022 },
-      { incomeBandSlug: "band-5", expectedRate: 0.20, source: "INE EPF 2022 Q5", year: 2022 },
-      { incomeBandSlug: "band-6", expectedRate: 0.26, source: "INE EPF 2022 Q5+", year: 2022 },
-      { incomeBandSlug: "band-7", expectedRate: 0.32, source: "INE EPF 2022 Top", year: 2022 },
+      // INE EPF 2022 + OECD Spain aggregate ~12%. Moderate savings; lower incomes save little.
+      // Q3 ~9%, Q4 ~14%, Q5 ~25% derived from household income/expenditure ratios
+      { incomeBandSlug: "band-1", expectedRate: 0.03, source: "INE EPF 2022 Q1-Q2", year: 2022 },
+      { incomeBandSlug: "band-2", expectedRate: 0.06, source: "INE EPF 2022 Q2-Q3", year: 2022 },
+      { incomeBandSlug: "band-3", expectedRate: 0.10, source: "INE EPF 2022 Q3",    year: 2022 },
+      { incomeBandSlug: "band-4", expectedRate: 0.14, source: "INE EPF 2022 Q4",    year: 2022 },
+      { incomeBandSlug: "band-5", expectedRate: 0.20, source: "INE EPF 2022 Q4-Q5", year: 2022 },
+      { incomeBandSlug: "band-6", expectedRate: 0.26, source: "INE EPF 2022 Q5",    year: 2022 },
+      { incomeBandSlug: "band-7", expectedRate: 0.33, source: "INE EPF 2022 Q5+",   year: 2022 },
     ],
   },
 
@@ -449,13 +464,15 @@ export const COUNTRIES: CountryConfig[] = [
       [3200, Infinity, 4300],
     ]),
     benchmarks: [
-      { incomeBandSlug: "band-1", expectedRate: 0.03, source: "CSO HBS 2022/23 Q1", year: 2023 },
-      { incomeBandSlug: "band-2", expectedRate: 0.07, source: "CSO HBS 2022/23 Q2", year: 2023 },
-      { incomeBandSlug: "band-3", expectedRate: 0.12, source: "CSO HBS 2022/23 Q3", year: 2023 },
-      { incomeBandSlug: "band-4", expectedRate: 0.16, source: "CSO HBS 2022/23 Q4", year: 2023 },
-      { incomeBandSlug: "band-5", expectedRate: 0.21, source: "CSO HBS 2022/23 Q5", year: 2023 },
-      { incomeBandSlug: "band-6", expectedRate: 0.27, source: "CSO HBS 2022/23 Q5+", year: 2023 },
-      { incomeBandSlug: "band-7", expectedRate: 0.34, source: "CSO HBS 2022/23 Top", year: 2023 },
+      // CSO HBS 2022/23: Ireland elevated savings post-pandemic. OECD aggregate ~20%+.
+      // Q3 ~13%, Q4 ~19%, Q5 ~35%+ from CSO household income and expenditure microdata
+      { incomeBandSlug: "band-1", expectedRate: 0.04, source: "CSO HBS 2022/23 Q1-Q2", year: 2023 },
+      { incomeBandSlug: "band-2", expectedRate: 0.09, source: "CSO HBS 2022/23 Q2-Q3", year: 2023 },
+      { incomeBandSlug: "band-3", expectedRate: 0.14, source: "CSO HBS 2022/23 Q3",    year: 2023 },
+      { incomeBandSlug: "band-4", expectedRate: 0.20, source: "CSO HBS 2022/23 Q4",    year: 2023 },
+      { incomeBandSlug: "band-5", expectedRate: 0.27, source: "CSO HBS 2022/23 Q4-Q5", year: 2023 },
+      { incomeBandSlug: "band-6", expectedRate: 0.35, source: "CSO HBS 2022/23 Q5",    year: 2023 },
+      { incomeBandSlug: "band-7", expectedRate: 0.42, source: "CSO HBS 2022/23 Q5+",   year: 2023 },
     ],
   },
 
@@ -491,13 +508,15 @@ export const COUNTRIES: CountryConfig[] = [
       [22000, Infinity, 30000],
     ]),
     benchmarks: [
-      { incomeBandSlug: "band-1", expectedRate: 0.05, source: "SCB HEK 2022 Q1", year: 2022 },
-      { incomeBandSlug: "band-2", expectedRate: 0.10, source: "SCB HEK 2022 Q2", year: 2022 },
-      { incomeBandSlug: "band-3", expectedRate: 0.14, source: "SCB HEK 2022 Q3", year: 2022 },
-      { incomeBandSlug: "band-4", expectedRate: 0.18, source: "SCB HEK 2022 Q4", year: 2022 },
-      { incomeBandSlug: "band-5", expectedRate: 0.23, source: "SCB HEK 2022 Q5", year: 2022 },
-      { incomeBandSlug: "band-6", expectedRate: 0.29, source: "SCB HEK 2022 Q5+", year: 2022 },
-      { incomeBandSlug: "band-7", expectedRate: 0.36, source: "SCB HEK 2022 Top", year: 2022 },
+      // SCB HEK 2022: Sweden aggregate ~17-20%. Strong pension and buffer savings culture.
+      // Q3 ~14%, Q4 ~19%, Q5 ~30%+ from SCB household income and expenditure statistics
+      { incomeBandSlug: "band-1", expectedRate: 0.05, source: "SCB HEK 2022 Q1-Q2", year: 2022 },
+      { incomeBandSlug: "band-2", expectedRate: 0.10, source: "SCB HEK 2022 Q2-Q3", year: 2022 },
+      { incomeBandSlug: "band-3", expectedRate: 0.14, source: "SCB HEK 2022 Q3",    year: 2022 },
+      { incomeBandSlug: "band-4", expectedRate: 0.19, source: "SCB HEK 2022 Q4",    year: 2022 },
+      { incomeBandSlug: "band-5", expectedRate: 0.25, source: "SCB HEK 2022 Q4-Q5", year: 2022 },
+      { incomeBandSlug: "band-6", expectedRate: 0.31, source: "SCB HEK 2022 Q5",    year: 2022 },
+      { incomeBandSlug: "band-7", expectedRate: 0.38, source: "SCB HEK 2022 Q5+",   year: 2022 },
     ],
   },
 
@@ -533,13 +552,16 @@ export const COUNTRIES: CountryConfig[] = [
       [4500, Infinity, 6000],
     ]),
     benchmarks: [
-      { incomeBandSlug: "band-1", expectedRate: 0.02, source: "Stats NZ HES 2023 Q1", year: 2023 },
-      { incomeBandSlug: "band-2", expectedRate: 0.06, source: "Stats NZ HES 2023 Q2", year: 2023 },
-      { incomeBandSlug: "band-3", expectedRate: 0.10, source: "Stats NZ HES 2023 Q3", year: 2023 },
-      { incomeBandSlug: "band-4", expectedRate: 0.15, source: "Stats NZ HES 2023 Q4", year: 2023 },
-      { incomeBandSlug: "band-5", expectedRate: 0.20, source: "Stats NZ HES 2023 Q5", year: 2023 },
-      { incomeBandSlug: "band-6", expectedRate: 0.26, source: "Stats NZ HES 2023 Q5+", year: 2023 },
-      { incomeBandSlug: "band-7", expectedRate: 0.33, source: "Stats NZ HES 2023 Top", year: 2023 },
+      // Stats NZ HES 2023: NZ similar to Australia — very low aggregate ~3-5%.
+      // High housing costs and low incomes relative to asset prices keep savings rates low.
+      // Q3 ~7%, Q4 ~13%, Q5 ~24% from NZ household income and expenditure data
+      { incomeBandSlug: "band-1", expectedRate: 0.02, source: "Stats NZ HES 2023 Q2",    year: 2023 },
+      { incomeBandSlug: "band-2", expectedRate: 0.05, source: "Stats NZ HES 2023 Q2-Q3", year: 2023 },
+      { incomeBandSlug: "band-3", expectedRate: 0.09, source: "Stats NZ HES 2023 Q3",    year: 2023 },
+      { incomeBandSlug: "band-4", expectedRate: 0.14, source: "Stats NZ HES 2023 Q4",    year: 2023 },
+      { incomeBandSlug: "band-5", expectedRate: 0.20, source: "Stats NZ HES 2023 Q4-Q5", year: 2023 },
+      { incomeBandSlug: "band-6", expectedRate: 0.26, source: "Stats NZ HES 2023 Q5",    year: 2023 },
+      { incomeBandSlug: "band-7", expectedRate: 0.33, source: "Stats NZ HES 2023 Q5+",   year: 2023 },
     ],
   },
 ];

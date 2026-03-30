@@ -92,13 +92,13 @@ export default function PathTool() {
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
 
-      {/* Country */}
-      <div className="space-y-1.5">
-        <label className="block text-sm font-semibold text-gray-700">Country</label>
+      {/* Country — compact header row */}
+      <div className="flex items-center justify-between gap-3 pb-1 border-b border-gray-100">
+        <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Country</span>
         <select
           value={countrySlug}
           onChange={(e) => handleCountryChange(e.target.value)}
-          className="w-full border border-gray-200 rounded-xl px-4 py-3 text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent appearance-none cursor-pointer"
+          className="text-sm font-semibold text-gray-700 bg-transparent border-none focus:outline-none cursor-pointer"
         >
           {COUNTRIES.map((c) => (
             <option key={c.slug} value={c.slug}>
