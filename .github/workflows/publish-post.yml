@@ -1,0 +1,49 @@
+name: Publish scheduled blog post
+
+on:
+  schedule:
+    - cron: '0 8 */4 * *'   # every 4 days at 8am UTC
+  workflow_dispatch:          # allow manual trigger from GitHub UI
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Find next draft
+        id: draft
+        run: |
+          DRAFT=$(ls _drafts/*.md 2>/dev/null | sort | head -1)
+          if [ -z "$DRAFT" ]; then
+            echo "No drafts found — nothing to publish."
+            echo "found=false" >> $GITHUB_OUTPUT
+          else
+            echo "found=true" >> $GITHUB_OUTPUT
+            echo "file=$DRAFT" >> $GITHUB_OUTPUT
+            echo "filename=$(basename $DRAFT)" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Set today's date in frontmatter and move to content/blog
+        if: steps.draft.outputs.found == 'true'
+        run: |
+          FILE="${{ steps.draft.outputs.file }}"
+          TODAY=$(date +%Y-%m-%d)
+          # Update the date field in frontmatter to today
+          sed -i "s/^date: .*/date: \"$TODAY\"/" "$FILE"
+          # Strip leading order prefix (01-, 02-, …) from filename
+          DEST=$(echo "${{ steps.draft.outputs.filename }}" | sed 's/^[0-9]*-//')
+          mv "$FILE" "content/blog/$DEST"
+          echo "Published: content/blog/$DEST"
+
+      - name: Commit and push
+        if: steps.draft.outputs.found == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "feat(blog): publish scheduled post — ${{ steps.draft.outputs.filename }}"
+          git push
