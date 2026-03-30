@@ -137,6 +137,104 @@ function deriveVerdict(savingsRate: number, gap: number): VerdictTier {
   return "ahead";
 }
 
+// ─── Financial identity system ────────────────────────────────────────────────
+
+export type FinancialIdentity =
+  | "running-on-fumes"
+  | "comfortable-slide"
+  | "stretched-thin"
+  | "treading-water"
+  | "holding-the-line"
+  | "quietly-ahead"
+  | "the-compounder";
+
+export interface IdentityCard {
+  identity:    FinancialIdentity;
+  label:       string;
+  statLine:    string;
+  comparison:  string;
+  shareText:   string;
+  borderClass: string;
+  accentColor: string; // hex, for OG image
+}
+
+export function deriveIdentity(result: PathResult): FinancialIdentity {
+  const bandNum = parseInt(result.incomeBandSlug.replace("band-", ""), 10);
+  if (result.verdict === "critical")                           return "running-on-fumes";
+  if (result.verdict === "falling-behind" && bandNum >= 4)     return "comfortable-slide";
+  if (result.verdict === "falling-behind")                     return "stretched-thin";
+  if (result.verdict === "under-saving")                       return "treading-water";
+  if (result.verdict === "on-track")                           return "holding-the-line";
+  if (result.verdict === "ahead" && result.invests === "yes")  return "the-compounder";
+  return "quietly-ahead";
+}
+
+export function buildIdentityCard(result: PathResult): IdentityCard {
+  const identity  = deriveIdentity(result);
+  const { savingsRate, expectedRate, gap, percentile } = result;
+  const absGap    = Math.abs(gap).toFixed(1);
+  const absSaving = Math.abs(savingsRate).toFixed(1);
+  const gapFmt    = gap.toFixed(1);
+
+  const comparison = percentile >= 50
+    ? `Top ${100 - percentile}% of savers at this income level`
+    : `Bottom ${percentile}% of savers at this income level`;
+
+  const CONFIGS: Record<FinancialIdentity, Omit<IdentityCard, "identity" | "comparison">> = {
+    "running-on-fumes": {
+      label:       "Running on Fumes",
+      statLine:    `Spending ${absSaving}% more than I earn`,
+      shareText:   `I'm spending more than I earn. PathVerdict puts me in the bottom ${percentile}% of savers. Seeing the number is different to knowing it.\npathverdict.com`,
+      borderClass: "border-red-300",
+      accentColor: "#fca5a5",
+    },
+    "comfortable-slide": {
+      label:       "The Comfortable Slide",
+      statLine:    `Saving ${savingsRate}% · Expected ${expectedRate}%`,
+      shareText:   `I earn well. I save ${savingsRate}%. People at my income save ${expectedRate}%. The gap is ${absGap} points and it doesn't close itself.\npathverdict.com`,
+      borderClass: "border-orange-300",
+      accentColor: "#fdba74",
+    },
+    "stretched-thin": {
+      label:       "Stretched Thin",
+      statLine:    `Saving ${savingsRate}% · Gap of ${absGap} points`,
+      shareText:   `Saving ${savingsRate}% when the benchmark is ${expectedRate}%. The gap's not laziness — it's the cost base. Still worth seeing it clearly.\npathverdict.com`,
+      borderClass: "border-amber-300",
+      accentColor: "#fcd34d",
+    },
+    "treading-water": {
+      label:       "Treading Water",
+      statLine:    `Saving ${savingsRate}% · ${absGap} points short`,
+      shareText:   `Technically saving. Not building. I'm ${absGap} points below where I should be for my income. Curious where you are?\npathverdict.com`,
+      borderClass: "border-yellow-300",
+      accentColor: "#fde68a",
+    },
+    "holding-the-line": {
+      label:       "Holding the Line",
+      statLine:    `Saving ${savingsRate}% · Right at benchmark`,
+      shareText:   `I'm on track. Not ahead. Saving ${savingsRate}% — right at the benchmark for my income level. Most people aren't here.\npathverdict.com`,
+      borderClass: "border-teal-300",
+      accentColor: "#5eead4",
+    },
+    "quietly-ahead": {
+      label:       "Quietly Ahead",
+      statLine:    `Saving ${savingsRate}% · ${gapFmt} points ahead`,
+      shareText:   `Saving ${savingsRate}% when people at my income save ${expectedRate}%. I didn't expect that gap.\npathverdict.com`,
+      borderClass: "border-emerald-300",
+      accentColor: "#6ee7b7",
+    },
+    "the-compounder": {
+      label:       "The Compounder",
+      statLine:    `Saving ${savingsRate}% · Investing regularly`,
+      shareText:   `Saving ${savingsRate}%. Investing consistently. ${gapFmt} points above benchmark. The math is doing what it's supposed to.\npathverdict.com`,
+      borderClass: "border-emerald-500",
+      accentColor: "#10b981",
+    },
+  };
+
+  return { identity, comparison, ...CONFIGS[identity] };
+}
+
 // ─── Currency formatting ─────────────────────────────────────────────────────
 
 export function formatAmount(

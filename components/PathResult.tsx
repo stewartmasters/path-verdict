@@ -7,10 +7,12 @@ import {
   AGE_BANDS,
   getInsightLine,
   getVerdictCopy,
+  buildIdentityCard,
   formatAmount,
 } from "@/lib/savings-data";
 import { getCountry } from "@/lib/countries";
 import { track } from "@/lib/analytics";
+import ShareCard from "./ShareCard";
 
 interface Props {
   result: PathResult;
@@ -24,30 +26,6 @@ function ordinal(n: number): string {
   return n + (s[(v - 20) % 10] ?? s[v] ?? s[0]);
 }
 
-function buildShareText(result: PathResult, incomeBandLabel?: string): string {
-  const pctLine =
-    result.percentile >= 50
-      ? `Top ${100 - result.percentile}% of savers`
-      : `Bottom ${result.percentile}% of savers`;
-
-  const verdictLine: Record<string, string> = {
-    "critical":       "My expenses exceed my income.",
-    "falling-behind": "I'm falling behind financially.",
-    "under-saving":   "I'm saving — but not enough.",
-    "on-track":       "I'm financially on track.",
-    "ahead":          "I'm ahead of my peers financially.",
-  };
-
-  const lines = [
-    verdictLine[result.verdict] ?? "",
-    `Savings rate: ${result.savingsRate}% (expected: ${result.expectedRate}%)`,
-    pctLine,
-    incomeBandLabel ? `Income: ${incomeBandLabel}` : "",
-    "Checked on PathVerdict → pathverdict.com",
-  ].filter(Boolean);
-
-  return lines.join("\n");
-}
 
 export default function PathResultComponent({ result, onReset, onEdit }: Props) {
   const [copiedCard, setCopiedCard] = useState(false);
@@ -56,9 +34,9 @@ export default function PathResultComponent({ result, onReset, onEdit }: Props) 
   const config = VERDICT_CONFIG[result.verdict];
   const verdictCopy = getVerdictCopy(result);
   const insightLine = getInsightLine(result);
+  const identityCard = buildIdentityCard(result);
   const country = getCountry(result.countrySlug);
   const incomeBandLabel = country?.incomeBands.find((b) => b.slug === result.incomeBandSlug)?.label;
-  const shareText = buildShareText(result, incomeBandLabel);
   const ageBandLabel = result.ageBandSlug ? AGE_BANDS.find((b) => b.slug === result.ageBandSlug)?.label : null;
   const fmt = (n: number) => formatAmount(n, result.currencySymbol, result.currencyPosition);
 
@@ -70,9 +48,9 @@ export default function PathResultComponent({ result, onReset, onEdit }: Props) 
 
   const handleCopyCard = async () => {
     try {
-      await navigator.clipboard.writeText(shareText);
+      await navigator.clipboard.writeText(identityCard.shareText);
       setCopiedCard(true);
-      track("share_text_copied");
+      track("share_text_copied", { identity: identityCard.identity });
       setTimeout(() => setCopiedCard(false), 2500);
     } catch {}
   };
@@ -86,9 +64,9 @@ export default function PathResultComponent({ result, onReset, onEdit }: Props) 
     } catch {}
   };
 
-  const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText + "\n\n")}&url=${encodeURIComponent(pageUrl)}`;
+  const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(identityCard.shareText + "\n\n")}&url=${encodeURIComponent(pageUrl)}`;
   const linkedinUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(pageUrl)}`;
-  const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(shareText + "\n\n" + pageUrl)}`;
+  const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(identityCard.shareText + "\n\n" + pageUrl)}`;
 
   const MONTH_YEAR = new Date().toLocaleDateString("en-US", { month: "long", year: "numeric" });
 
@@ -161,7 +139,7 @@ export default function PathResultComponent({ result, onReset, onEdit }: Props) 
             onClick={handleCopyCard}
             className="flex-1 text-xs font-semibold text-center py-2 px-3 rounded-lg bg-white/80 hover:bg-white text-gray-700 transition-colors"
           >
-            {copiedCard ? "✓ Copied!" : "Share result →"}
+            {copiedCard ? "✓ Copied!" : `Share as "${identityCard.label}" →`}
           </button>
           <a
             href="/methodology"
@@ -271,17 +249,14 @@ export default function PathResultComponent({ result, onReset, onEdit }: Props) 
         {/* ─── SHARE BLOCK ─── */}
         <div className="px-5 py-5 space-y-3">
           <div className="flex items-center justify-between">
-            <h3 className="font-bold text-gray-900 text-base">Share your result</h3>
-            <span className="text-xs text-gray-400">Compare with a friend →</span>
+            <h3 className="font-bold text-gray-900 text-base">Your financial identity</h3>
+            <span className="text-xs text-gray-400">Share to compare →</span>
           </div>
 
-          <div
-            className="bg-gray-900 rounded-xl px-4 py-3.5 font-mono text-xs text-gray-200 whitespace-pre-wrap break-words leading-relaxed select-all cursor-pointer overflow-hidden"
-            onClick={handleCopyCard}
-          >
-            {shareText}
-          </div>
+          {/* Identity card — tap to copy */}
+          <ShareCard card={identityCard} onClick={handleCopyCard} copied={copiedCard} />
 
+          {/* Primary CTA */}
           <button
             onClick={handleCopyCard}
             className="w-full flex items-center justify-center gap-2 text-sm font-bold bg-gray-900 text-white py-3 px-4 rounded-xl hover:bg-gray-800 transition-colors"
@@ -289,12 +264,13 @@ export default function PathResultComponent({ result, onReset, onEdit }: Props) 
             {copiedCard ? "✓ Copied to clipboard!" : "Copy and share"}
           </button>
 
+          {/* Social row */}
           <div className="grid grid-cols-3 gap-2">
             <a
               href={whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
-              onClick={() => track("share_whatsapp")}
+              onClick={() => track("share_whatsapp", { identity: identityCard.identity })}
               className="flex items-center justify-center text-xs font-semibold bg-green-500 text-white py-2.5 px-2 rounded-lg hover:bg-green-600 transition-colors"
             >
               WhatsApp
@@ -303,7 +279,7 @@ export default function PathResultComponent({ result, onReset, onEdit }: Props) 
               href={linkedinUrl}
               target="_blank"
               rel="noopener noreferrer"
-              onClick={() => track("share_linkedin")}
+              onClick={() => track("share_linkedin", { identity: identityCard.identity })}
               className="flex items-center justify-center text-xs font-semibold bg-blue-600 text-white py-2.5 px-2 rounded-lg hover:bg-blue-700 transition-colors"
             >
               LinkedIn
@@ -312,7 +288,7 @@ export default function PathResultComponent({ result, onReset, onEdit }: Props) 
               href={twitterUrl}
               target="_blank"
               rel="noopener noreferrer"
-              onClick={() => track("share_twitter")}
+              onClick={() => track("share_twitter", { identity: identityCard.identity })}
               className="flex items-center justify-center text-xs font-semibold bg-black text-white py-2.5 px-2 rounded-lg hover:bg-gray-900 transition-colors"
             >
               X

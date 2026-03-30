@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const dynamic = "force-static";
-export const alt = "Am I Underpaid? — Free Salary Checker";
+export const alt = "PathVerdict — Am I saving enough?";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -19,17 +19,18 @@ export default async function Image() {
           justifyContent: "center",
           padding: "80px 90px",
           position: "relative",
+          fontFamily: "system-ui, -apple-system, sans-serif",
         }}
       >
-        {/* Top accent bar */}
+        {/* Left accent bar */}
         <div
           style={{
             position: "absolute",
             top: 0,
             left: 0,
-            right: 0,
-            height: "6px",
-            background: "linear-gradient(90deg, #f97316, #ea580c)",
+            bottom: 0,
+            width: "10px",
+            background: "#0d9488",
           }}
         />
 
@@ -38,26 +39,20 @@ export default async function Image() {
           style={{
             display: "flex",
             alignItems: "center",
-            background: "rgba(249,115,22,0.15)",
-            border: "1px solid rgba(249,115,22,0.3)",
+            background: "rgba(13,148,136,0.15)",
+            border: "1px solid rgba(13,148,136,0.3)",
             borderRadius: "100px",
             padding: "8px 20px",
-            marginBottom: "32px",
+            marginBottom: "40px",
           }}
         >
-          <span style={{ color: "#f97316", fontSize: "18px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase" }}>
+          <span style={{ color: "#0d9488", fontSize: "18px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase" }}>
             Free · No signup · Instant result
           </span>
         </div>
 
         {/* Headline */}
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            marginBottom: "40px",
-          }}
-        >
+        <div style={{ display: "flex", flexDirection: "column", marginBottom: "32px" }}>
           <span
             style={{
               color: "#ffffff",
@@ -67,8 +62,18 @@ export default async function Image() {
               letterSpacing: "-0.02em",
             }}
           >
-            am i underpaid
-            <span style={{ color: "#f97316" }}>?</span>
+            am i saving
+          </span>
+          <span
+            style={{
+              color: "#ffffff",
+              fontSize: "80px",
+              fontWeight: 800,
+              lineHeight: 1.05,
+              letterSpacing: "-0.02em",
+            }}
+          >
+            enough<span style={{ color: "#0d9488" }}>?</span>
           </span>
         </div>
 
@@ -78,19 +83,19 @@ export default async function Image() {
             color: "#9ca3af",
             fontSize: "28px",
             lineHeight: 1.4,
-            maxWidth: "680px",
+            maxWidth: "700px",
             marginBottom: "56px",
           }}
         >
-          Check your salary against the market. See your percentile. Find out in 30 seconds.
+          See your savings rate vs. your income-level benchmark. Get your financial identity in 60 seconds.
         </div>
 
         {/* Stats row */}
         <div style={{ display: "flex", gap: "48px" }}>
           {[
-            { value: "6", label: "Role categories" },
-            { value: "12", label: "Locations" },
-            { value: "90+", label: "Salary guides" },
+            { value: "11", label: "Countries" },
+            { value: "7",  label: "Financial identities" },
+            { value: "6",  label: "Verdict tiers" },
           ].map(({ value, label }) => (
             <div key={label} style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
               <span style={{ color: "#ffffff", fontSize: "40px", fontWeight: 800, lineHeight: 1 }}>{value}</span>
@@ -110,7 +115,7 @@ export default async function Image() {
             letterSpacing: "0.02em",
           }}
         >
-          salaryverdict.com
+          pathverdict.com
         </div>
       </div>
     ),
