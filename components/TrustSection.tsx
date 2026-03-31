@@ -21,8 +21,8 @@ export default function TrustSection({ variant = "full" }: Props) {
           <img
             src={src}
             alt={alt}
-            className="opacity-40 grayscale hover:opacity-60 transition-opacity object-contain"
-            style={{ maxHeight: "28px", maxWidth: "76px" }}
+            className="opacity-50 grayscale hover:opacity-70 transition-opacity"
+            style={{ height: "27px", width: "auto", mixBlendMode: "multiply" }}
           />
         </div>
       ))}
