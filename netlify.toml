@@ -1,5 +1,5 @@
 [build]
-  command = "npm run normalize && npm run build"
+  command = "npm run build"
   publish = "out"
 
 # Security headers for all routes
