@@ -5,6 +5,7 @@ export interface PopularCheck {
   locationLabel: string; // "$118k in New York"
   hook:          string; // punchy one-liner
   flag:          string; // emoji
+  citySlug:      string; // links to /financial-position/[city]
   input:         PathInput;
   result:        PathResult;
   identityCard:  IdentityCard;
@@ -14,12 +15,13 @@ export interface PopularCheck {
 // Each input maps to real income/expense bands from countries.ts.
 // Verdicts are computed — not hard-coded — so they always reflect the live calculator.
 
-const SCENARIOS: Array<{ id: string; locationLabel: string; hook: string; flag: string; input: PathInput }> = [
+const SCENARIOS: Array<{ id: string; locationLabel: string; hook: string; flag: string; citySlug: string; input: PathInput }> = [
   {
     id:            "denver-38k",
     locationLabel: "$38k in Denver",
     hook:          "Entry-level Denver. The rent won.",
     flag:          "🇺🇸",
+    citySlug:      "denver",
     input: {
       countrySlug:     "us",
       incomeBandSlug:  "band-1", // $30–40k, mid $35k
@@ -32,6 +34,7 @@ const SCENARIOS: Array<{ id: string; locationLabel: string; hook: string; flag: 
     locationLabel: "$118k in New York",
     hook:          "Six figures. Still not building.",
     flag:          "🇺🇸",
+    citySlug:      "new-york",
     input: {
       countrySlug:     "us",
       incomeBandSlug:  "band-5", // $100–140k, mid $120k
@@ -44,6 +47,7 @@ const SCENARIOS: Array<{ id: string; locationLabel: string; hook: string; flag: 
     locationLabel: "£67k in London",
     hook:          "London takes more than you give it.",
     flag:          "🇬🇧",
+    citySlug:      "london",
     input: {
       countrySlug:     "gb",
       incomeBandSlug:  "band-4", // £50–70k, mid £60k
@@ -56,6 +60,7 @@ const SCENARIOS: Array<{ id: string; locationLabel: string; hook: string; flag: 
     locationLabel: "£44k in Manchester",
     hook:          "Northern salary. Quietly better off.",
     flag:          "🇬🇧",
+    citySlug:      "manchester",
     input: {
       countrySlug:     "gb",
       incomeBandSlug:  "band-3", // £35–50k, mid £42.5k
@@ -68,6 +73,7 @@ const SCENARIOS: Array<{ id: string; locationLabel: string; hook: string; flag: 
     locationLabel: "€55k in Dublin",
     hook:          "Dublin rent vs. a Dublin salary — who wins?",
     flag:          "🇮🇪",
+    citySlug:      "dublin",
     input: {
       countrySlug:     "ie",
       incomeBandSlug:  "band-3", // €45–62k, mid €53.5k
@@ -80,6 +86,7 @@ const SCENARIOS: Array<{ id: string; locationLabel: string; hook: string; flag: 
     locationLabel: "A$78k in Sydney",
     hook:          "Big rent. Not much left.",
     flag:          "🇦🇺",
+    citySlug:      "sydney",
     input: {
       countrySlug:     "au",
       incomeBandSlug:  "band-3", // A$70–95k, mid A$82.5k
@@ -92,6 +99,7 @@ const SCENARIOS: Array<{ id: string; locationLabel: string; hook: string; flag: 
     locationLabel: "€58k in Berlin",
     hook:          "Berlin is still cheap. Are you using that?",
     flag:          "🇩🇪",
+    citySlug:      "berlin",
     input: {
       countrySlug:     "de",
       incomeBandSlug:  "band-4", // €50–70k, mid €60k
@@ -105,6 +113,7 @@ const SCENARIOS: Array<{ id: string; locationLabel: string; hook: string; flag: 
     locationLabel: "C$47k in Toronto",
     hook:          "Toronto on C$47k — keeping pace, barely.",
     flag:          "🇨🇦",
+    citySlug:      "toronto",
     input: {
       countrySlug:     "ca",
       incomeBandSlug:  "band-2", // C$40–55k, mid C$47.5k
@@ -117,6 +126,7 @@ const SCENARIOS: Array<{ id: string; locationLabel: string; hook: string; flag: 
     locationLabel: "NZ$69k in Auckland",
     hook:          "Auckland prices on one Auckland salary.",
     flag:          "🇳🇿",
+    citySlug:      "auckland",
     input: {
       countrySlug:     "nz",
       incomeBandSlug:  "band-3", // NZ$58–80k, mid NZ$69k
@@ -129,6 +139,7 @@ const SCENARIOS: Array<{ id: string; locationLabel: string; hook: string; flag: 
     locationLabel: "720k kr in Stockholm",
     hook:          "Swedish income. Swedish discipline.",
     flag:          "🇸🇪",
+    citySlug:      "stockholm",
     input: {
       countrySlug:     "se",
       incomeBandSlug:  "band-4", // 600–800k kr, mid 700k

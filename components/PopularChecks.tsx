@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
+import Link from "next/link";
 import { POPULAR_CHECKS, type PopularCheck } from "@/lib/popular-checks";
 import { VERDICT_CONFIG } from "@/lib/savings-data";
 import PathResultComponent from "./PathResult";
@@ -51,10 +52,21 @@ function CheckCard({
           {check.hook}
         </p>
 
-        {/* CTA */}
-        <p className={`text-[10px] font-semibold uppercase tracking-widest pt-0.5 ${selected ? "text-teal-400" : "text-teal-600"}`}>
-          {selected ? "Showing result ↓" : "See result →"}
-        </p>
+        {/* CTA row */}
+        <div className="flex items-center justify-between pt-0.5">
+          <p className={`text-[10px] font-semibold uppercase tracking-widest ${selected ? "text-teal-400" : "text-teal-600"}`}>
+            {selected ? "Showing result ↓" : "See result →"}
+          </p>
+          {check.citySlug && !selected && (
+            <Link
+              href={`/financial-position/${check.citySlug}`}
+              onClick={(e) => e.stopPropagation()}
+              className="text-[10px] text-gray-400 hover:text-gray-600 transition-colors"
+            >
+              City →
+            </Link>
+          )}
+        </div>
       </div>
     </button>
   );
@@ -120,10 +132,18 @@ export default function PopularChecks() {
       {selectedCheck && (
         <div ref={resultRef} className="mt-6 scroll-mt-6">
           {/* Context strip */}
-          <div className="flex items-center gap-2 mb-3">
+          <div className="flex items-center gap-2 mb-3 flex-wrap">
             <span className="text-base">{selectedCheck.flag}</span>
             <span className="text-sm font-semibold text-gray-700">{selectedCheck.locationLabel}</span>
             <span className="text-xs text-gray-400">— {selectedCheck.hook}</span>
+            {selectedCheck.citySlug && (
+              <Link
+                href={`/financial-position/${selectedCheck.citySlug}`}
+                className="ml-auto text-xs font-semibold text-teal-600 hover:text-teal-700 transition-colors whitespace-nowrap"
+              >
+                See {selectedCheck.citySlug.replace(/-/g, " ")} city page →
+              </Link>
+            )}
           </div>
 
           <PathResultComponent

@@ -17,10 +17,15 @@ const INVEST_OPTIONS: { value: InvestsOption; label: string }[] = [
   { value: "no",        label: "No" },
 ];
 
-export default function PathTool() {
-  const [countrySlug, setCountrySlug]   = useState("us");
+interface Props {
+  defaultCountry?: string;
+  defaultRent?:    number;
+}
+
+export default function PathTool({ defaultCountry, defaultRent }: Props = {}) {
+  const [countrySlug, setCountrySlug]   = useState(defaultCountry ?? "us");
   const [incomeBand, setIncomeBand]     = useState("");
-  const [monthlyRent, setMonthlyRent]   = useState<number | null>(null);
+  const [monthlyRent, setMonthlyRent]   = useState<number | null>(defaultRent ?? null);
   const [expenseBand, setExpenseBand]   = useState("");
   const [ageBand, setAgeBand]           = useState("");
   const [invests, setInvests]           = useState<InvestsOption | "">("");
