@@ -14,7 +14,6 @@ export default function TrustSection({ variant = "full" }: Props) {
     year: "numeric",
   });
 
-  // Shared logo element — fixed 28px height, max 76px wide, grayscale
   const LogoList = () => (
     <>
       {TRUST_SOURCES.map(({ src, alt }) => (
@@ -36,6 +35,7 @@ export default function TrustSection({ variant = "full" }: Props) {
     return (
       <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
         <LogoList />
+        <span className="text-xs text-gray-400 font-medium">+ BLS · ABS · StatsCan · CBS</span>
       </div>
     );
   }
@@ -43,18 +43,18 @@ export default function TrustSection({ variant = "full" }: Props) {
   return (
     <div className="mt-4 pt-4 border-t border-gray-100">
       <p className="text-xs font-medium text-gray-500 mb-3">
-        Built using official public salary datasets and verified market benchmarks
+        Benchmarks from official household expenditure and savings surveys
       </p>
       <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mb-2">
         <LogoList />
-        <span className="text-xs text-gray-400 font-medium">+ national statistical offices</span>
+        <span className="text-xs text-gray-400 font-medium">+ BLS · ABS · StatsCan · CBS · CSO · Stats NZ</span>
       </div>
-      <p className="text-xs text-gray-400 mb-2.5">Coverage varies by role and location.</p>
+      <p className="text-xs text-gray-400 mb-2.5">Coverage varies by country and income band.</p>
       <div className="flex items-center justify-between">
         <p className="text-xs text-gray-300">
-          Updated {MONTH_YEAR} · Based on public benchmarks &amp; structured modelling
+          Updated {MONTH_YEAR} · Based on public household expenditure data
         </p>
-        <Link href="/methodology" className="text-xs text-orange-500 hover:underline font-medium whitespace-nowrap ml-3">
+        <Link href="/methodology" className="text-xs text-teal-600 hover:underline font-medium whitespace-nowrap ml-3">
           How we calculate →
         </Link>
       </div>

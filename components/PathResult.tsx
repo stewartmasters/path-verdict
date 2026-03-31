@@ -31,6 +31,8 @@ function ordinal(n: number): string {
 export default function PathResultComponent({ result, onReset, onEdit, resetLabel }: Props) {
   const [copiedCard, setCopiedCard] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
+  const [email, setEmail] = useState("");
+  const [emailSent, setEmailSent] = useState(false);
 
   const config = VERDICT_CONFIG[result.verdict];
   const verdictCopy = getVerdictCopy(result);
@@ -117,13 +119,13 @@ export default function PathResultComponent({ result, onReset, onEdit, resetLabe
           <div className="bg-white/70 rounded-xl p-3 text-center">
             <div className="text-xs text-gray-400 font-medium mb-1">Your rate</div>
             <div className={`font-bold text-sm sm:text-base leading-tight ${isNegative ? "text-red-600" : "text-gray-900"}`}>
-              {result.savingsRate}%
+              ~{result.savingsRate}%
             </div>
           </div>
           <div className="bg-white rounded-xl p-3 text-center ring-1 ring-gray-200 shadow-sm">
             <div className="text-xs text-gray-400 font-medium mb-1">Expected</div>
             <div className="font-bold text-gray-900 text-sm sm:text-base leading-tight">
-              {result.expectedRate}%
+              ~{result.expectedRate}%
             </div>
           </div>
           <div className="bg-white/70 rounded-xl p-3 text-center">
@@ -173,9 +175,9 @@ export default function PathResultComponent({ result, onReset, onEdit, resetLabe
             ))}
           </div>
           <div className="pt-1 border-t border-gray-100 flex items-center justify-between text-sm">
-            <span className="font-semibold text-gray-700">Savings rate</span>
+            <span className="font-semibold text-gray-700">Est. savings rate</span>
             <span className={`font-extrabold text-base ${isNegative ? "text-red-600" : result.savingsRate >= result.expectedRate ? "text-teal-600" : "text-gray-900"}`}>
-              {result.savingsRate}%
+              ~{result.savingsRate}%
             </span>
           </div>
         </div>
@@ -302,6 +304,57 @@ export default function PathResultComponent({ result, onReset, onEdit, resetLabe
             {copiedLink ? "✓ Link copied" : "or copy link"}
           </button>
         </div>
+
+        {/* ─── EMAIL CAPTURE ─── */}
+        {!emailSent && (
+          <div className="px-5 py-5 space-y-3">
+            <h3 className="font-bold text-gray-900 text-base">Get a reminder to recheck</h3>
+            <p className="text-xs text-gray-400 leading-relaxed">
+              Your financial position changes. Enter your email and we&apos;ll remind you to check again in 3 months. No spam, no marketing — one email.
+            </p>
+            <form
+              name="path-leads"
+              method="POST"
+              data-netlify="true"
+              onSubmit={(e) => {
+                e.preventDefault();
+                if (!email) return;
+                const fd = new FormData();
+                fd.append("form-name", "path-leads");
+                fd.append("email", email);
+                fd.append("verdict", result.verdict);
+                fd.append("income_band", result.incomeBandSlug);
+                fetch("/", { method: "POST", body: fd }).catch(() => {});
+                track("email_captured", { verdict: result.verdict });
+                setEmailSent(true);
+              }}
+              className="flex gap-2"
+            >
+              <input type="hidden" name="form-name" value="path-leads" />
+              <input type="hidden" name="verdict" value={result.verdict} />
+              <input type="hidden" name="income_band" value={result.incomeBandSlug} />
+              <input
+                type="email"
+                name="email"
+                placeholder="your@email.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="flex-1 border border-gray-200 rounded-xl px-3 py-2.5 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+              />
+              <button
+                type="submit"
+                className="bg-gray-900 text-white text-sm font-semibold px-4 py-2.5 rounded-xl hover:bg-gray-800 transition-colors whitespace-nowrap"
+              >
+                Remind me
+              </button>
+            </form>
+          </div>
+        )}
+        {emailSent && (
+          <div className="px-5 py-4 text-center">
+            <p className="text-sm text-teal-600 font-semibold">✓ Got it. We&apos;ll check in with you in 3 months.</p>
+          </div>
+        )}
 
         {/* ─── RESET ─── */}
         <div className="px-5 py-4 bg-gray-50 space-y-3">

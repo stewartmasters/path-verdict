@@ -3,13 +3,11 @@ export interface TrustSource {
   alt: string;
 }
 
+// Household expenditure and savings survey agencies used in PathVerdict's benchmark model.
+// Logo files available in /public/logos/ — BLS, ABS, StatsCan, CBS, CSO, Stats NZ cited by text.
 export const TRUST_SOURCES: TrustSource[] = [
-  { src: "/logos/eurostat.png", alt: "Eurostat" },
-  { src: "/logos/ons.png",      alt: "ONS" },
-  { src: "/logos/destatis.png", alt: "Destatis" },
-  { src: "/logos/ine.png",      alt: "INE" },
-  { src: "/logos/bfs.jpg",      alt: "BFS" },
-  { src: "/logos/scb.png",      alt: "SCB" },
-  { src: "/logos/istat.png",    alt: "Istat" },
-  { src: "/logos/gus.png",      alt: "GUS" },
+  { src: "/logos/ons.png",      alt: "ONS" },       // ONS Living Costs & Food Survey FYE2024 (UK)
+  { src: "/logos/destatis.png", alt: "Destatis" },  // Destatis EVS 2023 (Germany)
+  { src: "/logos/ine.png",      alt: "INE" },       // INE EPF (Spain)
+  { src: "/logos/scb.png",      alt: "SCB" },       // SCB HEK (Sweden)
 ];

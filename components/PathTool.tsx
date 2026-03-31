@@ -59,7 +59,7 @@ export default function PathTool({ defaultCountry, defaultRent }: Props = {}) {
     });
 
     setResult(res);
-    track("salary_calculated", { verdict: res.verdict, percentile: res.percentile, country: countrySlug });
+    track("path_calculated", { verdict: res.verdict, percentile: res.percentile, country: countrySlug });
   };
 
   const handleReset = () => {

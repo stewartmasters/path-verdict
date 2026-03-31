@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "How We Calculate Salaries — Our Methodology",
+  title: "How We Calculate Your Financial Position — PathVerdict Methodology",
   description:
-    "We use modelled salary estimates based on public benchmarks, not real-time company data. Here's exactly how our salary ranges are calculated.",
+    "PathVerdict benchmarks your savings rate against real household expenditure survey data. Here's exactly how the calculation works, what data we use, and what the numbers mean.",
   alternates: { canonical: "/methodology" },
 };
 
@@ -14,142 +14,128 @@ const SECTIONS = [
     heading: "Where the data comes from",
     content: (
       <>
-        <p>We do <strong>not</strong> have access to live company salary databases, proprietary HR platforms, or real-time job posting data. We want to be upfront about that.</p>
-        <p>Instead, our salary estimates are built from government earnings surveys and community compensation platforms, normalized into a single structured pipeline:</p>
+        <p>PathVerdict does not use crowdsourced data, estimates, or synthetic benchmarks. Every expected savings rate is derived from national household expenditure surveys — the same data used by central banks and finance ministries to model household saving behaviour.</p>
+        <p>Our nine primary sources are:</p>
         <ul>
-          <li><strong>Government earnings surveys</strong> — ONS ASHE (UK), Eurostat SES (EU-wide), Destatis VSE (Germany), and INE EES (Spain). These are the most statistically reliable sources available — large samples, consistent methodology, published under open data licences.</li>
-          <li><strong>Levels.fyi compensation data</strong> — manually curated from publicly visible salary ranges on the platform, used as a directional signal for tech roles in major cities. Self-reported data with known upward bias — treated as an upper-market signal, not a market median.</li>
-          <li><strong>Structured modelling</strong> — for role/location combinations where we have no direct source data, we fall back to a calibrated model using location and experience multipliers derived from the survey data above.</li>
+          <li><strong>BLS Consumer Expenditure Survey 2023 (US)</strong> — Annual income and expenditure by quintile for US households. We use quintile average income and expenditure to derive implied savings rates by income band. Published by the US Bureau of Labor Statistics under public domain.</li>
+          <li><strong>ONS Living Costs &amp; Food Survey FYE2024 (UK)</strong> — Detailed decile-level household income and expenditure data for Great Britain. The most granular public savings benchmark dataset available for the UK. Published by the Office for National Statistics under Open Government Licence v3.0.</li>
+          <li><strong>Destatis Einkommens- und Verbrauchsstichprobe 2023 (Germany)</strong> — German household income and expenditure survey (EVS). Quintile-level data with breakdowns by household type. Published by Destatis under the Data Licence Germany (dl-de/by-2-0).</li>
+          <li><strong>INSEE Enquête Budget de Famille (France)</strong> — French household budget survey covering income, consumption, and savings by decile. Published by INSEE under open public data terms.</li>
+          <li><strong>ABS Household Expenditure Survey 2019–20 (Australia)</strong> — Australian household income and expenditure by equivalised income quintile. Published by the Australian Bureau of Statistics under Creative Commons CC BY 4.0.</li>
+          <li><strong>Statistics Canada Survey of Household Spending 2023 (Canada)</strong> — Canadian household expenditure by income quintile. Published under the Statistics Canada Open Licence.</li>
+          <li><strong>CBS Household Budget Survey (Netherlands)</strong> — Dutch household income and expenditure data. Published by Statistics Netherlands (CBS) under Creative Commons CC BY 4.0.</li>
+          <li><strong>SCB Hushållens ekonomi (HEK) 2022 (Sweden)</strong> — Swedish household income and savings data by decile. Published by Statistics Sweden (SCB) under open data terms.</li>
+          <li><strong>Stats NZ Household Economic Survey 2022–23 (New Zealand)</strong> — New Zealand household income and expenditure by equivalised income quintile. Published by Statistics New Zealand under Creative Commons CC BY 4.0.</li>
         </ul>
-        <p>All records are normalized into a unified schema and explicitly tagged with their source, geographic scope, seniority level, and freshness. Estimates are only produced from this pipeline — we do not use synthetic data.</p>
+        <p>For Ireland and Spain, we use Eurostat Household Budget Survey (HBS) data supplemented by national CBS Ireland and INE EPF sources respectively, where available at the required income-band granularity.</p>
       </>
     ),
   },
   {
-    id: "how-we-estimate",
-    heading: "How we estimate salaries",
+    id: "how-benchmarks-are-calculated",
+    heading: "How expected savings rates are calculated",
     content: (
       <>
-        <p>When you query a role and location, we run a <strong>3-tier geographic search</strong> against our normalized record set:</p>
+        <p>For each country, we map income bands to expected savings rates using the income-quintile data from the household surveys above. The process is:</p>
         <ol>
-          <li><strong>City-level records</strong> — the most specific and highest-weighted data. For example, ONS London regional data or Levels.fyi London records.</li>
-          <li><strong>Country-level records</strong> — national-level survey data (e.g. UK ONS ASHE national, Germany Destatis VSE national).</li>
-          <li><strong>Pan-European fallback</strong> — Eurostat SES aggregate data, used only when no country-specific records exist for a combination.</li>
+          <li><strong>Income quintile alignment</strong> — Each of our income bands (e.g. £35k–£50k) is mapped to the closest survey quintile or decile by average income. Where a band straddles two quintiles, we interpolate linearly by income weight.</li>
+          <li><strong>Implied savings rate calculation</strong> — For each quintile, we calculate: <em>implied savings rate = (average income − average total expenditure) / average income</em>. Total expenditure in these surveys covers all consumption categories including housing costs.</li>
+          <li><strong>Validation against OECD national accounts</strong> — Country-level implied rates are cross-checked against OECD Household Savings Rate aggregate data. Where the survey-derived rates diverge materially from OECD national accounts, we apply a documented adjustment with notes in the source data.</li>
         </ol>
-        <p>Each record is weighted by <strong>four factors</strong>: source reliability (government surveys weighted highest), data freshness (decaying ~15% per year), geographic specificity (city &gt; country &gt; Europe), and role normalization confidence (how well the raw occupation code maps to our role definition).</p>
-        <p>If the available records don&apos;t match the queried seniority exactly, we apply an <strong>experience curve</strong> — a smooth non-linear function (Hermite spline) calibrated from observed European tech market data. Entry level is approximately 58% of mid-level market rate; 15 years of experience is approximately 148%.</p>
-        <p>Where no pipeline data exists for a combination, the estimate falls back to a calibrated multiplier model using location premiums derived from our survey data.</p>
-        <p>The result is a <strong>low / median / high</strong> range (weighted P25/P50/P75 across the contributing records) and a percentile estimate for where your salary sits.</p>
+        <p>The result is a per-income-band expected savings rate for each of the 11 countries we cover. These are the rates shown in your result as "Expected."</p>
       </>
     ),
   },
   {
-    id: "country-mapping",
-    heading: "Country data integrity",
+    id: "how-your-rate-is-calculated",
+    heading: "How your savings rate is calculated",
     content: (
       <>
-        <p>We apply a strict country-to-source mapping. UK data is never used to estimate EU salaries, and EU data is never used to estimate UK salaries.</p>
+        <p>Your savings rate is calculated from the inputs you provide:</p>
+        <ol>
+          <li><strong>Monthly income</strong> is estimated from the midpoint of your selected income band. For example, if you select £35k–£50k, we use £42,500 annual (£3,542/month). This is the primary source of estimation uncertainty — see the precision section below.</li>
+          <li><strong>Monthly rent/mortgage</strong> is taken directly from the slider value.</li>
+          <li><strong>Other monthly expenses</strong> are estimated from the midpoint of your selected expense band.</li>
+          <li><strong>Monthly surplus</strong> = monthly income − rent − other expenses.</li>
+          <li><strong>Savings rate</strong> = monthly surplus ÷ monthly income × 100.</li>
+        </ol>
+        <p>This is a gross income savings rate — it measures what proportion of your before-tax income you retain, which is what the household survey benchmarks also measure. We use gross income rather than net because survey quintile data is predominantly reported on a gross basis.</p>
+        <p>Note: tax is not explicitly modelled. This means the savings rate calculation treats gross income as the baseline, consistent with the source data but different from how some personal finance tools work.</p>
+      </>
+    ),
+  },
+  {
+    id: "verdict-derivation",
+    heading: "How the verdict is derived",
+    content: (
+      <>
+        <p>Once we have your savings rate and the expected rate for your income band, we calculate the <strong>gap</strong>: gap = your rate − expected rate.</p>
+        <p>The verdict tiers are:</p>
         <ul>
-          <li><strong>London and UK estimates</strong> are calibrated from ONS ASHE data (UK government survey). Eurostat data is not used for these locations.</li>
-          <li><strong>Continental European estimates</strong> (Germany, France, Spain, Netherlands, Ireland) are calibrated from Eurostat Labour Cost Survey data. ONS data is not used for these locations.</li>
-          <li><strong>Tech-role estimates</strong> in major cities (London, Berlin, Amsterdam, Paris, Dublin) are additionally cross-referenced with Levels.fyi community compensation data, which has strong European tech coverage.</li>
-          <li><strong>Glassdoor salary data</strong> is used as a secondary directional cross-check only — not as a primary benchmark input. It is applied on a per-country basis and weighted at 0.55× vs 0.80–0.90× for government sources. <em>Indeed is not currently integrated.</em></li>
+          <li><strong>Critical</strong> — your savings rate is negative (spending exceeds income). Regardless of the gap.</li>
+          <li><strong>Falling Behind</strong> — gap is below −8 percentage points. You are saving significantly less than people at your income level.</li>
+          <li><strong>Under-Saving</strong> — gap is between −8 and −2 percentage points. Below benchmark but not in structural deficit.</li>
+          <li><strong>On Track</strong> — gap is between −2 and +6 percentage points. Saving at or near the expected rate for your income.</li>
+          <li><strong>Ahead</strong> — gap is above +6 percentage points. Saving meaningfully above what people at your income level typically save.</li>
         </ul>
-        <p>This mapping is maintained explicitly in our data layer and validated at build time to prevent accidental cross-country mixing.</p>
+        <p>The thresholds (−8, −2, +6) are calibrated to reflect the natural variance in savings rates within quintiles. Household survey data shows that within any income quintile, the standard deviation of savings rates is approximately 8–12 percentage points — so a gap of 2 percentage points below expected is well within normal variance, while a gap of 8+ points below suggests a structural difference in spending behaviour.</p>
       </>
     ),
   },
   {
-    id: "data-sources",
-    heading: "Named data sources",
+    id: "age-and-investment-adjustments",
+    heading: "Age and investment adjustments",
     content: (
       <>
-        <p>Our salary pipeline draws on the following publicly available sources, each tagged with its geographic scope and ingestion method:</p>
+        <p>If you provide your age, we apply a small adjustment to the expected savings rate. This reflects the well-documented life-cycle pattern of household savings: younger households (under 25) tend to save less due to lower incomes and higher setup costs; savings rates typically peak in the 45–55 range before declining in retirement.</p>
+        <p>The age modifiers are derived from life-cycle savings pattern data in the BLS CEX and ONS LCF (which publish age-of-head breakdowns). They are small — typically ±3 to ±7 percentage points — and are intended to make the expected rate more relevant to your stage of life rather than a single average for all ages.</p>
+        <p>If you indicate you invest regularly, the expected rate is adjusted slightly downward. This reflects that consistent investing functions as a form of wealth-building equivalent to saving, and the survey benchmarks do not always capture investment flows in their expenditure figures.</p>
+      </>
+    ),
+  },
+  {
+    id: "percentile-estimation",
+    heading: "Percentile estimation",
+    content: (
+      <>
+        <p>The percentile estimate — "you save more than roughly X% of people" — is derived from the distribution of savings rates across all income levels, not just your income band.</p>
+        <p>We map savings rates to percentiles using a distribution fitted to BLS CEX 2023 micro-level data, cross-validated against ONS LCF FYE2024 and OECD cross-country data. The distribution is heavily right-skewed: the majority of households save below 10% of income, and the upper tail (above 25%) represents a small fraction of the population.</p>
+        <p>Key reference points from the source data: a savings rate of 0% corresponds to approximately the 26th percentile; 10% to the 38th percentile; 20% to the 74th percentile; 30% to the 90th percentile. These are population-wide figures — not conditional on income.</p>
+      </>
+    ),
+  },
+  {
+    id: "precision-and-limitations",
+    heading: "Precision and limitations",
+    content: (
+      <>
+        <p>We want to be honest about the precision of these outputs.</p>
         <ul>
-          <li><strong>UK ONS ASHE 2024</strong> (ons-uk) — Annual Survey of Hours and Earnings Table 14. SOC 2020 occupation codes. Covers UK national and London regional gross annual pay by occupation for full-time employees. Open Government Licence v3.0. <em>UK locations only.</em></li>
-          <li><strong>Eurostat Structure of Earnings Survey 2022</strong> (eurostat-ses) — EU member state earnings data by ISCO-08 occupation, enterprise size, and country. Covers DE, NL, ES, FR, IE and other states. Updated every 4 years. <em>Continental European markets.</em></li>
-          <li><strong>Destatis Verdienststrukturerhebung 2022</strong> (destatis-vse) — Germany&apos;s national earnings structure survey aligned with EU SES. KldB 2010 occupation codes. Includes Berlin federal state breakdown. Data licence Germany dl-de/by-2-0. <em>Germany only.</em></li>
-          <li><strong>INE Encuesta de Estructura Salarial 2022</strong> (ine-ees) — Spain&apos;s national earnings structure survey. CNO-11 occupation codes. Includes Comunidad de Madrid and Cataluña regional breakdown (used for Madrid and Barcelona). Attribution to INE required. <em>Spain only.</em></li>
-          <li><strong>Levels.fyi 2024</strong> (levels-fyi) — Manually curated from publicly visible salary ranges on the platform. Representative of larger tech companies and above-market-median employers. Self-reported data has known upward bias — used as an upper-market signal for engineering, product, and data roles in major tech hubs. <em>Not used for non-tech roles.</em></li>
-        </ul>
-        <p>Government surveys are weighted highest in our pipeline. Levels.fyi is weighted at approximately 0.65× vs 0.80–0.90× for national statistics sources. Glassdoor salary figures are used as a secondary directional cross-check at 0.55× and are not a primary driver of estimates. Indeed is not currently integrated.</p>
-      </>
-    ),
-  },
-  {
-    id: "confidence-scoring",
-    heading: "Confidence scoring",
-    content: (
-      <>
-        <p>We assign a confidence level — <strong>High</strong>, <strong>Medium</strong>, or <strong>Lower</strong> — to each estimate, computed directly from the pipeline data used to produce it. This is not a heuristic label; it is derived from six measured factors:</p>
-        <ul>
-          <li><strong>Source diversity</strong> — how many distinct data sources contributed. One source = medium at best.</li>
-          <li><strong>Record count</strong> — how many normalized records matched the query. Fewer records = lower confidence.</li>
-          <li><strong>Freshness</strong> — how recent the contributing data is. Government surveys run every 4 years; freshness decays 15% per year from publication date.</li>
-          <li><strong>Geographic specificity</strong> — city-level data is scored highest; pan-European fallback lowest.</li>
-          <li><strong>Seniority match</strong> — whether records exist for the exact queried seniority, or whether we had to interpolate using the experience curve.</li>
-          <li><strong>Fallback depth</strong> — whether we reached the Europe-wide fallback tier, which means no country-specific data was available.</li>
-        </ul>
-        <p>High confidence requires a composite score ≥ 0.75 across these factors. Medium is 0.45–0.74. Lower confidence means the estimate is based on thin or indirect data — use it as a rough guide only.</p>
-        <p>Confidence is shown on each salary page and in calculator results. It is not a claim about accuracy — it is a measure of how much real evidence supports the estimate.</p>
-      </>
-    ),
-  },
-  {
-    id: "coverage",
-    heading: "Coverage summary",
-    content: (
-      <>
-        <p>We cover 21 role types across 12 locations. Coverage quality varies — here&apos;s an honest breakdown:</p>
-        <div className="mt-4 space-y-4">
-          <div>
-            <p className="font-semibold text-emerald-700 text-sm mb-1">Strong coverage (high confidence)</p>
-            <p className="text-gray-600 text-sm">Software Engineer, Frontend Developer, Backend Developer, Product Manager, Designer, Marketing Manager, Sales Manager, Data Analyst — in London, Berlin, Amsterdam, Paris, Dublin. Multiple independent sources available for these combinations.</p>
-          </div>
-          <div>
-            <p className="font-semibold text-amber-700 text-sm mb-1">Medium coverage</p>
-            <p className="text-gray-600 text-sm">DevOps Engineer, Data Scientist, Business Analyst, HR Manager, Finance Analyst, Operations Manager, Customer Success Manager, Account Manager, Growth Manager, Performance Marketing Manager — in major cities. Reasonable market signals available but fewer cross-referenced sources.</p>
-          </div>
-          <div>
-            <p className="font-semibold text-gray-500 text-sm mb-1">Lower confidence</p>
-            <p className="text-gray-600 text-sm">QA Engineer, Content Manager, Social Media Manager in any location. Any role in the generic &quot;Europe&quot; category. Fewer public benchmarks; use as a rough guide only.</p>
-          </div>
-        </div>
-      </>
-    ),
-  },
-  {
-    id: "limitations",
-    heading: "Limitations",
-    content: (
-      <>
-        <p>We think transparency here matters. There are real limitations to be aware of:</p>
-        <ul>
-          <li><strong>Not all industries are well represented.</strong> Our estimates are strongest for tech, product, marketing, sales, and operations roles. Legal, executive, finance advisory, and highly specialised roles are not well modelled.</li>
-          <li><strong>We don&apos;t account for company size or stage.</strong> A senior engineer at a Series A startup and one at a FAANG company are not the same. Our estimates reflect a broad market average, not any specific company type.</li>
-          <li><strong>We don&apos;t include equity, bonuses, or benefits.</strong> Total compensation can be significantly higher than base salary, especially in tech. Our tool only estimates gross annual base salary.</li>
-          <li><strong>Data is not real-time.</strong> We update the model periodically, but salaries can shift quickly in fast-moving markets.</li>
-          <li><strong>Currency values are not live FX rates.</strong> UK estimates are in GBP; European estimates are in EUR. We do not apply live exchange rates between them.</li>
+          <li><strong>Income band midpoints introduce uncertainty.</strong> If your income band is $55k–$75k (midpoint: $65k), the actual savings rate for someone earning $56k differs from someone earning $74k by several percentage points. The output is an estimate based on the midpoint — treat it as directional, not exact.</li>
+          <li><strong>Expense band midpoints introduce similar uncertainty.</strong> A wide "other expenses" band covers a range of real behaviours. The midpoint is our best estimate of typical spending within that range.</li>
+          <li><strong>Tax is not modelled explicitly.</strong> In high-income bands, tax can reduce the disposable income available to save substantially. Our gross savings rate benchmark is comparable across countries, but it does not tell you exactly how much of your take-home pay you are saving.</li>
+          <li><strong>Survey data is not real-time.</strong> Household expenditure surveys are typically conducted every 2–5 years. We update benchmarks when new survey waves are published. The most recent data we use (ONS LCF FYE2024, StatsCan SHS 2023) is from 2023–24; some countries use data from 2022 survey waves.</li>
+          <li><strong>We cover 11 countries.</strong> If your country is not listed, the benchmark is not applicable. We do not extrapolate to uncovered markets.</li>
+          <li><strong>Savings rate does not equal wealth-building rate.</strong> The gap between income and expenditure includes savings but also debt repayment. A high savings rate does not guarantee net worth is growing if there is a large debt load.</li>
         </ul>
       </>
     ),
   },
   {
-    id: "why-still-useful",
-    heading: "Why this is still useful",
+    id: "why-useful",
+    heading: "Why this is useful despite the limitations",
     content: (
       <>
-        <p>Despite these limitations, benchmarking your salary is genuinely useful — even with modelled estimates.</p>
-        <p>Most people have no external reference point for their salary at all. They accepted an offer, received annual increments, and have no idea whether they&apos;re at the 30th or 80th percentile for their role. That asymmetry favours employers.</p>
-        <p>Our tool gives you a directional signal. If our model puts your current salary in the bottom 25% for your role and location, that&apos;s a meaningful data point — even if the exact median is off by a few thousand euros. It tells you there&apos;s a conversation worth having.</p>
-        <p>For a more precise view, we recommend combining our estimate with:</p>
+        <p>Most people have no external reference point for whether their savings rate is normal. They've never seen the household survey data. They don't know whether saving 8% of their income is good, average, or behind — because no one has shown them what other people at their income level actually save.</p>
+        <p>That's the asymmetry PathVerdict addresses. Even with income-band estimation, even with survey data that's 1–3 years old, knowing that your savings rate is 12 percentage points below what people at your income level typically save is a meaningful signal. It tells you there's a structural difference worth examining — whether that's rent cost, lifestyle creep, or something else.</p>
+        <p>For a more precise view of your position, we recommend combining your PathVerdict result with:</p>
         <ul>
-          <li>Job listings for similar roles in your location</li>
-          <li>Conversations with recruiters who can share live market rates</li>
-          <li>Professional network salary discussions</li>
-          <li>National salary survey data published by government bodies</li>
+          <li>Your actual take-home income and monthly account statement</li>
+          <li>A detailed monthly budget if you've never built one</li>
+          <li>A salary benchmark from SalaryVerdict to check whether your income is at market</li>
+          <li>A rent affordability check from SpendVerdict if housing cost is the main driver</li>
         </ul>
-        <p>Our goal is to give you enough signal to start the conversation — with your manager, a recruiter, or yourself.</p>
+        <p>PathVerdict gives you the signal. What you do with it is up to you.</p>
       </>
     ),
   },
@@ -159,38 +145,38 @@ export default function MethodologyPage() {
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10 sm:py-16">
       <nav className="text-sm text-gray-400 mb-8 flex items-center gap-2">
-        <Link href="/" className="hover:text-orange-500 transition-colors">Home</Link>
+        <Link href="/" className="hover:text-teal-600 transition-colors">Home</Link>
         <span>/</span>
         <span className="text-gray-600">Methodology</span>
       </nav>
 
       <header className="mb-12 space-y-4">
-        <div className="inline-block bg-orange-50 text-orange-600 text-xs font-bold uppercase tracking-widest px-3 py-1.5 rounded-full">
+        <div className="inline-block bg-teal-50 text-teal-700 text-xs font-bold uppercase tracking-widest px-3 py-1.5 rounded-full">
           How we work
         </div>
         <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 leading-tight">
-          How we calculate salary estimates
+          How we calculate your financial position
         </h1>
         <p className="text-lg text-gray-500 leading-relaxed">
-          We believe in being honest about what we do and don&apos;t know. This page explains where our salary data comes from and how we model it.
+          We believe in being honest about what we do and don&apos;t know. This page explains where our savings benchmarks come from and exactly how we calculate your result.
         </p>
       </header>
 
-      <div className="bg-orange-50 border border-orange-100 rounded-2xl p-6 mb-12 space-y-3">
+      <div className="bg-teal-50 border border-teal-100 rounded-2xl p-6 mb-12 space-y-3">
         <h2 className="font-bold text-gray-900">The short version</h2>
         <p className="text-gray-700 text-sm leading-relaxed">
-          Our salary estimates are based on <strong>public benchmarks and structured modelling</strong>. We do not use real-time company data feeds or proprietary salary databases. Our numbers are designed to give you a directional signal — not a legally precise figure.
+          We take your income, rent, and expenses, calculate your savings rate, then compare it to what households at your income level actually save — using data from national statistics agencies. The result is a <strong>gap</strong> between your rate and the expected rate. The gap drives the verdict.
         </p>
         <div className="flex flex-wrap gap-3 pt-1">
-          {["Government wage data", "Industry benchmarks", "Experience modelling", "Location adjustments"].map((tag) => (
-            <span key={tag} className="text-xs font-semibold bg-white border border-orange-200 text-orange-700 px-3 py-1 rounded-full">{tag}</span>
+          {["Household expenditure surveys", "9 national datasets", "Income-band benchmarks", "No crowdsourcing"].map((tag) => (
+            <span key={tag} className="text-xs font-semibold bg-white border border-teal-200 text-teal-700 px-3 py-1 rounded-full">{tag}</span>
           ))}
         </div>
       </div>
 
-      <nav className="mb-12 space-y-1 border-l-2 border-orange-100 pl-4">
+      <nav className="mb-12 space-y-1 border-l-2 border-teal-100 pl-4">
         {SECTIONS.map(({ id, heading }) => (
-          <a key={id} href={`#${id}`} className="block text-sm text-gray-500 hover:text-orange-600 py-0.5 transition-colors">{heading}</a>
+          <a key={id} href={`#${id}`} className="block text-sm text-gray-500 hover:text-teal-600 py-0.5 transition-colors">{heading}</a>
         ))}
       </nav>
 
@@ -206,10 +192,10 @@ export default function MethodologyPage() {
       </div>
 
       <div className="mt-16 bg-gray-900 rounded-2xl p-8 text-center space-y-4">
-        <h2 className="text-xl font-bold text-white">Ready to check your salary?</h2>
+        <h2 className="text-xl font-bold text-white">Ready to check your position?</h2>
         <p className="text-gray-400 text-sm">Takes 30 seconds. No email required. No signup.</p>
-        <Link href="/" className="inline-block bg-orange-500 hover:bg-orange-600 text-white font-bold px-6 py-3 rounded-xl transition-colors">
-          Check my salary →
+        <Link href="/" className="inline-block bg-teal-600 hover:bg-teal-700 text-white font-bold px-6 py-3 rounded-xl transition-colors">
+          Get my verdict →
         </Link>
       </div>
     </div>

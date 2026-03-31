@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { CITIES } from "@/lib/cities";
+import { BLOG_POSTS } from "@/data/blog-posts-path";
 
 export const dynamic = "force-static";
 
@@ -10,7 +11,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: BASE_URL,                       lastModified: now, changeFrequency: "weekly",  priority: 1.0 },
-    { url: `${BASE_URL}/methodology`,      lastModified: now, changeFrequency: "monthly", priority: 0.5 },
+    { url: `${BASE_URL}/blog`,             lastModified: now, changeFrequency: "weekly",  priority: 0.7 },
+    { url: `${BASE_URL}/methodology`,      lastModified: now, changeFrequency: "monthly", priority: 0.6 },
     { url: `${BASE_URL}/privacy`,          lastModified: now, changeFrequency: "yearly",  priority: 0.2 },
   ];
 
@@ -28,5 +30,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority:        0.80,
   }));
 
-  return [...staticRoutes, ...financialPositionRoutes, ...affordabilityRoutes];
+  const blogRoutes: MetadataRoute.Sitemap = BLOG_POSTS.map((p) => ({
+    url:             `${BASE_URL}/blog/${p.slug}`,
+    lastModified:    new Date(p.date),
+    changeFrequency: "monthly" as const,
+    priority:        0.75,
+  }));
+
+  return [...staticRoutes, ...financialPositionRoutes, ...affordabilityRoutes, ...blogRoutes];
 }

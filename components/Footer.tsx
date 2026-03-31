@@ -15,7 +15,7 @@ export default function Footer() {
               A fast, benchmarked verdict on your financial position. Income, spending, and savings — combined into one clear signal.
             </p>
             <p className="text-xs text-gray-400">
-              Based on BLS Consumer Expenditure Survey data and income-adjusted savings benchmarks.
+              Benchmarks from BLS CEX, ONS LCF, Destatis EVS, ABS HES, StatsCan SHS, and six other national household expenditure surveys.
             </p>
           </div>
 
@@ -24,6 +24,7 @@ export default function Footer() {
             <ul className="space-y-1.5">
               {[
                 { href: "/", label: "Financial health check" },
+                { href: "/blog", label: "Blog" },
                 { href: "/methodology", label: "Methodology" },
                 { href: "/privacy", label: "Privacy policy" },
               ].map(({ href, label }) => (
