@@ -24,7 +24,7 @@ const SCENARIOS: Array<{ id: string; locationLabel: string; hook: string; flag: 
     citySlug:      "denver",
     input: {
       countrySlug:     "us",
-      incomeBandSlug:  "band-1", // $30–40k, mid $35k
+      annualIncome:    35000,
       monthlyRent:     1600,
       monthlyOtherExpenses: 1750,
     },
@@ -37,7 +37,7 @@ const SCENARIOS: Array<{ id: string; locationLabel: string; hook: string; flag: 
     citySlug:      "new-york",
     input: {
       countrySlug:     "us",
-      incomeBandSlug:  "band-5", // $100–140k, mid $120k
+      annualIncome:    120000,
       monthlyRent:     4200,
       monthlyOtherExpenses: 5000,
     },
@@ -50,7 +50,7 @@ const SCENARIOS: Array<{ id: string; locationLabel: string; hook: string; flag: 
     citySlug:      "london",
     input: {
       countrySlug:     "gb",
-      incomeBandSlug:  "band-4", // £50–70k, mid £60k
+      annualIncome:    60000,
       monthlyRent:     2200,
       monthlyOtherExpenses: 1900,
     },
@@ -63,7 +63,7 @@ const SCENARIOS: Array<{ id: string; locationLabel: string; hook: string; flag: 
     citySlug:      "manchester",
     input: {
       countrySlug:     "gb",
-      incomeBandSlug:  "band-3", // £35–50k, mid £42.5k
+      annualIncome:    42500,
       monthlyRent:     850,
       monthlyOtherExpenses: 1000,
     },
@@ -76,7 +76,7 @@ const SCENARIOS: Array<{ id: string; locationLabel: string; hook: string; flag: 
     citySlug:      "dublin",
     input: {
       countrySlug:     "ie",
-      incomeBandSlug:  "band-3", // €45–62k, mid €53.5k
+      annualIncome:    53500,
       monthlyRent:     2100,
       monthlyOtherExpenses: 2100,
     },
@@ -89,7 +89,7 @@ const SCENARIOS: Array<{ id: string; locationLabel: string; hook: string; flag: 
     citySlug:      "sydney",
     input: {
       countrySlug:     "au",
-      incomeBandSlug:  "band-3", // A$70–95k, mid A$82.5k
+      annualIncome:    82500,
       monthlyRent:     2800,
       monthlyOtherExpenses: 3850,
     },
@@ -102,7 +102,7 @@ const SCENARIOS: Array<{ id: string; locationLabel: string; hook: string; flag: 
     citySlug:      "berlin",
     input: {
       countrySlug:     "de",
-      incomeBandSlug:  "band-4", // €50–70k, mid €60k
+      annualIncome:    60000,
       monthlyRent:     1050,
       monthlyOtherExpenses: 1000,
       invests:         "yes",
@@ -116,7 +116,7 @@ const SCENARIOS: Array<{ id: string; locationLabel: string; hook: string; flag: 
     citySlug:      "toronto",
     input: {
       countrySlug:     "ca",
-      incomeBandSlug:  "band-2", // C$40–55k, mid C$47.5k
+      annualIncome:    47500,
       monthlyRent:     2200,
       monthlyOtherExpenses: 1750,
     },
@@ -129,7 +129,7 @@ const SCENARIOS: Array<{ id: string; locationLabel: string; hook: string; flag: 
     citySlug:      "auckland",
     input: {
       countrySlug:     "nz",
-      incomeBandSlug:  "band-3", // NZ$58–80k, mid NZ$69k
+      annualIncome:    69000,
       monthlyRent:     2400,
       monthlyOtherExpenses: 2800,
     },
@@ -142,7 +142,7 @@ const SCENARIOS: Array<{ id: string; locationLabel: string; hook: string; flag: 
     citySlug:      "stockholm",
     input: {
       countrySlug:     "se",
-      incomeBandSlug:  "band-4", // 600–800k kr, mid 700k
+      annualIncome:    700000,
       monthlyRent:     9500,
       monthlyOtherExpenses: 10500,
       invests:         "yes",

@@ -1,4 +1,4 @@
-import { getCountry, getBenchmarkRate } from "./countries";
+import { getCountry, getBenchmarkRateForIncome, getIncomeBandForIncome } from "./countries";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -7,7 +7,7 @@ export type InvestsOption = "yes" | "sometimes" | "no";
 
 export interface PathInput {
   countrySlug: string;
-  incomeBandSlug: string;
+  annualIncome: number;
   monthlyRent: number;
   monthlyOtherExpenses: number;
   ageBandSlug?: string;
@@ -26,7 +26,8 @@ export interface PathResult {
   monthlyExpenses: number;
   monthlySurplus: number;
   countrySlug: string;
-  incomeBandSlug: string;
+  annualIncome: number;
+  incomeBandLabel: string;
   ageBandSlug?: string;
   invests?: InvestsOption;
   currency: string;
@@ -88,15 +89,13 @@ export function calculatePath(input: PathInput): PathResult {
   const country = getCountry(input.countrySlug);
   if (!country) throw new Error(`Unknown country: ${input.countrySlug}`);
 
-  const incomeBand = country.incomeBands.find((b) => b.slug === input.incomeBandSlug);
-  if (!incomeBand) throw new Error("Invalid income band");
-
-  const monthlyIncome   = incomeBand.midpoint / 12;
+  const incomeBand      = getIncomeBandForIncome(country, input.annualIncome);
+  const monthlyIncome   = input.annualIncome / 12;
   const monthlyExpenses = input.monthlyRent + input.monthlyOtherExpenses;
   const monthlySurplus  = monthlyIncome - monthlyExpenses;
   const savingsRate     = (monthlySurplus / monthlyIncome) * 100;
 
-  const baseExpected    = getBenchmarkRate(country, input.incomeBandSlug);
+  const baseExpected    = getBenchmarkRateForIncome(country, input.annualIncome);
   const ageModifier     = input.ageBandSlug ? (AGE_MODIFIERS[input.ageBandSlug] ?? 0) : 0;
   const investModifier  = input.invests ? INVEST_MODIFIERS[input.invests] : 0;
   const expectedRate    = (baseExpected + ageModifier + investModifier) * 100;
@@ -117,7 +116,8 @@ export function calculatePath(input: PathInput): PathResult {
     monthlyExpenses:      Math.round(monthlyExpenses),
     monthlySurplus:       Math.round(monthlySurplus),
     countrySlug:          input.countrySlug,
-    incomeBandSlug:       input.incomeBandSlug,
+    annualIncome:         input.annualIncome,
+    incomeBandLabel:      incomeBand.label,
     ageBandSlug:          input.ageBandSlug,
     invests:              input.invests,
     currency:             country.currency,
@@ -159,7 +159,9 @@ export interface IdentityCard {
 }
 
 export function deriveIdentity(result: PathResult): FinancialIdentity {
-  const bandNum = parseInt(result.incomeBandSlug.replace("band-", ""), 10);
+  const country = getCountry(result.countrySlug);
+  const band    = country ? getIncomeBandForIncome(country, result.annualIncome) : null;
+  const bandNum = band ? parseInt(band.slug.replace("band-", ""), 10) : 1;
   if (result.verdict === "critical")                           return "running-on-fumes";
   if (result.verdict === "falling-behind" && bandNum >= 4)     return "comfortable-slide";
   if (result.verdict === "falling-behind")                     return "stretched-thin";

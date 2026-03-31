@@ -39,7 +39,7 @@ export default function PathResultComponent({ result, onReset, onEdit, resetLabe
   const insightLine = getInsightLine(result);
   const identityCard = buildIdentityCard(result);
   const country = getCountry(result.countrySlug);
-  const incomeBandLabel = country?.incomeBands.find((b) => b.slug === result.incomeBandSlug)?.label;
+  const incomeBandLabel = result.incomeBandLabel;
   const ageBandLabel = result.ageBandSlug ? AGE_BANDS.find((b) => b.slug === result.ageBandSlug)?.label : null;
   const fmt = (n: number) => formatAmount(n, result.currencySymbol, result.currencyPosition);
 
@@ -323,7 +323,7 @@ export default function PathResultComponent({ result, onReset, onEdit, resetLabe
                 fd.append("form-name", "path-leads");
                 fd.append("email", email);
                 fd.append("verdict", result.verdict);
-                fd.append("income_band", result.incomeBandSlug);
+                fd.append("income_band", result.incomeBandLabel);
                 fetch("/", { method: "POST", body: fd }).catch(() => {});
                 track("email_captured", { verdict: result.verdict });
                 setEmailSent(true);
@@ -332,7 +332,7 @@ export default function PathResultComponent({ result, onReset, onEdit, resetLabe
             >
               <input type="hidden" name="form-name" value="path-leads" />
               <input type="hidden" name="verdict" value={result.verdict} />
-              <input type="hidden" name="income_band" value={result.incomeBandSlug} />
+              <input type="hidden" name="income_band" value={result.incomeBandLabel} />
               <input
                 type="email"
                 name="email"

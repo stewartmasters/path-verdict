@@ -26,9 +26,9 @@ export default function CityCostBreakdown({ city }: Props) {
     const band = country.incomeBands.find((b) => b.slug === bandSlug);
     if (!band) return [];
     const result = calculatePath({
-      countrySlug:     city.countrySlug,
-      incomeBandSlug:  bandSlug,
-      monthlyRent:     city.medianRent,
+      countrySlug:          city.countrySlug,
+      annualIncome:         band.midpoint,
+      monthlyRent:          city.medianRent,
       monthlyOtherExpenses: city.typicalOther,
     });
     const config = VERDICT_CONFIG[result.verdict];

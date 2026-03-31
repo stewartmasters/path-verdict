@@ -3,7 +3,9 @@
 export interface IncomeBand {
   slug: string;
   label: string;
-  midpoint: number; // annual, in local currency
+  low: number;      // annual lower bound (inclusive)
+  high: number;     // annual upper bound (exclusive; Infinity for top band)
+  midpoint: number; // annual midpoint — kept for reference only
 }
 
 export interface ExpenseBand {
@@ -29,13 +31,17 @@ export interface CountryConfig {
   incomeBands: IncomeBand[];
   expenseBands: ExpenseBand[];
   benchmarks: SavingsBenchmark[];
-  rentSliderMin: number;      // monthly
-  rentSliderMax: number;      // monthly
+  rentSliderMin: number;
+  rentSliderMax: number;
   rentSliderStep: number;
   rentSliderDefault: number;
-  expenseSliderMax: number;   // monthly other expenses
+  expenseSliderMax: number;
   expenseSliderStep: number;
   expenseSliderDefault: number;
+  incomeSliderMin: number;   // annual gross
+  incomeSliderMax: number;
+  incomeSliderStep: number;
+  incomeSliderDefault: number;
   dataSource: string;
   dataYear: number;
 }
@@ -56,6 +62,8 @@ function makeBands(
     label: high === Infinity
       ? `${fmt(symbol, position, low)}+`
       : `${fmt(symbol, position, low)} – ${fmt(symbol, position, high)}`,
+    low,
+    high,
     midpoint: mid,
   }));
 }
@@ -100,6 +108,10 @@ export const COUNTRIES: CountryConfig[] = [
     expenseSliderMax: 5000,
     expenseSliderStep: 100,
     expenseSliderDefault: 1750,
+    incomeSliderMin: 20000,
+    incomeSliderMax: 300000,
+    incomeSliderStep: 2500,
+    incomeSliderDefault: 65000,
     incomeBands: makeBands("$", "before", [
       [30000,  40000,  35000],
       [40000,  55000,  47500],
@@ -147,6 +159,10 @@ export const COUNTRIES: CountryConfig[] = [
     expenseSliderMax: 4000,
     expenseSliderStep: 100,
     expenseSliderDefault: 1400,
+    incomeSliderMin: 10000,
+    incomeSliderMax: 200000,
+    incomeSliderStep: 1000,
+    incomeSliderDefault: 42500,
     incomeBands: makeBands("£", "before", [
       [15000, 25000, 20000],
       [25000, 35000, 30000],
@@ -194,6 +210,10 @@ export const COUNTRIES: CountryConfig[] = [
     expenseSliderMax: 4000,
     expenseSliderStep: 100,
     expenseSliderDefault: 1400,
+    incomeSliderMin: 10000,
+    incomeSliderMax: 200000,
+    incomeSliderStep: 1000,
+    incomeSliderDefault: 42500,
     incomeBands: makeBands("€", "before", [
       [15000, 25000, 20000],
       [25000, 35000, 30000],
@@ -241,6 +261,10 @@ export const COUNTRIES: CountryConfig[] = [
     expenseSliderMax: 3800,
     expenseSliderStep: 100,
     expenseSliderDefault: 1300,
+    incomeSliderMin: 8000,
+    incomeSliderMax: 180000,
+    incomeSliderStep: 1000,
+    incomeSliderDefault: 38500,
     incomeBands: makeBands("€", "before", [
       [12000, 22000, 17000],
       [22000, 32000, 27000],
@@ -288,6 +312,10 @@ export const COUNTRIES: CountryConfig[] = [
     expenseSliderMax: 6000,
     expenseSliderStep: 100,
     expenseSliderDefault: 2100,
+    incomeSliderMin: 20000,
+    incomeSliderMax: 400000,
+    incomeSliderStep: 2500,
+    incomeSliderDefault: 82500,
     incomeBands: makeBands("A$", "before", [
       [30000,  50000,  40000],
       [50000,  70000,  60000],
@@ -335,6 +363,10 @@ export const COUNTRIES: CountryConfig[] = [
     expenseSliderMax: 5000,
     expenseSliderStep: 100,
     expenseSliderDefault: 1750,
+    incomeSliderMin: 15000,
+    incomeSliderMax: 300000,
+    incomeSliderStep: 2500,
+    incomeSliderDefault: 65000,
     incomeBands: makeBands("C$", "before", [
       [25000,  40000,  32500],
       [40000,  55000,  47500],
@@ -382,6 +414,10 @@ export const COUNTRIES: CountryConfig[] = [
     expenseSliderMax: 4200,
     expenseSliderStep: 100,
     expenseSliderDefault: 1450,
+    incomeSliderMin: 10000,
+    incomeSliderMax: 200000,
+    incomeSliderStep: 1000,
+    incomeSliderDefault: 44500,
     incomeBands: makeBands("€", "before", [
       [15000, 25000, 20000],
       [25000, 37000, 31000],
@@ -429,6 +465,10 @@ export const COUNTRIES: CountryConfig[] = [
     expenseSliderMax: 3500,
     expenseSliderStep: 100,
     expenseSliderDefault: 1200,
+    incomeSliderMin: 8000,
+    incomeSliderMax: 160000,
+    incomeSliderStep: 1000,
+    incomeSliderDefault: 32500,
     incomeBands: makeBands("€", "before", [
       [10000, 18000, 14000],
       [18000, 27000, 22500],
@@ -476,6 +516,10 @@ export const COUNTRIES: CountryConfig[] = [
     expenseSliderMax: 4300,
     expenseSliderStep: 100,
     expenseSliderDefault: 1550,
+    incomeSliderMin: 15000,
+    incomeSliderMax: 250000,
+    incomeSliderStep: 1000,
+    incomeSliderDefault: 53500,
     incomeBands: makeBands("€", "before", [
       [20000, 32000, 26000],
       [32000, 45000, 38500],
@@ -523,6 +567,10 @@ export const COUNTRIES: CountryConfig[] = [
     expenseSliderMax: 30000,
     expenseSliderStep: 500,
     expenseSliderDefault: 10500,
+    incomeSliderMin: 150000,
+    incomeSliderMax: 2500000,
+    incomeSliderStep: 25000,
+    incomeSliderDefault: 525000,
     incomeBands: makeBands("kr", "after", [
       [200000,  320000, 260000],
       [320000,  450000, 385000],
@@ -570,6 +618,10 @@ export const COUNTRIES: CountryConfig[] = [
     expenseSliderMax: 6000,
     expenseSliderStep: 100,
     expenseSliderDefault: 2100,
+    incomeSliderMin: 15000,
+    incomeSliderMax: 300000,
+    incomeSliderStep: 2500,
+    incomeSliderDefault: 69000,
     incomeBands: makeBands("NZ$", "before", [
       [25000,  40000,  32500],
       [40000,  58000,  49000],
@@ -610,4 +662,17 @@ export function getCountry(slug: string): CountryConfig | undefined {
 
 export function getBenchmarkRate(country: CountryConfig, incomeBandSlug: string): number {
   return country.benchmarks.find((b) => b.incomeBandSlug === incomeBandSlug)?.expectedRate ?? 0.10;
+}
+
+export function getIncomeBandForIncome(country: CountryConfig, annualIncome: number): IncomeBand {
+  // Find the band whose range contains the income. Fall back to the top band.
+  return (
+    country.incomeBands.find((b) => annualIncome >= b.low && annualIncome < b.high) ??
+    country.incomeBands[country.incomeBands.length - 1]
+  );
+}
+
+export function getBenchmarkRateForIncome(country: CountryConfig, annualIncome: number): number {
+  const band = getIncomeBandForIncome(country, annualIncome);
+  return country.benchmarks.find((b) => b.incomeBandSlug === band.slug)?.expectedRate ?? 0.10;
 }
