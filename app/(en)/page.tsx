@@ -4,6 +4,7 @@ import PathTool from "@/components/PathTool";
 import PopularChecks from "@/components/PopularChecks";
 import ScrollToTopButton from "@/components/ScrollToTopButton";
 import TrustSection from "@/components/TrustSection";
+import { BLOG_POSTS } from "@/data/blog-posts-path";
 
 export const metadata: Metadata = {
   title: "PathVerdict — Are You Financially On Track?",
@@ -67,7 +68,7 @@ export default function Home() {
             <ul className="space-y-2 pt-1">
               {[
                 "Your savings rate, benchmarked against people earning like you",
-                "See exactly where you fall: Critical, Behind, Stable, On Track, or Ahead",
+                "See exactly where you fall: Critical, Falling Behind, Under-Saving, On Track, or Ahead",
                 "No spreadsheets. No guesswork. One clear financial position.",
               ].map((line) => (
                 <li key={line} className="flex items-start gap-2 text-sm text-gray-600">
@@ -229,23 +230,19 @@ export default function Home() {
           <Link href="/blog" className="text-sm text-teal-600 font-semibold hover:underline">All articles →</Link>
         </div>
         <div className="grid sm:grid-cols-2 gap-6">
-          {[
-            {
-              href: "/blog/what-is-a-good-savings-rate",
-              title: "What's a good savings rate? The real numbers by income",
-              desc: "Most benchmarks are averages. Here's what people at your income level actually save — and what the data says you should be aiming for.",
-            },
-            {
-              href: "/blog/why-high-earners-struggle-to-save",
-              title: "Why six-figure earners still can't save",
-              desc: "Earning more doesn't automatically mean saving more. The data shows why income and savings rate are weakly correlated at the top.",
-            },
-          ].map(({ href, title, desc }) => (
-            <Link key={href} href={href} className="group block p-5 rounded-xl border border-gray-100 hover:border-teal-200 hover:shadow-sm transition-all">
-              <h3 className="font-bold text-gray-900 group-hover:text-teal-700 transition-colors mb-2">{title}</h3>
-              <p className="text-sm text-gray-500 leading-relaxed">{desc}</p>
-            </Link>
-          ))}
+          {[...BLOG_POSTS]
+            .sort((a, b) => (b.priority ?? 0) - (a.priority ?? 0))
+            .slice(0, 2)
+            .map((post) => (
+              <Link
+                key={post.slug}
+                href={`/blog/${post.slug}`}
+                className="group block p-5 rounded-xl border border-gray-100 hover:border-teal-200 hover:shadow-sm transition-all"
+              >
+                <h3 className="font-bold text-gray-900 group-hover:text-teal-700 transition-colors mb-2">{post.title}</h3>
+                <p className="text-sm text-gray-500 leading-relaxed">{post.description}</p>
+              </Link>
+            ))}
         </div>
       </section>
 

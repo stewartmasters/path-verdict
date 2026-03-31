@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { BLOG_POSTS } from "@/data/blog-posts-path";
+import { getAllMarkdownPosts } from "@/lib/markdown";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://pathverdict.com";
 
@@ -11,7 +12,11 @@ export const metadata: Metadata = {
 };
 
 export default function BlogIndex() {
-  const sorted = [...BLOG_POSTS].sort((a, b) => b.date.localeCompare(a.date));
+  // Static posts take priority; markdown posts fill in anything not already covered
+  const staticSlugs = new Set(BLOG_POSTS.map((p) => p.slug));
+  const markdownPosts = getAllMarkdownPosts().filter((p) => !staticSlugs.has(p.slug));
+  const allPosts = [...BLOG_POSTS, ...markdownPosts];
+  const sorted = allPosts.sort((a, b) => b.date.localeCompare(a.date));
 
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10 sm:py-16">

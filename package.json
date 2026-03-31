@@ -7,8 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "normalize": "npx tsx scripts/normalize.ts",
-    "benchmark:inspect": "npx tsx scripts/benchmark-inspect.ts"
+    "generate:article": "npx tsx scripts/generateArticle.ts",
+    "generate:article:dry": "npx tsx scripts/generateArticle.ts --dry-run"
   },
   "dependencies": {
     "gray-matter": "^4.0.3",

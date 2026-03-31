@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
-  description: "How SalaryVerdict collects, uses, and protects your data.",
+  description: "How PathVerdict collects, uses, and protects your data.",
 };
 
 const LAST_UPDATED = "27 March 2026";
@@ -21,14 +21,14 @@ export default function PrivacyPage() {
         <section className="space-y-3">
           <h2 className="text-lg font-bold text-gray-900">1. Who we are</h2>
           <p>
-            SalaryVerdict (<strong>salaryverdict.com</strong>) is a free salary benchmarking tool for European professionals.
+            PathVerdict (<strong>pathverdict.com</strong>) is a free financial position tool.
             For the purposes of GDPR and applicable data protection law, we are the data controller for any
             personal data collected through this website.
           </p>
           <p>
             Contact:{" "}
-            <a href="mailto:hello@salaryverdict.com" className="text-orange-500 hover:underline">
-              hello@salaryverdict.com
+            <a href="mailto:hello@pathverdict.com" className="text-teal-600 hover:underline">
+              hello@pathverdict.com
             </a>
           </p>
         </section>
@@ -36,18 +36,18 @@ export default function PrivacyPage() {
         <section className="space-y-3">
           <h2 className="text-lg font-bold text-gray-900">2. What data we collect and why</h2>
 
-          <h3 className="font-semibold text-gray-800">Salary tool inputs</h3>
+          <h3 className="font-semibold text-gray-800">Financial position tool inputs</h3>
           <p>
-            When you use the salary checker (role, location, years of experience, current salary), this data is
-            processed entirely in your browser. We do not transmit or store your salary inputs on any server.
+            When you use the financial position tool (income, location, rent, and other expenses), this data is
+            processed entirely in your browser. We do not transmit or store your financial position tool inputs on any server.
             Your results are never sent to us.
           </p>
 
           <h3 className="font-semibold text-gray-800">Analytics (Google Analytics 4)</h3>
           <p>
             With your consent, we use Google Analytics 4 to understand how visitors use the site — for example,
-            which pages are visited, how long users stay, and what actions they take (such as completing the salary
-            check). This data is anonymised and aggregated. It contains no personally identifiable information.
+            which pages are visited, how long users stay, and what actions they take (such as completing the financial
+            position check). This data is anonymised and aggregated. It contains no personally identifiable information.
           </p>
           <p>
             Analytics are only activated after you click &ldquo;Accept analytics&rdquo; in the cookie banner.
@@ -59,7 +59,7 @@ export default function PrivacyPage() {
               href="https://policies.google.com/privacy"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-orange-500 hover:underline"
+              className="text-teal-600 hover:underline"
             >
               policies.google.com/privacy
             </a>
@@ -67,15 +67,15 @@ export default function PrivacyPage() {
 
           <h3 className="font-semibold text-gray-800">Email subscription</h3>
           <p>
-            If you choose to subscribe to salary insights via the result screen, we collect your email address.
-            This is used solely to send you monthly salary and negotiation content. We do not sell, rent, or
-            share your email address with third parties for marketing purposes.
+            If you choose to subscribe to financial position and savings insights via the result screen, we collect
+            your email address. This is used solely to send you monthly savings and financial position content. We do
+            not sell, rent, or share your email address with third parties for marketing purposes.
           </p>
           <p>
             Email subscriptions are managed via Netlify Forms. You can unsubscribe at any time by clicking the
             unsubscribe link in any email we send, or by emailing{" "}
-            <a href="mailto:hello@salaryverdict.com" className="text-orange-500 hover:underline">
-              hello@salaryverdict.com
+            <a href="mailto:hello@pathverdict.com" className="text-teal-600 hover:underline">
+              hello@pathverdict.com
             </a>
             .
           </p>
@@ -96,18 +96,12 @@ export default function PrivacyPage() {
               </thead>
               <tbody>
                 <tr>
-                  <td className="p-2 border border-gray-200"><code>sv_cookie_consent</code></td>
+                  <td className="p-2 border border-gray-200"><code>pv_cookie_consent</code></td>
                   <td className="p-2 border border-gray-200">Stores your cookie preference</td>
                   <td className="p-2 border border-gray-200">1 year</td>
                   <td className="p-2 border border-gray-200">No (functional)</td>
                 </tr>
                 <tr className="bg-gray-50">
-                  <td className="p-2 border border-gray-200"><code>salary_verdict_saved</code></td>
-                  <td className="p-2 border border-gray-200">Remembers your last salary check result locally</td>
-                  <td className="p-2 border border-gray-200">Browser session</td>
-                  <td className="p-2 border border-gray-200">No (functional)</td>
-                </tr>
-                <tr>
                   <td className="p-2 border border-gray-200"><code>_ga, _ga_*</code></td>
                   <td className="p-2 border border-gray-200">Google Analytics — distinguishes users and sessions</td>
                   <td className="p-2 border border-gray-200">2 years</td>
@@ -126,7 +120,7 @@ export default function PrivacyPage() {
           <ul className="list-disc list-inside space-y-1">
             <li><strong>Analytics:</strong> Consent (Article 6(1)(a) GDPR)</li>
             <li><strong>Email subscription:</strong> Consent (Article 6(1)(a) GDPR)</li>
-            <li><strong>Salary tool inputs:</strong> Processed locally in your browser only — no personal data is transmitted to us</li>
+            <li><strong>Financial position tool inputs:</strong> Processed locally in your browser only — no personal data is transmitted to us</li>
           </ul>
         </section>
 
@@ -151,8 +145,8 @@ export default function PrivacyPage() {
           </ul>
           <p>
             To exercise any of these rights, email{" "}
-            <a href="mailto:hello@salaryverdict.com" className="text-orange-500 hover:underline">
-              hello@salaryverdict.com
+            <a href="mailto:hello@pathverdict.com" className="text-teal-600 hover:underline">
+              hello@pathverdict.com
             </a>
             . We will respond within 30 days.
           </p>
@@ -176,8 +170,8 @@ export default function PrivacyPage() {
         </section>
 
         <div className="pt-6 border-t border-gray-100">
-          <Link href="/" className="text-orange-500 hover:underline text-sm font-medium">
-            ← Back to SalaryVerdict
+          <Link href="/" className="text-teal-600 hover:underline text-sm font-medium">
+            ← Back to PathVerdict
           </Link>
         </div>
       </div>

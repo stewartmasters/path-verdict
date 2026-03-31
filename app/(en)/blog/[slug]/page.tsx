@@ -2,18 +2,24 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { BLOG_POSTS } from "@/data/blog-posts-path";
+import { getAllMarkdownSlugs, getMarkdownPost } from "@/lib/markdown";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://pathverdict.com";
 
 export async function generateStaticParams() {
-  return BLOG_POSTS.map((p) => ({ slug: p.slug }));
+  const staticParams = BLOG_POSTS.map((p) => ({ slug: p.slug }));
+  const staticSlugs = new Set(BLOG_POSTS.map((p) => p.slug));
+  const markdownParams = getAllMarkdownSlugs()
+    .filter((slug) => !staticSlugs.has(slug))
+    .map((slug) => ({ slug }));
+  return [...staticParams, ...markdownParams];
 }
 
 export async function generateMetadata(
   { params }: { params: Promise<{ slug: string }> }
 ): Promise<Metadata> {
   const { slug } = await params;
-  const post = BLOG_POSTS.find((p) => p.slug === slug);
+  const post = BLOG_POSTS.find((p) => p.slug === slug) ?? getMarkdownPost(slug);
   if (!post) return {};
   return {
     title: post.title,
@@ -33,7 +39,8 @@ export default async function BlogPost(
   { params }: { params: Promise<{ slug: string }> }
 ) {
   const { slug } = await params;
-  const post = BLOG_POSTS.find((p) => p.slug === slug);
+  // Static posts take priority over markdown posts
+  const post = BLOG_POSTS.find((p) => p.slug === slug) ?? getMarkdownPost(slug);
   if (!post) notFound();
 
   const articleSchema = {
@@ -108,7 +115,7 @@ export default async function BlogPost(
           </Link>
         </div>
 
-        {/* Related posts */}
+        {/* Related posts — static posts only */}
         {(post.relatedPages ?? []).filter((p) => p.startsWith("/blog/")).length > 0 && (
           <div className="mt-10 pt-8 border-t border-gray-100">
             <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">Related articles</p>
