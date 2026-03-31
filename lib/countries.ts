@@ -29,10 +29,13 @@ export interface CountryConfig {
   incomeBands: IncomeBand[];
   expenseBands: ExpenseBand[];
   benchmarks: SavingsBenchmark[];
-  rentSliderMin: number;   // monthly
-  rentSliderMax: number;   // monthly
+  rentSliderMin: number;      // monthly
+  rentSliderMax: number;      // monthly
   rentSliderStep: number;
   rentSliderDefault: number;
+  expenseSliderMax: number;   // monthly other expenses
+  expenseSliderStep: number;
+  expenseSliderDefault: number;
   dataSource: string;
   dataYear: number;
 }
@@ -94,6 +97,9 @@ export const COUNTRIES: CountryConfig[] = [
     rentSliderMax: 5000,
     rentSliderStep: 100,
     rentSliderDefault: 1500,
+    expenseSliderMax: 5000,
+    expenseSliderStep: 100,
+    expenseSliderDefault: 1750,
     incomeBands: makeBands("$", "before", [
       [30000,  40000,  35000],
       [40000,  55000,  47500],
@@ -138,6 +144,9 @@ export const COUNTRIES: CountryConfig[] = [
     rentSliderMax: 4000,
     rentSliderStep: 100,
     rentSliderDefault: 1200,
+    expenseSliderMax: 4000,
+    expenseSliderStep: 100,
+    expenseSliderDefault: 1400,
     incomeBands: makeBands("£", "before", [
       [15000, 25000, 20000],
       [25000, 35000, 30000],
@@ -182,6 +191,9 @@ export const COUNTRIES: CountryConfig[] = [
     rentSliderMax: 4000,
     rentSliderStep: 100,
     rentSliderDefault: 1100,
+    expenseSliderMax: 4000,
+    expenseSliderStep: 100,
+    expenseSliderDefault: 1400,
     incomeBands: makeBands("€", "before", [
       [15000, 25000, 20000],
       [25000, 35000, 30000],
@@ -226,6 +238,9 @@ export const COUNTRIES: CountryConfig[] = [
     rentSliderMax: 4000,
     rentSliderStep: 100,
     rentSliderDefault: 1000,
+    expenseSliderMax: 3800,
+    expenseSliderStep: 100,
+    expenseSliderDefault: 1300,
     incomeBands: makeBands("€", "before", [
       [12000, 22000, 17000],
       [22000, 32000, 27000],
@@ -270,6 +285,9 @@ export const COUNTRIES: CountryConfig[] = [
     rentSliderMax: 6000,
     rentSliderStep: 100,
     rentSliderDefault: 2000,
+    expenseSliderMax: 6000,
+    expenseSliderStep: 100,
+    expenseSliderDefault: 2100,
     incomeBands: makeBands("A$", "before", [
       [30000,  50000,  40000],
       [50000,  70000,  60000],
@@ -314,6 +332,9 @@ export const COUNTRIES: CountryConfig[] = [
     rentSliderMax: 5000,
     rentSliderStep: 100,
     rentSliderDefault: 1800,
+    expenseSliderMax: 5000,
+    expenseSliderStep: 100,
+    expenseSliderDefault: 1750,
     incomeBands: makeBands("C$", "before", [
       [25000,  40000,  32500],
       [40000,  55000,  47500],
@@ -358,6 +379,9 @@ export const COUNTRIES: CountryConfig[] = [
     rentSliderMax: 3500,
     rentSliderStep: 100,
     rentSliderDefault: 1200,
+    expenseSliderMax: 4200,
+    expenseSliderStep: 100,
+    expenseSliderDefault: 1450,
     incomeBands: makeBands("€", "before", [
       [15000, 25000, 20000],
       [25000, 37000, 31000],
@@ -402,6 +426,9 @@ export const COUNTRIES: CountryConfig[] = [
     rentSliderMax: 3000,
     rentSliderStep: 100,
     rentSliderDefault: 900,
+    expenseSliderMax: 3500,
+    expenseSliderStep: 100,
+    expenseSliderDefault: 1200,
     incomeBands: makeBands("€", "before", [
       [10000, 18000, 14000],
       [18000, 27000, 22500],
@@ -446,6 +473,9 @@ export const COUNTRIES: CountryConfig[] = [
     rentSliderMax: 4500,
     rentSliderStep: 100,
     rentSliderDefault: 1800,
+    expenseSliderMax: 4300,
+    expenseSliderStep: 100,
+    expenseSliderDefault: 1550,
     incomeBands: makeBands("€", "before", [
       [20000, 32000, 26000],
       [32000, 45000, 38500],
@@ -490,6 +520,9 @@ export const COUNTRIES: CountryConfig[] = [
     rentSliderMax: 25000,
     rentSliderStep: 500,
     rentSliderDefault: 10000,
+    expenseSliderMax: 30000,
+    expenseSliderStep: 500,
+    expenseSliderDefault: 10500,
     incomeBands: makeBands("kr", "after", [
       [200000,  320000, 260000],
       [320000,  450000, 385000],
@@ -534,6 +567,9 @@ export const COUNTRIES: CountryConfig[] = [
     rentSliderMax: 5000,
     rentSliderStep: 100,
     rentSliderDefault: 2000,
+    expenseSliderMax: 6000,
+    expenseSliderStep: 100,
+    expenseSliderDefault: 2100,
     incomeBands: makeBands("NZ$", "before", [
       [25000,  40000,  32500],
       [40000,  58000,  49000],

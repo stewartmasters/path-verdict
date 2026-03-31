@@ -23,14 +23,14 @@ interface Props {
 }
 
 export default function PathTool({ defaultCountry, defaultRent }: Props = {}) {
-  const [countrySlug, setCountrySlug]   = useState(defaultCountry ?? "us");
-  const [incomeBand, setIncomeBand]     = useState("");
-  const [monthlyRent, setMonthlyRent]   = useState<number | null>(defaultRent ?? null);
-  const [expenseBand, setExpenseBand]   = useState("");
-  const [ageBand, setAgeBand]           = useState("");
-  const [invests, setInvests]           = useState<InvestsOption | "">("");
-  const [result, setResult]             = useState<PathResult | null>(null);
-  const [error, setError]               = useState("");
+  const [countrySlug, setCountrySlug]         = useState(defaultCountry ?? "us");
+  const [incomeBand, setIncomeBand]           = useState("");
+  const [monthlyRent, setMonthlyRent]         = useState<number | null>(defaultRent ?? null);
+  const [otherExpenses, setOtherExpenses]     = useState<number | null>(null);
+  const [ageBand, setAgeBand]                 = useState("");
+  const [invests, setInvests]                 = useState<InvestsOption | "">("");
+  const [result, setResult]                   = useState<PathResult | null>(null);
+  const [error, setError]                     = useState("");
 
   const country: CountryConfig = COUNTRIES.find((c) => c.slug === countrySlug) ?? COUNTRIES[0];
   const rentValue = monthlyRent ?? country.rentSliderDefault;
@@ -39,7 +39,7 @@ export default function PathTool({ defaultCountry, defaultRent }: Props = {}) {
     setCountrySlug(slug);
     setIncomeBand("");
     setMonthlyRent(null);
-    setExpenseBand("");
+    setOtherExpenses(null);
     setError("");
   };
 
@@ -47,13 +47,12 @@ export default function PathTool({ defaultCountry, defaultRent }: Props = {}) {
     e.preventDefault();
     setError("");
     if (!incomeBand) return setError("Please select your income range.");
-    if (!expenseBand) return setError("Please select your monthly expenses.");
 
     const res = calculatePath({
       countrySlug,
       incomeBandSlug: incomeBand,
       monthlyRent: rentValue,
-      expenseBandSlug: expenseBand,
+      monthlyOtherExpenses: expenseValue,
       ageBandSlug: ageBand || undefined,
       invests: (invests as InvestsOption) || undefined,
     });
@@ -66,7 +65,7 @@ export default function PathTool({ defaultCountry, defaultRent }: Props = {}) {
     setResult(null);
     setIncomeBand("");
     setMonthlyRent(null);
-    setExpenseBand("");
+    setOtherExpenses(null);
     setAgeBand("");
     setInvests("");
     setError("");
@@ -91,8 +90,11 @@ export default function PathTool({ defaultCountry, defaultRent }: Props = {}) {
     return pos === "before" ? `${sym}${s}/mo` : `${s}${sym}/mo`;
   };
 
-  const rentMax = country.rentSliderMax;
-  const isAtMax = rentValue >= rentMax;
+  const rentMax    = country.rentSliderMax;
+  const isAtMax    = rentValue >= rentMax;
+  const expenseValue = otherExpenses ?? country.expenseSliderDefault;
+  const expenseMax   = country.expenseSliderMax;
+  const isExpenseAtMax = expenseValue >= expenseMax;
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
@@ -152,21 +154,33 @@ export default function PathTool({ defaultCountry, defaultRent }: Props = {}) {
         </div>
       </div>
 
-      {/* Other expenses */}
-      <div className="space-y-1.5">
-        <label className="block text-sm font-semibold text-gray-700">Other monthly expenses</label>
-        <p className="text-xs text-gray-400 -mt-0.5">Food, transport, subscriptions, going out — everything except rent</p>
-        <select
-          value={expenseBand}
-          onChange={(e) => setExpenseBand(e.target.value)}
-          className="w-full border border-gray-200 rounded-xl px-4 py-3 text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent appearance-none cursor-pointer"
-        >
-          <option value="">Select your expense range...</option>
-          {country.expenseBands.map((b) => (
-            <option key={b.slug} value={b.slug}>{b.label}</option>
-          ))}
-        </select>
-        <p className="text-xs text-gray-400">Use the honest number, not the ideal one.</p>
+      {/* Other expenses slider */}
+      <div className="space-y-2">
+        <div className="flex justify-between items-center">
+          <div>
+            <label className="block text-sm font-semibold text-gray-700">Other monthly expenses</label>
+            <p className="text-xs text-gray-400 mt-0.5">Food, transport, subscriptions, going out — everything except rent</p>
+          </div>
+          <span className="text-sm font-bold text-teal-600 flex-shrink-0 ml-3">
+            {isExpenseAtMax
+              ? `${pos === "before" ? `${sym}${expenseMax.toLocaleString()}` : `${expenseMax.toLocaleString()}${sym}`}+/mo`
+              : `${pos === "before" ? `${sym}${expenseValue.toLocaleString()}` : `${expenseValue.toLocaleString()}${sym}`}/mo`}
+          </span>
+        </div>
+        <input
+          type="range"
+          min={0}
+          max={expenseMax}
+          step={country.expenseSliderStep}
+          value={expenseValue}
+          onChange={(e) => setOtherExpenses(parseInt(e.target.value))}
+          className="w-full accent-teal-600 cursor-pointer"
+        />
+        <div className="flex justify-between text-xs text-gray-400">
+          <span>{pos === "before" ? `${sym}0` : `0${sym}`}</span>
+          <span>{pos === "before" ? `${sym}${(expenseMax / 2).toLocaleString()}` : `${(expenseMax / 2).toLocaleString()}${sym}`}</span>
+          <span>{pos === "before" ? `${sym}${expenseMax.toLocaleString()}+` : `${expenseMax.toLocaleString()}+${sym}`}</span>
+        </div>
       </div>
 
       {/* Age — optional */}

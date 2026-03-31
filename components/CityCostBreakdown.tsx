@@ -29,7 +29,7 @@ export default function CityCostBreakdown({ city }: Props) {
       countrySlug:     city.countrySlug,
       incomeBandSlug:  bandSlug,
       monthlyRent:     city.medianRent,
-      expenseBandSlug: city.typicalOtherBandSlug,
+      monthlyOtherExpenses: city.typicalOther,
     });
     const config = VERDICT_CONFIG[result.verdict];
     return [{ band, result, config }];

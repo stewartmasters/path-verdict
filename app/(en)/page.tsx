@@ -78,26 +78,6 @@ export default function Home() {
               ))}
             </ul>
 
-            {/* Suite links */}
-            <div className="space-y-2 pt-1">
-              <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Also in the Verdict suite</p>
-              <div className="flex flex-wrap gap-2">
-                {[
-                  { href: "https://www.salaryverdict.com", label: "SalaryVerdict — Are you underpaid?" },
-                  { href: "https://www.spendverdict.com",  label: "SpendVerdict — Is your rent too high?" },
-                ].map(({ href, label }) => (
-                  <a
-                    key={href}
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-xs bg-gray-100 hover:bg-gray-200 text-gray-600 px-3 py-1.5 rounded-full transition-colors"
-                  >
-                    {label}
-                  </a>
-                ))}
-              </div>
-            </div>
           </div>
 
           {/* Tool */}

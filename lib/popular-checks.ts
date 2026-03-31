@@ -26,7 +26,7 @@ const SCENARIOS: Array<{ id: string; locationLabel: string; hook: string; flag: 
       countrySlug:     "us",
       incomeBandSlug:  "band-1", // $30–40k, mid $35k
       monthlyRent:     1600,
-      expenseBandSlug: "exp-3",  // $1,500–2,000, mid $1,750
+      monthlyOtherExpenses: 1750,
     },
   },
   {
@@ -39,7 +39,7 @@ const SCENARIOS: Array<{ id: string; locationLabel: string; hook: string; flag: 
       countrySlug:     "us",
       incomeBandSlug:  "band-5", // $100–140k, mid $120k
       monthlyRent:     4200,
-      expenseBandSlug: "exp-6",  // $3,750+, mid $5,000
+      monthlyOtherExpenses: 5000,
     },
   },
   {
@@ -52,7 +52,7 @@ const SCENARIOS: Array<{ id: string; locationLabel: string; hook: string; flag: 
       countrySlug:     "gb",
       incomeBandSlug:  "band-4", // £50–70k, mid £60k
       monthlyRent:     2200,
-      expenseBandSlug: "exp-4",  // £1,600–2,200, mid £1,900
+      monthlyOtherExpenses: 1900,
     },
   },
   {
@@ -65,7 +65,7 @@ const SCENARIOS: Array<{ id: string; locationLabel: string; hook: string; flag: 
       countrySlug:     "gb",
       incomeBandSlug:  "band-3", // £35–50k, mid £42.5k
       monthlyRent:     850,
-      expenseBandSlug: "exp-2",  // £800–1,200, mid £1,000
+      monthlyOtherExpenses: 1000,
     },
   },
   {
@@ -78,7 +78,7 @@ const SCENARIOS: Array<{ id: string; locationLabel: string; hook: string; flag: 
       countrySlug:     "ie",
       incomeBandSlug:  "band-3", // €45–62k, mid €53.5k
       monthlyRent:     2100,
-      expenseBandSlug: "exp-4",  // €1,800–2,400, mid €2,100
+      monthlyOtherExpenses: 2100,
     },
   },
   {
@@ -91,7 +91,7 @@ const SCENARIOS: Array<{ id: string; locationLabel: string; hook: string; flag: 
       countrySlug:     "au",
       incomeBandSlug:  "band-3", // A$70–95k, mid A$82.5k
       monthlyRent:     2800,
-      expenseBandSlug: "exp-5",  // A$3,200–4,500, mid A$3,850
+      monthlyOtherExpenses: 3850,
     },
   },
   {
@@ -104,7 +104,7 @@ const SCENARIOS: Array<{ id: string; locationLabel: string; hook: string; flag: 
       countrySlug:     "de",
       incomeBandSlug:  "band-4", // €50–70k, mid €60k
       monthlyRent:     1050,
-      expenseBandSlug: "exp-2",  // €800–1,200, mid €1,000
+      monthlyOtherExpenses: 1000,
       invests:         "yes",
     },
   },
@@ -118,7 +118,7 @@ const SCENARIOS: Array<{ id: string; locationLabel: string; hook: string; flag: 
       countrySlug:     "ca",
       incomeBandSlug:  "band-2", // C$40–55k, mid C$47.5k
       monthlyRent:     2200,
-      expenseBandSlug: "exp-3",  // C$1,500–2,000, mid C$1,750
+      monthlyOtherExpenses: 1750,
     },
   },
   {
@@ -131,7 +131,7 @@ const SCENARIOS: Array<{ id: string; locationLabel: string; hook: string; flag: 
       countrySlug:     "nz",
       incomeBandSlug:  "band-3", // NZ$58–80k, mid NZ$69k
       monthlyRent:     2400,
-      expenseBandSlug: "exp-4",  // NZ$2,400–3,200, mid NZ$2,800
+      monthlyOtherExpenses: 2800,
     },
   },
   {
@@ -144,7 +144,7 @@ const SCENARIOS: Array<{ id: string; locationLabel: string; hook: string; flag: 
       countrySlug:     "se",
       incomeBandSlug:  "band-4", // 600–800k kr, mid 700k
       monthlyRent:     9500,
-      expenseBandSlug: "exp-3",  // 9,000–12,000 kr, mid 10,500
+      monthlyOtherExpenses: 10500,
       invests:         "yes",
     },
   },

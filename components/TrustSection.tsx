@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { TRUST_SOURCES } from "@/data/trustSources";
 
 interface Props {
@@ -17,14 +16,13 @@ export default function TrustSection({ variant = "full" }: Props) {
   const LogoList = () => (
     <>
       {TRUST_SOURCES.map(({ src, alt }) => (
-        <div key={alt} className="h-[28px] w-[76px] flex items-center justify-center flex-shrink-0">
-          <Image
+        <div key={alt} className="h-[28px] flex items-center justify-center flex-shrink-0">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
             src={src}
             alt={alt}
-            width={76}
-            height={28}
-            className="opacity-40 grayscale hover:opacity-60 transition-opacity"
-            style={{ maxHeight: "100%", maxWidth: "100%", width: "auto", objectFit: "contain" }}
+            className="opacity-40 grayscale hover:opacity-60 transition-opacity object-contain"
+            style={{ maxHeight: "28px", maxWidth: "76px" }}
           />
         </div>
       ))}

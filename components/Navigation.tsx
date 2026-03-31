@@ -16,22 +16,18 @@ export default function Navigation() {
           >
             Methodology
           </Link>
-          <a
-            href="https://www.salaryverdict.com"
-            className="transition-colors hidden sm:block text-gray-500 hover:text-gray-900 text-xs"
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href="/blog"
+            className="transition-colors hidden sm:block text-gray-500 hover:text-gray-900"
           >
-            SalaryVerdict
-          </a>
-          <a
-            href="https://www.spendverdict.com"
-            className="transition-colors hidden sm:block text-gray-500 hover:text-gray-900 text-xs"
-            target="_blank"
-            rel="noopener noreferrer"
+            Blog
+          </Link>
+          <Link
+            href="/financial-position/new-york"
+            className="transition-colors hidden sm:block text-gray-500 hover:text-gray-900"
           >
-            SpendVerdict
-          </a>
+            Cities
+          </Link>
           <Link
             href="/#path-tool"
             className="bg-teal-600 text-white px-3 sm:px-4 py-1.5 rounded-full text-xs sm:text-sm font-semibold hover:bg-teal-700 transition-colors flex-shrink-0 whitespace-nowrap"

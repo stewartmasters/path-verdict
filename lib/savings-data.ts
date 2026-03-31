@@ -9,7 +9,7 @@ export interface PathInput {
   countrySlug: string;
   incomeBandSlug: string;
   monthlyRent: number;
-  expenseBandSlug: string;
+  monthlyOtherExpenses: number;
   ageBandSlug?: string;
   invests?: InvestsOption;
 }
@@ -88,12 +88,11 @@ export function calculatePath(input: PathInput): PathResult {
   const country = getCountry(input.countrySlug);
   if (!country) throw new Error(`Unknown country: ${input.countrySlug}`);
 
-  const incomeBand  = country.incomeBands.find((b) => b.slug === input.incomeBandSlug);
-  const expenseBand = country.expenseBands.find((b) => b.slug === input.expenseBandSlug);
-  if (!incomeBand || !expenseBand) throw new Error("Invalid income or expense band");
+  const incomeBand = country.incomeBands.find((b) => b.slug === input.incomeBandSlug);
+  if (!incomeBand) throw new Error("Invalid income band");
 
   const monthlyIncome   = incomeBand.midpoint / 12;
-  const monthlyExpenses = input.monthlyRent + expenseBand.midpoint;
+  const monthlyExpenses = input.monthlyRent + input.monthlyOtherExpenses;
   const monthlySurplus  = monthlyIncome - monthlyExpenses;
   const savingsRate     = (monthlySurplus / monthlyIncome) * 100;
 
@@ -114,7 +113,7 @@ export function calculatePath(input: PathInput): PathResult {
     percentile,
     monthlyIncome:        Math.round(monthlyIncome),
     monthlyRent:          input.monthlyRent,
-    monthlyOtherExpenses: expenseBand.midpoint,
+    monthlyOtherExpenses: input.monthlyOtherExpenses,
     monthlyExpenses:      Math.round(monthlyExpenses),
     monthlySurplus:       Math.round(monthlySurplus),
     countrySlug:          input.countrySlug,
