@@ -155,6 +155,7 @@ export interface IdentityCard {
   comparison:  string;
   shareText:   string;
   borderClass: string;
+  bgBarClass:  string;
   accentColor: string; // hex, for OG image
 }
 
@@ -186,6 +187,7 @@ export function buildIdentityCard(result: PathResult): IdentityCard {
       statLine:    `Spending ${absSaving}% more than I earn`,
       shareText:   `I'm spending more than I earn. PathVerdict puts me in the bottom ${percentile}% of savers. Seeing the number is different to knowing it.\npathverdict.com`,
       borderClass: "border-red-300",
+      bgBarClass:  "bg-red-300",
       accentColor: "#fca5a5",
     },
     "comfortable-slide": {
@@ -193,6 +195,7 @@ export function buildIdentityCard(result: PathResult): IdentityCard {
       statLine:    `Saving ${savingsRate}% · Expected ${expectedRate}%`,
       shareText:   `I earn well. I save ${savingsRate}%. People at my income save ${expectedRate}%. The gap is ${absGap} points and it doesn't close itself.\npathverdict.com`,
       borderClass: "border-orange-300",
+      bgBarClass:  "bg-orange-300",
       accentColor: "#fdba74",
     },
     "stretched-thin": {
@@ -200,6 +203,7 @@ export function buildIdentityCard(result: PathResult): IdentityCard {
       statLine:    `Saving ${savingsRate}% · Gap of ${absGap} points`,
       shareText:   `Saving ${savingsRate}% when the benchmark is ${expectedRate}%. The gap's not laziness — it's the cost base. Still worth seeing it clearly.\npathverdict.com`,
       borderClass: "border-amber-300",
+      bgBarClass:  "bg-amber-300",
       accentColor: "#fcd34d",
     },
     "treading-water": {
@@ -207,6 +211,7 @@ export function buildIdentityCard(result: PathResult): IdentityCard {
       statLine:    `Saving ${savingsRate}% · ${absGap} points short`,
       shareText:   `Technically saving. Not building. I'm ${absGap} points below where I should be for my income. Curious where you are?\npathverdict.com`,
       borderClass: "border-yellow-300",
+      bgBarClass:  "bg-yellow-300",
       accentColor: "#fde68a",
     },
     "holding-the-line": {
@@ -214,6 +219,7 @@ export function buildIdentityCard(result: PathResult): IdentityCard {
       statLine:    `Saving ${savingsRate}% · Right at benchmark`,
       shareText:   `I'm on track. Not ahead. Saving ${savingsRate}% — right at the benchmark for my income level. Most people aren't here.\npathverdict.com`,
       borderClass: "border-teal-300",
+      bgBarClass:  "bg-teal-300",
       accentColor: "#5eead4",
     },
     "quietly-ahead": {
@@ -221,6 +227,7 @@ export function buildIdentityCard(result: PathResult): IdentityCard {
       statLine:    `Saving ${savingsRate}% · ${gapFmt} points ahead`,
       shareText:   `Saving ${savingsRate}% when people at my income save ${expectedRate}%. I didn't expect that gap.\npathverdict.com`,
       borderClass: "border-emerald-300",
+      bgBarClass:  "bg-emerald-300",
       accentColor: "#6ee7b7",
     },
     "the-compounder": {
@@ -228,6 +235,7 @@ export function buildIdentityCard(result: PathResult): IdentityCard {
       statLine:    `Saving ${savingsRate}% · Investing regularly`,
       shareText:   `Saving ${savingsRate}%. Investing consistently. ${gapFmt} points above benchmark. The math is doing what it's supposed to.\npathverdict.com`,
       borderClass: "border-emerald-500",
+      bgBarClass:  "bg-emerald-500",
       accentColor: "#10b981",
     },
   };

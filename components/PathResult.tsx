@@ -18,6 +18,7 @@ interface Props {
   result: PathResult;
   onReset: () => void;
   onEdit?: () => void;
+  resetLabel?: string;
 }
 
 function ordinal(n: number): string {
@@ -27,7 +28,7 @@ function ordinal(n: number): string {
 }
 
 
-export default function PathResultComponent({ result, onReset, onEdit }: Props) {
+export default function PathResultComponent({ result, onReset, onEdit, resetLabel }: Props) {
   const [copiedCard, setCopiedCard] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
 
@@ -308,7 +309,7 @@ export default function PathResultComponent({ result, onReset, onEdit }: Props) 
             onClick={onReset}
             className="w-full bg-teal-600 hover:bg-teal-700 text-white py-3 px-6 rounded-xl font-semibold transition-colors text-sm"
           >
-            Check again →
+            {resetLabel ?? "Check again →"}
           </button>
         </div>
 

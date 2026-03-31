@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import PathTool from "@/components/PathTool";
+import PopularChecks from "@/components/PopularChecks";
 import ScrollToTopButton from "@/components/ScrollToTopButton";
 
 export const metadata: Metadata = {
@@ -98,6 +99,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <PopularChecks />
 
       {/* How it works */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 py-16 border-t border-gray-100 mt-8">

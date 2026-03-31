@@ -16,7 +16,7 @@ export default function ShareCard({ card, onClick, copied }: Props) {
       `}
     >
       {/* Left accent bar */}
-      <div className={`absolute left-0 top-0 bottom-0 w-1 ${card.borderClass.replace("border-", "bg-")}`} />
+      <div className={`absolute left-0 top-0 bottom-0 w-1 ${card.bgBarClass}`} />
 
       <div className="pl-5 pr-4 py-4">
         {/* Top row */}
