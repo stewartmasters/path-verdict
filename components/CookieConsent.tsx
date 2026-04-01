@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 
-const CONSENT_KEY = "sv_cookie_consent";
+const CONSENT_KEY = "pv_cookie_consent";
 
 function updateGtagConsent(granted: boolean) {
   if (typeof window === "undefined" || !window.gtag) return;

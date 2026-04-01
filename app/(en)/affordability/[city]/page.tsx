@@ -28,6 +28,7 @@ export async function generateMetadata(
       title: `Cost of Living in ${city.name} — Is Your Salary Enough?`,
       description: `Rent, expenses and income benchmarks for ${city.name}. Check your financial position in 30 seconds.`,
       url: `${BASE_URL}/affordability/${city.slug}`,
+      images: [{ url: `${BASE_URL}/opengraph-image`, width: 1200, height: 630 }],
     },
   };
 }

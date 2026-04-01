@@ -6,10 +6,25 @@ import ScrollToTopButton from "@/components/ScrollToTopButton";
 import TrustSection from "@/components/TrustSection";
 import { BLOG_POSTS } from "@/data/blog-posts-path";
 
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://pathverdict.com";
+
 export const metadata: Metadata = {
   title: "PathVerdict — Are You Financially On Track?",
   description:
     "Find out if you're building wealth or falling behind. Benchmarked against real income and savings data. 30 seconds, no signup required.",
+  alternates: { canonical: BASE_URL },
+  openGraph: {
+    title: "PathVerdict — Are You Financially On Track?",
+    description: "Find out if you're building wealth or falling behind. Benchmarked against real income and savings data. 30 seconds, no signup.",
+    url: BASE_URL,
+    images: [{ url: `${BASE_URL}/opengraph-image`, width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "PathVerdict — Are You Financially On Track?",
+    description: "Find out if you're financially on track in 30 seconds. Free, no signup.",
+    images: [`${BASE_URL}/opengraph-image`],
+  },
 };
 
 const FEATURED_CITIES = [
@@ -49,7 +64,7 @@ export default function Home() {
             <div className="grid grid-cols-3 gap-4 pt-2">
               {[
                 { value: "11",   label: "Countries" },
-                { value: "50",   label: "Cities" },
+                { value: "83",   label: "Cities" },
                 { value: "9",    label: "Official datasets" },
               ].map(({ value, label }) => (
                 <div key={label} className="text-center">

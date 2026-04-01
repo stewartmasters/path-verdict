@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import CookieConsent from "@/components/CookieConsent";
+import RouteTracker from "@/components/RouteTracker";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -87,6 +88,7 @@ export default function RootLayout({
       </head>
       <body className="bg-white text-gray-900 min-h-screen font-sans">
         {children}
+        <RouteTracker />
         <CookieConsent />
         <form name="path-leads" data-netlify="true" hidden aria-hidden="true">
           <input type="email" name="email" />

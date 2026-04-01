@@ -27,6 +27,7 @@ export async function generateMetadata(
       title: `Savings Rate in ${city.name} — Are You On Track?`,
       description: `Benchmark your financial position against real income data from ${city.name}.`,
       url: `${BASE_URL}/financial-position/${city.slug}`,
+      images: [{ url: `${BASE_URL}/opengraph-image`, width: 1200, height: 630 }],
     },
   };
 }

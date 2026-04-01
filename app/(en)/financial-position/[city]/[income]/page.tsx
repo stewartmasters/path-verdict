@@ -54,6 +54,7 @@ export async function generateMetadata(
       title: `Savings Rate in ${city.name} on ${band.label}`,
       description: `Benchmark your savings against real ${country.label} data for ${band.label} earners in ${city.name}.`,
       url: `${BASE_URL}/financial-position/${city.slug}/${incomeSlug}`,
+      images: [{ url: `${BASE_URL}/opengraph-image`, width: 1200, height: 630 }],
     },
   };
 }

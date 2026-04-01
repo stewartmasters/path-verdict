@@ -48,6 +48,7 @@ export async function generateMetadata(
       title: `Savings Rate Benchmarks in ${country.label}`,
       description: `Income-band savings benchmarks for ${country.label} from ${country.dataSource}.`,
       url: `${BASE_URL}/financial-position/country/${urlSlug}`,
+      images: [{ url: `${BASE_URL}/opengraph-image`, width: 1200, height: 630 }],
     },
   };
 }

@@ -130,6 +130,7 @@ export default function PathTool({ defaultCountry, defaultRent, defaultIncome }:
         </div>
         <input
           type="range"
+          aria-label="Annual income (gross)"
           min={country.incomeSliderMin}
           max={incomeMax}
           step={country.incomeSliderStep}
@@ -154,6 +155,7 @@ export default function PathTool({ defaultCountry, defaultRent, defaultIncome }:
         </div>
         <input
           type="range"
+          aria-label="Monthly rent or mortgage"
           min={country.rentSliderMin}
           max={rentMax}
           step={country.rentSliderStep}
@@ -183,6 +185,7 @@ export default function PathTool({ defaultCountry, defaultRent, defaultIncome }:
         </div>
         <input
           type="range"
+          aria-label="Other monthly expenses"
           min={0}
           max={expenseMax}
           step={country.expenseSliderStep}

@@ -9,6 +9,12 @@ export const metadata: Metadata = {
   title: "Blog — PathVerdict",
   description: "Data-driven articles on savings rates, financial position, and building wealth. Based on household expenditure survey data from 11 countries.",
   alternates: { canonical: `${BASE_URL}/blog` },
+  openGraph: {
+    title: "Blog — PathVerdict",
+    description: "Data-driven articles on savings rates, financial position, and building wealth.",
+    url: `${BASE_URL}/blog`,
+    images: [{ url: `${BASE_URL}/opengraph-image`, width: 1200, height: 630 }],
+  },
 };
 
 export default function BlogIndex() {
