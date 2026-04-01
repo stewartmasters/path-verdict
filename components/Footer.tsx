@@ -28,6 +28,8 @@ const TRUST_LOGOS = [
   { src: "/logos/abs.png",      alt: "ABS" },
   { src: "/logos/statscan.png", alt: "StatsCan" },
   { src: "/logos/cbs.png",      alt: "CBS" },
+  { src: "/logos/ine.png",      alt: "INE" },
+  { src: "/logos/scb.png",      alt: "SCB" },
 ];
 
 const VERDICT_NETWORK = [

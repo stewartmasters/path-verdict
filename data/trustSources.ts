@@ -8,10 +8,12 @@ export interface TrustSource {
 // BLS (SVG), StatsCan (281×64) all have good aspect ratios.
 // INE and SCB need better landscape logo files before they can be added.
 export const TRUST_SOURCES: TrustSource[] = [
-  { src: "/logos/ons.png",      alt: "ONS" },       // ONS Living Costs & Food Survey FYE2024 (UK)
-  { src: "/logos/destatis.png", alt: "Destatis" },  // Destatis EVS 2023 (Germany)
-  { src: "/logos/bls.svg",      alt: "BLS" },       // BLS Consumer Expenditure Survey 2023 (US)
-  { src: "/logos/abs.png",      alt: "ABS" },       // ABS Household Expenditure Survey (Australia)
-  { src: "/logos/statscan.png", alt: "StatsCan" },  // Statistics Canada SHS 2023
-  { src: "/logos/cbs.png",      alt: "CBS" },       // CBS Household Budget Survey (Netherlands)
+  { src: "/logos/ons.png",      alt: "ONS" },
+  { src: "/logos/destatis.png", alt: "Destatis" },
+  { src: "/logos/bls.svg",      alt: "BLS" },
+  { src: "/logos/abs.png",      alt: "ABS" },
+  { src: "/logos/statscan.png", alt: "StatsCan" },
+  { src: "/logos/cbs.png",      alt: "CBS" },
+  { src: "/logos/ine.png",      alt: "INE" },
+  { src: "/logos/scb.png",      alt: "SCB" },
 ];
