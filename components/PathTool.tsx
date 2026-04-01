@@ -20,11 +20,12 @@ const INVEST_OPTIONS: { value: InvestsOption; label: string }[] = [
 interface Props {
   defaultCountry?: string;
   defaultRent?:    number;
+  defaultIncome?:  number;
 }
 
-export default function PathTool({ defaultCountry, defaultRent }: Props = {}) {
+export default function PathTool({ defaultCountry, defaultRent, defaultIncome }: Props = {}) {
   const [countrySlug, setCountrySlug]     = useState(defaultCountry ?? "us");
-  const [annualIncome, setAnnualIncome]   = useState<number | null>(null);
+  const [annualIncome, setAnnualIncome]   = useState<number | null>(defaultIncome ?? null);
   const [monthlyRent, setMonthlyRent]     = useState<number | null>(defaultRent ?? null);
   const [otherExpenses, setOtherExpenses] = useState<number | null>(null);
   const [ageBand, setAgeBand]             = useState("");

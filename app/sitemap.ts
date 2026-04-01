@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { CITIES } from "@/lib/cities";
+import { getCountry, incomeSlugFromBand } from "@/lib/countries";
 import { BLOG_POSTS } from "@/data/blog-posts-path";
 import { getAllMarkdownPosts } from "@/lib/markdown";
 
@@ -31,6 +32,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority:        0.80,
   }));
 
+  // Income bracket × city pages (50 cities × 7 bands = 350 pages)
+  const incomeRoutes: MetadataRoute.Sitemap = CITIES.flatMap((c) => {
+    const country = getCountry(c.countrySlug);
+    if (!country) return [];
+    return country.incomeBands.map((band) => ({
+      url:             `${BASE_URL}/financial-position/${c.slug}/${incomeSlugFromBand(band)}`,
+      lastModified:    now,
+      changeFrequency: "monthly" as const,
+      priority:        0.80,
+    }));
+  });
+
   // Static blog posts
   const staticBlogRoutes: MetadataRoute.Sitemap = BLOG_POSTS.map((p) => ({
     url:             `${BASE_URL}/blog/${p.slug}`,
@@ -53,6 +66,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     ...staticRoutes,
     ...financialPositionRoutes,
+    ...incomeRoutes,
     ...affordabilityRoutes,
     ...staticBlogRoutes,
     ...markdownBlogRoutes,

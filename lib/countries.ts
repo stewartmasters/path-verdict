@@ -676,3 +676,13 @@ export function getBenchmarkRateForIncome(country: CountryConfig, annualIncome: 
   const band = getIncomeBandForIncome(country, annualIncome);
   return country.benchmarks.find((b) => b.incomeBandSlug === band.slug)?.expectedRate ?? 0.10;
 }
+
+/** Converts an income band to a URL-friendly slug, e.g. 65000 → "65k". */
+export function incomeSlugFromBand(band: IncomeBand): string {
+  return `${Math.floor(band.midpoint / 1000)}k`;
+}
+
+/** Finds the income band that matches a URL slug like "65k". */
+export function getBandFromIncomeSlug(country: CountryConfig, slug: string): IncomeBand | undefined {
+  return country.incomeBands.find((b) => incomeSlugFromBand(b) === slug);
+}
