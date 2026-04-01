@@ -18,7 +18,7 @@ export default function Navigation() {
           </Link>
           <Link
             href="/blog"
-            className="transition-colors hidden sm:block text-gray-500 hover:text-gray-900"
+            className="transition-colors text-gray-500 hover:text-gray-900"
           >
             Blog
           </Link>
