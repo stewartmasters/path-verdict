@@ -4,7 +4,7 @@
 
 [build.environment]
   # GA4 Measurement ID — replace with your own from GA4 → Admin → Data Streams
-  NEXT_PUBLIC_GA_ID = "G-XXXXXXXXXX"
+  NEXT_PUBLIC_GA_ID = "G-FXHX8PHWZ3"
 
 # Security headers for all routes
 [[headers]]
