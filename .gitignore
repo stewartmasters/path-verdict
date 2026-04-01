@@ -7,12 +7,15 @@ node_modules/
 out/
 tsconfig.tsbuildinfo
 
-# loose asset files in root
+# loose asset files in root (public/logos/ is explicitly allowed below)
 *.png
 *.jpg
 *.jpeg
 *.svg
 *.gif
+!public/logos/*.png
+!public/logos/*.svg
+!public/logos/*.jpg
 
 # env files
 .env*
