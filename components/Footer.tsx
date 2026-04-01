@@ -21,6 +21,20 @@ const CITY_LINKS = [
   { href: "/financial-position/stockholm",  label: "Stockholm" },
 ];
 
+const COUNTRY_LINKS = [
+  { href: "/financial-position/country/united-states",  label: "🇺🇸 United States" },
+  { href: "/financial-position/country/united-kingdom", label: "🇬🇧 United Kingdom" },
+  { href: "/financial-position/country/australia",      label: "🇦🇺 Australia" },
+  { href: "/financial-position/country/canada",         label: "🇨🇦 Canada" },
+  { href: "/financial-position/country/germany",        label: "🇩🇪 Germany" },
+  { href: "/financial-position/country/france",         label: "🇫🇷 France" },
+  { href: "/financial-position/country/ireland",        label: "🇮🇪 Ireland" },
+  { href: "/financial-position/country/netherlands",    label: "🇳🇱 Netherlands" },
+  { href: "/financial-position/country/spain",          label: "🇪🇸 Spain" },
+  { href: "/financial-position/country/sweden",         label: "🇸🇪 Sweden" },
+  { href: "/financial-position/country/new-zealand",   label: "🇳🇿 New Zealand" },
+];
+
 const TRUST_LOGOS = [
   { src: "/logos/ons.png",      alt: "ONS" },
   { src: "/logos/destatis.png", alt: "Destatis" },
@@ -58,10 +72,10 @@ export default function Footer() {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-12">
 
         {/* Top grid */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-10">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
 
           {/* Brand */}
-          <div className="space-y-3">
+          <div className="space-y-3 lg:col-span-1">
             <div className="font-bold text-gray-900 text-base">
               Path<span className="text-teal-600">Verdict</span>
             </div>
@@ -90,6 +104,18 @@ export default function Footer() {
             <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">Top cities</p>
             <ul className="space-y-1.5">
               {CITY_LINKS.map(({ href, label }) => (
+                <li key={href}>
+                  <Link href={href} className="text-sm text-gray-500 hover:text-teal-600 transition-colors">{label}</Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Countries */}
+          <div className="space-y-3">
+            <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">By country</p>
+            <ul className="space-y-1.5">
+              {COUNTRY_LINKS.map(({ href, label }) => (
                 <li key={href}>
                   <Link href={href} className="text-sm text-gray-500 hover:text-teal-600 transition-colors">{label}</Link>
                 </li>

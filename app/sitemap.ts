@@ -1,8 +1,15 @@
 import type { MetadataRoute } from "next";
 import { CITIES } from "@/lib/cities";
-import { getCountry, incomeSlugFromBand } from "@/lib/countries";
+import { COUNTRIES, getCountry, incomeSlugFromBand } from "@/lib/countries";
 import { BLOG_POSTS } from "@/data/blog-posts-path";
 import { getAllMarkdownPosts } from "@/lib/markdown";
+
+const COUNTRY_URL_SLUGS: Record<string, string> = {
+  us: "united-states", gb: "united-kingdom", de: "germany",
+  fr: "france",        au: "australia",      ca: "canada",
+  ie: "ireland",       nl: "netherlands",    es: "spain",
+  se: "sweden",        nz: "new-zealand",
+};
 
 export const dynamic = "force-static";
 
@@ -32,7 +39,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority:        0.80,
   }));
 
-  // Income bracket × city pages (50 cities × 7 bands = 350 pages)
+  // Country hub pages (11 countries)
+  const countryRoutes: MetadataRoute.Sitemap = COUNTRIES.flatMap((c) => {
+    const urlSlug = COUNTRY_URL_SLUGS[c.slug];
+    if (!urlSlug) return [];
+    return [{
+      url:             `${BASE_URL}/financial-position/country/${urlSlug}`,
+      lastModified:    now,
+      changeFrequency: "monthly" as const,
+      priority:        0.85,
+    }];
+  });
+
+  // Income bracket × city pages
   const incomeRoutes: MetadataRoute.Sitemap = CITIES.flatMap((c) => {
     const country = getCountry(c.countrySlug);
     if (!country) return [];
@@ -65,6 +84,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     ...staticRoutes,
+    ...countryRoutes,
     ...financialPositionRoutes,
     ...incomeRoutes,
     ...affordabilityRoutes,

@@ -16,7 +16,7 @@ export interface CityData {
 }
 
 // ─── City dataset ─────────────────────────────────────────────────────────────
-// 50 cities across 11 countries. medianRent in local currency.
+// 83 cities across 11 countries. medianRent in local currency.
 
 
 export const CITIES: CityData[] = [
@@ -102,6 +102,86 @@ export const CITIES: CityData[] = [
     savingsContext: "Atlanta's lower housing costs relative to income levels mean mid-income earners often save above the national benchmark.",
     nearbySlug: ["miami", "chicago", "denver"],
   },
+  {
+    slug: "washington-dc", name: "Washington DC", countrySlug: "us", costTier: "very-high",
+    medianRent: 2600, typicalOther: 2200,
+    defaultIncomeBand: "band-5",
+    rentContext: "Washington DC median rent is $2,600/month, sustained by dense federal and professional employment.",
+    savingsContext: "DC's high income levels partially offset elevated housing costs, but mid-income earners still face a compressed savings ratio.",
+    nearbySlug: ["new-york", "boston", "philadelphia"],
+  },
+  {
+    slug: "philadelphia", name: "Philadelphia", countrySlug: "us", costTier: "high",
+    medianRent: 1700, typicalOther: 1700,
+    defaultIncomeBand: "band-4",
+    rentContext: "Philadelphia median rent is around $1,700/month, making it one of the more affordable major north-east cities.",
+    savingsContext: "Philadelphia earners at mid-income levels benefit from lower housing costs than nearby New York or Boston.",
+    nearbySlug: ["new-york", "boston", "washington-dc"],
+  },
+  {
+    slug: "houston", name: "Houston", countrySlug: "us", costTier: "moderate",
+    medianRent: 1400, typicalOther: 1600,
+    defaultIncomeBand: "band-3",
+    rentContext: "Houston median rent is approximately $1,400/month, one of the lowest among major US metros.",
+    savingsContext: "Houston's no-income-tax environment and low housing costs make it one of the best US cities for mid-income savings.",
+    nearbySlug: ["dallas", "austin", "miami"],
+  },
+  {
+    slug: "dallas", name: "Dallas", countrySlug: "us", costTier: "high",
+    medianRent: 1600, typicalOther: 1700,
+    defaultIncomeBand: "band-3",
+    rentContext: "Dallas median rent is around $1,600/month, rising quickly as corporate relocations drive demand.",
+    savingsContext: "Dallas earners benefit from no state income tax, though rapid rent growth is narrowing the affordability advantage.",
+    nearbySlug: ["houston", "austin", "chicago"],
+  },
+  {
+    slug: "phoenix", name: "Phoenix", countrySlug: "us", costTier: "high",
+    medianRent: 1600, typicalOther: 1700,
+    defaultIncomeBand: "band-3",
+    rentContext: "Phoenix median rent is around $1,600/month, up sharply following sustained migration from California.",
+    savingsContext: "Phoenix's income-to-cost ratio has deteriorated since 2020 but remains better than coastal peers.",
+    nearbySlug: ["los-angeles", "las-vegas", "denver"],
+  },
+  {
+    slug: "san-diego", name: "San Diego", countrySlug: "us", costTier: "very-high",
+    medianRent: 2800, typicalOther: 2200,
+    defaultIncomeBand: "band-5",
+    rentContext: "San Diego median rent reached $2,800/month in 2023, reflecting sustained demand from defence, biotech, and tourism sectors.",
+    savingsContext: "San Diego earners face Bay Area-level housing costs without commensurate tech-sector salaries for most workers.",
+    nearbySlug: ["los-angeles", "san-francisco", "phoenix"],
+  },
+  {
+    slug: "nashville", name: "Nashville", countrySlug: "us", costTier: "high",
+    medianRent: 1800, typicalOther: 1700,
+    defaultIncomeBand: "band-3",
+    rentContext: "Nashville rents climbed to $1,800/month following rapid population growth and a corporate relocation boom.",
+    savingsContext: "Nashville's no-income-tax advantage is increasingly offset by rent growth that has outpaced local wage increases.",
+    nearbySlug: ["atlanta", "chicago", "austin"],
+  },
+  {
+    slug: "portland", name: "Portland", countrySlug: "us", costTier: "high",
+    medianRent: 1800, typicalOther: 1800,
+    defaultIncomeBand: "band-4",
+    rentContext: "Portland median rent is around $1,800/month; relatively affordable versus Seattle despite a similar economic profile.",
+    savingsContext: "Portland earners face Oregon's high income tax, reducing take-home pay and effective savings rates versus gross income benchmarks.",
+    nearbySlug: ["seattle", "san-francisco", "denver"],
+  },
+  {
+    slug: "minneapolis", name: "Minneapolis", countrySlug: "us", costTier: "moderate",
+    medianRent: 1400, typicalOther: 1600,
+    defaultIncomeBand: "band-3",
+    rentContext: "Minneapolis median rent is around $1,400/month, low for a major metro with a diverse professional economy.",
+    savingsContext: "Minneapolis consistently ranks among the better US cities for mid-income savings, with low housing costs offsetting cold-climate expenses.",
+    nearbySlug: ["chicago", "denver", "seattle"],
+  },
+  {
+    slug: "las-vegas", name: "Las Vegas", countrySlug: "us", costTier: "high",
+    medianRent: 1600, typicalOther: 1700,
+    defaultIncomeBand: "band-3",
+    rentContext: "Las Vegas median rent is approximately $1,600/month, rising following sustained in-migration from California.",
+    savingsContext: "Las Vegas workers benefit from Nevada's no-income-tax status, though entertainment and lifestyle costs can offset the advantage.",
+    nearbySlug: ["los-angeles", "phoenix", "denver"],
+  },
 
   // ── United Kingdom ──────────────────────────────────────────────────────────
   {
@@ -152,6 +232,70 @@ export const CITIES: CityData[] = [
     savingsContext: "Leeds consistently ranks among the UK's best cities for income-to-expense ratios at mid-income levels.",
     nearbySlug: ["manchester", "birmingham", "edinburgh"],
   },
+  {
+    slug: "glasgow", name: "Glasgow", countrySlug: "gb", costTier: "moderate",
+    medianRent: 850, typicalOther: 1000,
+    defaultIncomeBand: "band-2",
+    rentContext: "Glasgow median rent is around £850/month, making it one of the most affordable major UK cities for renters.",
+    savingsContext: "Glasgow's low housing costs allow mid-income earners to save comfortably above the UK benchmark for their income band.",
+    nearbySlug: ["edinburgh", "manchester", "newcastle"],
+  },
+  {
+    slug: "liverpool", name: "Liverpool", countrySlug: "gb", costTier: "moderate",
+    medianRent: 750, typicalOther: 950,
+    defaultIncomeBand: "band-2",
+    rentContext: "Liverpool median rent is around £750/month, among the lowest in England's major cities.",
+    savingsContext: "Liverpool earners benefit from low housing costs; mid-income workers can significantly exceed UK savings benchmarks.",
+    nearbySlug: ["manchester", "birmingham", "leeds"],
+  },
+  {
+    slug: "newcastle", name: "Newcastle", countrySlug: "gb", costTier: "moderate",
+    medianRent: 700, typicalOther: 900,
+    defaultIncomeBand: "band-2",
+    rentContext: "Newcastle median rent is around £700/month, the lowest of any major northern English city.",
+    savingsContext: "Newcastle's very low housing costs make it one of the best UK cities for savings at mid and lower income levels.",
+    nearbySlug: ["edinburgh", "glasgow", "leeds"],
+  },
+  {
+    slug: "sheffield", name: "Sheffield", countrySlug: "gb", costTier: "moderate",
+    medianRent: 750, typicalOther: 900,
+    defaultIncomeBand: "band-2",
+    rentContext: "Sheffield median rent is approximately £750/month, benefiting from a large student population keeping supply high.",
+    savingsContext: "Sheffield's affordable housing gives mid-income earners strong savings capacity relative to UK national benchmarks.",
+    nearbySlug: ["leeds", "manchester", "birmingham"],
+  },
+  {
+    slug: "cardiff", name: "Cardiff", countrySlug: "gb", costTier: "moderate",
+    medianRent: 950, typicalOther: 1000,
+    defaultIncomeBand: "band-2",
+    rentContext: "Cardiff rents average £950/month — the Welsh capital is significantly cheaper than comparable English cities.",
+    savingsContext: "Cardiff professionals face a favourable income-to-cost ratio, supporting savings rates above the UK mid-income benchmark.",
+    nearbySlug: ["bristol", "birmingham", "london"],
+  },
+  {
+    slug: "nottingham", name: "Nottingham", countrySlug: "gb", costTier: "moderate",
+    medianRent: 800, typicalOther: 950,
+    defaultIncomeBand: "band-2",
+    rentContext: "Nottingham median rent is around £800/month, affordable for a midlands city with a large university and professional base.",
+    savingsContext: "Nottingham earners at mid-income levels typically save above the UK benchmark thanks to low housing costs.",
+    nearbySlug: ["birmingham", "leeds", "manchester"],
+  },
+  {
+    slug: "oxford", name: "Oxford", countrySlug: "gb", costTier: "very-high",
+    medianRent: 1700, typicalOther: 1300,
+    defaultIncomeBand: "band-4",
+    rentContext: "Oxford median rent is around £1,700/month — driven by university demand and proximity to London it is the most expensive city outside the capital.",
+    savingsContext: "Oxford renters face London-adjacent housing costs without London salaries for most workers outside academia and tech.",
+    nearbySlug: ["london", "bristol", "cambridge"],
+  },
+  {
+    slug: "cambridge", name: "Cambridge", countrySlug: "gb", costTier: "high",
+    medianRent: 1500, typicalOther: 1200,
+    defaultIncomeBand: "band-3",
+    rentContext: "Cambridge rents average £1,500/month, sustained by university, biotech, and tech-cluster demand.",
+    savingsContext: "Cambridge earners in the tech and life-sciences sector can meet savings benchmarks, but general mid-income workers face a squeeze.",
+    nearbySlug: ["london", "oxford", "birmingham"],
+  },
 
   // ── Germany ─────────────────────────────────────────────────────────────────
   {
@@ -186,6 +330,30 @@ export const CITIES: CityData[] = [
     savingsContext: "Frankfurt's finance-heavy workforce skews income higher, but housing costs also significantly exceed the German average.",
     nearbySlug: ["munich", "berlin", "amsterdam"],
   },
+  {
+    slug: "cologne", name: "Cologne", countrySlug: "de", costTier: "high",
+    medianRent: 1300, typicalOther: 1000,
+    defaultIncomeBand: "band-3",
+    rentContext: "Cologne rents average €1,300/month, driven by media and commercial activity in Germany's fourth-largest city.",
+    savingsContext: "Cologne earners at mid-income levels typically achieve Germany's savings benchmark, though housing costs have risen sharply.",
+    nearbySlug: ["frankfurt", "berlin", "dusseldorf"],
+  },
+  {
+    slug: "stuttgart", name: "Stuttgart", countrySlug: "de", costTier: "high",
+    medianRent: 1400, typicalOther: 1100,
+    defaultIncomeBand: "band-4",
+    rentContext: "Stuttgart rents average €1,400/month; high demand is driven by automotive and engineering employers.",
+    savingsContext: "Stuttgart's strong automotive-sector wages partly offset high housing costs, keeping mid-income savings benchmarks achievable.",
+    nearbySlug: ["munich", "frankfurt", "cologne"],
+  },
+  {
+    slug: "dusseldorf", name: "Düsseldorf", countrySlug: "de", costTier: "high",
+    medianRent: 1300, typicalOther: 1000,
+    defaultIncomeBand: "band-3",
+    rentContext: "Düsseldorf median rent is around €1,300/month, slightly below Cologne despite a similar professional income profile.",
+    savingsContext: "Düsseldorf earners benefit from a strong commercial services sector; mid-income savings benchmarks are broadly achievable.",
+    nearbySlug: ["cologne", "frankfurt", "amsterdam"],
+  },
 
   // ── France ──────────────────────────────────────────────────────────────────
   {
@@ -211,6 +379,38 @@ export const CITIES: CityData[] = [
     rentContext: "Bordeaux median rent is €850/month, below both Paris and Lyon for a comparable lifestyle.",
     savingsContext: "Bordeaux professionals at mid-income levels can typically exceed France's national savings benchmark.",
     nearbySlug: ["lyon", "paris", "madrid"],
+  },
+  {
+    slug: "marseille", name: "Marseille", countrySlug: "fr", costTier: "moderate",
+    medianRent: 750, typicalOther: 950,
+    defaultIncomeBand: "band-2",
+    rentContext: "Marseille median rent is around €750/month, France's second-largest city but significantly cheaper than Paris.",
+    savingsContext: "Marseille earners benefit from low housing costs; mid-income workers can exceed France's benchmark savings rate.",
+    nearbySlug: ["lyon", "nice", "barcelona"],
+  },
+  {
+    slug: "toulouse", name: "Toulouse", countrySlug: "fr", costTier: "moderate",
+    medianRent: 800, typicalOther: 950,
+    defaultIncomeBand: "band-3",
+    rentContext: "Toulouse rents average €800/month; aerospace industry employment supports strong professional incomes.",
+    savingsContext: "Toulouse combines moderate housing costs with above-average engineering salaries, making benchmark savings readily achievable.",
+    nearbySlug: ["bordeaux", "marseille", "barcelona"],
+  },
+  {
+    slug: "nice", name: "Nice", countrySlug: "fr", costTier: "high",
+    medianRent: 1100, typicalOther: 1000,
+    defaultIncomeBand: "band-3",
+    rentContext: "Nice rents average €1,100/month, elevated by tourism and Côte d'Azur lifestyle demand.",
+    savingsContext: "Nice earners face higher housing costs than most French cities; mid-income benchmark achievement requires careful spending.",
+    nearbySlug: ["marseille", "paris", "lyon"],
+  },
+  {
+    slug: "strasbourg", name: "Strasbourg", countrySlug: "fr", costTier: "moderate",
+    medianRent: 800, typicalOther: 950,
+    defaultIncomeBand: "band-3",
+    rentContext: "Strasbourg rents average €800/month; EU institutions and cross-border employment drive steady demand.",
+    savingsContext: "Strasbourg's moderate costs and EU-adjacent salary levels mean mid-income earners typically meet or exceed France's savings benchmark.",
+    nearbySlug: ["paris", "frankfurt", "cologne"],
   },
 
   // ── Australia ───────────────────────────────────────────────────────────────
@@ -246,6 +446,22 @@ export const CITIES: CityData[] = [
     savingsContext: "Perth earners benefit from high resources-sector wages, often saving above Australia's mid-income benchmark.",
     nearbySlug: ["brisbane", "melbourne", "auckland"],
   },
+  {
+    slug: "adelaide", name: "Adelaide", countrySlug: "au", costTier: "moderate",
+    medianRent: 1700, typicalOther: 1900,
+    defaultIncomeBand: "band-3",
+    rentContext: "Adelaide rents average A$1,700/month — the most affordable of Australia's five mainland capitals.",
+    savingsContext: "Adelaide's lower housing costs and strong manufacturing and defence-sector incomes support solid mid-income savings.",
+    nearbySlug: ["melbourne", "perth", "brisbane"],
+  },
+  {
+    slug: "gold-coast", name: "Gold Coast", countrySlug: "au", costTier: "high",
+    medianRent: 2200, typicalOther: 2000,
+    defaultIncomeBand: "band-3",
+    rentContext: "Gold Coast rents average A$2,200/month, rising sharply as interstate migration from Sydney and Melbourne accelerated post-pandemic.",
+    savingsContext: "Gold Coast earners face rising rent costs against a regional income base, compressing savings rates below Brisbane levels.",
+    nearbySlug: ["brisbane", "sydney", "melbourne"],
+  },
 
   // ── Canada ──────────────────────────────────────────────────────────────────
   {
@@ -280,6 +496,30 @@ export const CITIES: CityData[] = [
     savingsContext: "Calgary's combination of high energy-sector incomes and moderate costs creates strong conditions for mid-income saving.",
     nearbySlug: ["vancouver", "montreal", "toronto"],
   },
+  {
+    slug: "ottawa", name: "Ottawa", countrySlug: "ca", costTier: "high",
+    medianRent: 1900, typicalOther: 1600,
+    defaultIncomeBand: "band-4",
+    rentContext: "Ottawa median rent is C$1,900/month, driven by government and tech-sector employment in the national capital.",
+    savingsContext: "Ottawa's stable public-sector incomes and moderate costs give mid-income earners a better savings outlook than Toronto or Vancouver.",
+    nearbySlug: ["toronto", "montreal", "boston"],
+  },
+  {
+    slug: "edmonton", name: "Edmonton", countrySlug: "ca", costTier: "moderate",
+    medianRent: 1400, typicalOther: 1400,
+    defaultIncomeBand: "band-3",
+    rentContext: "Edmonton rents average C$1,400/month, among the lowest of Canada's major cities, benefiting from Alberta's abundant land.",
+    savingsContext: "Edmonton earners combine Alberta's no-provincial-income-tax advantage with low housing costs — an unusually strong savings environment.",
+    nearbySlug: ["calgary", "vancouver", "toronto"],
+  },
+  {
+    slug: "halifax", name: "Halifax", countrySlug: "ca", costTier: "moderate",
+    medianRent: 1500, typicalOther: 1300,
+    defaultIncomeBand: "band-3",
+    rentContext: "Halifax rents average C$1,500/month, rising due to remote-work migration but still well below Toronto and Vancouver.",
+    savingsContext: "Halifax offers one of Canada's better income-to-cost ratios; mid-income earners can comfortably meet savings benchmarks.",
+    nearbySlug: ["montreal", "toronto", "boston"],
+  },
 
   // ── Ireland ─────────────────────────────────────────────────────────────────
   {
@@ -298,6 +538,14 @@ export const CITIES: CityData[] = [
     savingsContext: "Cork earners face similar structural pressures to Dublin but with marginally better income-to-cost ratios.",
     nearbySlug: ["dublin", "london", "liverpool"],
   },
+  {
+    slug: "galway", name: "Galway", countrySlug: "ie", costTier: "high",
+    medianRent: 1400, typicalOther: 1200,
+    defaultIncomeBand: "band-3",
+    rentContext: "Galway rents average €1,400/month, elevated by university demand and limited housing supply in the compact city.",
+    savingsContext: "Galway earners face a tight income-to-cost ratio for its size; the pharma and tech sectors support incomes but housing remains constrained.",
+    nearbySlug: ["dublin", "cork", "london"],
+  },
 
   // ── Netherlands ─────────────────────────────────────────────────────────────
   {
@@ -314,7 +562,23 @@ export const CITIES: CityData[] = [
     defaultIncomeBand: "band-3",
     rentContext: "Rotterdam rents average €1,200/month, offering materially better affordability than Amsterdam.",
     savingsContext: "Rotterdam earners can typically meet the Dutch savings benchmark more easily than their Amsterdam counterparts.",
-    nearbySlug: ["amsterdam", "brussels", "berlin"],
+    nearbySlug: ["amsterdam", "berlin", "frankfurt"],
+  },
+  {
+    slug: "the-hague", name: "The Hague", countrySlug: "nl", costTier: "high",
+    medianRent: 1400, typicalOther: 1100,
+    defaultIncomeBand: "band-3",
+    rentContext: "The Hague rents average €1,400/month, reflecting demand from government, legal, and international-institutions employment.",
+    savingsContext: "The Hague earners benefit from stable government and international-sector incomes; mid-income savings benchmarks are broadly achievable.",
+    nearbySlug: ["amsterdam", "rotterdam", "berlin"],
+  },
+  {
+    slug: "utrecht", name: "Utrecht", countrySlug: "nl", costTier: "high",
+    medianRent: 1500, typicalOther: 1100,
+    defaultIncomeBand: "band-3",
+    rentContext: "Utrecht rents average €1,500/month — high demand from students and professionals seeking an Amsterdam alternative.",
+    savingsContext: "Utrecht earners face rising costs relative to wages; mid-income savings benchmarks are achievable but require discipline.",
+    nearbySlug: ["amsterdam", "rotterdam", "berlin"],
   },
 
   // ── Spain ───────────────────────────────────────────────────────────────────
@@ -342,6 +606,30 @@ export const CITIES: CityData[] = [
     savingsContext: "Seville's low housing costs allow mid-income earners to significantly exceed Spain's savings benchmark.",
     nearbySlug: ["madrid", "barcelona", "bordeaux"],
   },
+  {
+    slug: "valencia", name: "Valencia", countrySlug: "es", costTier: "moderate",
+    medianRent: 900, typicalOther: 950,
+    defaultIncomeBand: "band-2",
+    rentContext: "Valencia rents average €900/month, rising due to digital-nomad and expat demand but still well below Madrid.",
+    savingsContext: "Valencia's combination of low costs and growing tech-sector employment makes it increasingly attractive for savings-focused earners.",
+    nearbySlug: ["madrid", "barcelona", "marseille"],
+  },
+  {
+    slug: "malaga", name: "Málaga", countrySlug: "es", costTier: "moderate",
+    medianRent: 1000, typicalOther: 950,
+    defaultIncomeBand: "band-2",
+    rentContext: "Málaga rents have risen to around €1,000/month, driven by digital nomads and tourism — up sharply from €600 just five years ago.",
+    savingsContext: "Málaga's rapidly rising rents are compressing savings potential for local earners despite relatively low non-housing costs.",
+    nearbySlug: ["madrid", "seville", "barcelona"],
+  },
+  {
+    slug: "bilbao", name: "Bilbao", countrySlug: "es", costTier: "moderate",
+    medianRent: 900, typicalOther: 950,
+    defaultIncomeBand: "band-3",
+    rentContext: "Bilbao rents average €900/month; the Basque Country's strong industrial base supports above-average Spanish incomes.",
+    savingsContext: "Bilbao earners benefit from Spain's highest regional wages alongside moderate costs — a good environment for hitting savings benchmarks.",
+    nearbySlug: ["madrid", "barcelona", "bordeaux"],
+  },
 
   // ── Sweden ──────────────────────────────────────────────────────────────────
   {
@@ -358,7 +646,23 @@ export const CITIES: CityData[] = [
     defaultIncomeBand: "band-3",
     rentContext: "Gothenburg private rents average 7,500 kr/month, lower than Stockholm with a similar income profile.",
     savingsContext: "Gothenburg offers a better cost ratio than Stockholm for comparable professional roles, often allowing above-benchmark savings.",
-    nearbySlug: ["stockholm", "oslo", "berlin"],
+    nearbySlug: ["stockholm", "malmo", "berlin"],
+  },
+  {
+    slug: "malmo", name: "Malmö", countrySlug: "se", costTier: "moderate",
+    medianRent: 8000, typicalOther: 9000,
+    defaultIncomeBand: "band-3",
+    rentContext: "Malmö private rents average 8,000 kr/month; cross-border proximity to Copenhagen makes it attractive for commuters.",
+    savingsContext: "Malmö earners benefit from lower housing costs than Stockholm; mid-income savings benchmarks are typically achievable.",
+    nearbySlug: ["stockholm", "gothenburg", "berlin"],
+  },
+  {
+    slug: "uppsala", name: "Uppsala", countrySlug: "se", costTier: "moderate",
+    medianRent: 8500, typicalOther: 9500,
+    defaultIncomeBand: "band-3",
+    rentContext: "Uppsala rents average 8,500 kr/month; university and life-sciences sector demand keeps rents elevated for a mid-size city.",
+    savingsContext: "Uppsala earners at mid-income levels can generally meet Sweden's savings benchmark given the city's moderate non-housing costs.",
+    nearbySlug: ["stockholm", "gothenburg", "malmo"],
   },
 
   // ── New Zealand ─────────────────────────────────────────────────────────────
@@ -376,7 +680,15 @@ export const CITIES: CityData[] = [
     defaultIncomeBand: "band-3",
     rentContext: "Wellington median rent is NZ$1,900/month, lower than Auckland but high relative to the public-sector-heavy income profile.",
     savingsContext: "Wellington earners face moderate savings pressure; the public-sector income base makes benchmark achievement challenging.",
-    nearbySlug: ["auckland", "sydney", "brisbane"],
+    nearbySlug: ["auckland", "christchurch", "sydney"],
+  },
+  {
+    slug: "christchurch", name: "Christchurch", countrySlug: "nz", costTier: "moderate",
+    medianRent: 1700, typicalOther: 1800,
+    defaultIncomeBand: "band-3",
+    rentContext: "Christchurch median rent is NZ$1,700/month, the most affordable of New Zealand's main cities.",
+    savingsContext: "Christchurch's lower costs relative to Auckland and Wellington give mid-income earners the best savings outlook of New Zealand's main centres.",
+    nearbySlug: ["wellington", "auckland", "sydney"],
   },
 ];
 
