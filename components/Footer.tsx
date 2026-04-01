@@ -24,8 +24,8 @@ const CITY_LINKS = [
 const TRUST_LOGOS = [
   { src: "/logos/ons.png",      alt: "ONS" },
   { src: "/logos/destatis.png", alt: "Destatis" },
-  { src: "/logos/ine.png",      alt: "INE" },
-  { src: "/logos/scb.png",      alt: "SCB" },
+  { src: "/logos/abs.png",      alt: "ABS" },
+  { src: "/logos/cbs.png",      alt: "CBS" },
 ];
 
 const VERDICT_NETWORK = [
@@ -135,14 +135,13 @@ export default function Footer() {
           <p className="text-xs text-gray-400 mb-3">Built using official household expenditure surveys</p>
           <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
             {TRUST_LOGOS.map(({ src, alt }) => (
-              <div key={src} style={{ width: 80, height: 28, flexShrink: 0 }}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={src}
-                  alt={alt}
-                  style={{ width: "100%", height: "100%", objectFit: "contain", objectPosition: "left center", filter: "grayscale(1)", opacity: 0.5, mixBlendMode: "multiply" }}
-                />
-              </div>
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                key={src}
+                src={src}
+                alt={alt}
+                style={{ height: "27px", width: "auto", filter: "grayscale(1)", opacity: 0.5, mixBlendMode: "multiply", flexShrink: 0 }}
+              />
             ))}
           </div>
         </div>

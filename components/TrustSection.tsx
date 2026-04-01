@@ -16,15 +16,14 @@ export default function TrustSection({ variant = "full" }: Props) {
   const LogoList = () => (
     <>
       {TRUST_SOURCES.map(({ src, alt }) => (
-        <div key={alt} className="flex-shrink-0" style={{ width: 80, height: 28 }}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={src}
-            alt={alt}
-            className="opacity-50 grayscale hover:opacity-70 transition-opacity"
-            style={{ width: "100%", height: "100%", objectFit: "contain", objectPosition: "left center", mixBlendMode: "multiply" }}
-          />
-        </div>
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          key={alt}
+          src={src}
+          alt={alt}
+          className="opacity-50 grayscale hover:opacity-70 transition-opacity flex-shrink-0"
+          style={{ height: "27px", width: "auto", mixBlendMode: "multiply" }}
+        />
       ))}
     </>
   );
@@ -33,7 +32,7 @@ export default function TrustSection({ variant = "full" }: Props) {
     return (
       <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
         <LogoList />
-        <span className="text-xs text-gray-400 font-medium">+ BLS · ABS · StatsCan · CBS</span>
+        <span className="text-xs text-gray-400 font-medium">+ BLS · StatsCan · INE · SCB</span>
       </div>
     );
   }
@@ -45,7 +44,7 @@ export default function TrustSection({ variant = "full" }: Props) {
       </p>
       <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mb-2">
         <LogoList />
-        <span className="text-xs text-gray-400 font-medium">+ BLS · ABS · StatsCan · CBS · CSO · Stats NZ</span>
+        <span className="text-xs text-gray-400 font-medium">+ BLS · StatsCan · INE · SCB · CSO · Stats NZ</span>
       </div>
       <p className="text-xs text-gray-400 mb-2.5">Coverage varies by country and income band.</p>
       <div className="flex items-center justify-between">
