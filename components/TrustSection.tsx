@@ -16,13 +16,13 @@ export default function TrustSection({ variant = "full" }: Props) {
   const LogoList = () => (
     <>
       {TRUST_SOURCES.map(({ src, alt }) => (
-        <div key={alt} className="h-[28px] flex items-center justify-center flex-shrink-0">
+        <div key={alt} className="flex-shrink-0" style={{ width: 80, height: 28 }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={src}
             alt={alt}
             className="opacity-50 grayscale hover:opacity-70 transition-opacity"
-            style={{ height: "27px", width: "auto", mixBlendMode: "multiply" }}
+            style={{ width: "100%", height: "100%", objectFit: "contain", objectPosition: "left center", mixBlendMode: "multiply" }}
           />
         </div>
       ))}
