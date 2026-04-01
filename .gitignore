@@ -16,6 +16,7 @@ tsconfig.tsbuildinfo
 !public/logos/*.png
 !public/logos/*.svg
 !public/logos/*.jpg
+!public/linkedin-icon.png
 
 # env files
 .env*
