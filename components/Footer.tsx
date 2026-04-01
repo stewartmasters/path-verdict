@@ -24,7 +24,9 @@ const CITY_LINKS = [
 const TRUST_LOGOS = [
   { src: "/logos/ons.png",      alt: "ONS" },
   { src: "/logos/destatis.png", alt: "Destatis" },
+  { src: "/logos/bls.svg",      alt: "BLS" },
   { src: "/logos/abs.png",      alt: "ABS" },
+  { src: "/logos/statscan.png", alt: "StatsCan" },
   { src: "/logos/cbs.png",      alt: "CBS" },
 ];
 

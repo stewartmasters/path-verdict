@@ -32,7 +32,7 @@ export default function TrustSection({ variant = "full" }: Props) {
     return (
       <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
         <LogoList />
-        <span className="text-xs text-gray-400 font-medium">+ BLS · StatsCan · INE · SCB</span>
+        <span className="text-xs text-gray-400 font-medium">+ INE · SCB</span>
       </div>
     );
   }
@@ -44,7 +44,7 @@ export default function TrustSection({ variant = "full" }: Props) {
       </p>
       <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mb-2">
         <LogoList />
-        <span className="text-xs text-gray-400 font-medium">+ BLS · StatsCan · INE · SCB · CSO · Stats NZ</span>
+        <span className="text-xs text-gray-400 font-medium">+ INE · SCB · CSO · Stats NZ</span>
       </div>
       <p className="text-xs text-gray-400 mb-2.5">Coverage varies by country and income band.</p>
       <div className="flex items-center justify-between">
