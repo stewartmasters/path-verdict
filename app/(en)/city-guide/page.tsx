@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getAllCityGuides } from "@/lib/cityGuide";
 
+export const dynamic = "force-static";
+
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://pathverdict.com";
 
 export const metadata: Metadata = {
@@ -49,7 +51,7 @@ export default function CityGuideIndex() {
             >
               <div className="flex items-center gap-3 mb-3">
                 <span className="text-xs text-gray-400">
-                  {new Date(guide.date).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}
+                  {!isNaN(new Date(guide.date).getTime()) ? new Date(guide.date).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }) : ""}
                 </span>
                 <span className="text-gray-200">·</span>
                 <span className="text-xs text-gray-400">{guide.readTime}</span>
