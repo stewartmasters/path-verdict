@@ -159,27 +159,62 @@ export default function PathResultComponent({ result, onReset, onEdit, resetLabe
         <div className="px-5 py-5 space-y-3">
           <h3 className="font-bold text-gray-900 text-base">The numbers</h3>
           <div className="space-y-2">
-            {[
-              { label: "Monthly income",  value: fmt(result.monthlyIncome),         color: "text-gray-900" },
-              { label: "Rent / mortgage", value: `−${fmt(result.monthlyRent)}`,       color: "text-gray-600" },
-              { label: "Other expenses",  value: `−${fmt(result.monthlyOtherExpenses)}`, color: "text-gray-600" },
-              { label: "Monthly surplus", value: result.monthlySurplus >= 0
-                  ? fmt(result.monthlySurplus)
-                  : `−${fmt(Math.abs(result.monthlySurplus))}`,
-                color: result.monthlySurplus >= 0 ? "text-teal-600" : "text-red-600" },
-            ].map(({ label, value, color }) => (
-              <div key={label} className="flex items-center justify-between text-sm">
-                <span className="text-gray-500">{label}</span>
-                <span className={`font-semibold ${color}`}>{value}</span>
+            {/* Gross income */}
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-gray-500">Gross monthly income</span>
+              <span className="font-semibold text-gray-900">{fmt(result.monthlyIncome)}</span>
+            </div>
+            {/* Tax deduction — shown if we have a profile */}
+            {result.monthlyTaxDeduction > 0 && (
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-gray-400">
+                  Tax &amp; contributions
+                  <span className="ml-1 text-xs text-gray-300">
+                    (~{Math.round(result.taxEffectiveRate * 100)}% effective)
+                  </span>
+                </span>
+                <span className="font-semibold text-gray-400">−{fmt(result.monthlyTaxDeduction)}</span>
               </div>
-            ))}
+            )}
+            {/* Net income */}
+            <div className="flex items-center justify-between text-sm border-t border-gray-100 pt-2">
+              <span className="font-medium text-gray-700">Net monthly income</span>
+              <span className="font-bold text-gray-900">{fmt(result.netMonthlyIncome)}</span>
+            </div>
+            {/* Expenses */}
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-gray-500">Rent / mortgage</span>
+              <span className="font-semibold text-gray-600">−{fmt(result.monthlyRent)}</span>
+            </div>
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-gray-500">Other expenses</span>
+              <span className="font-semibold text-gray-600">−{fmt(result.monthlyOtherExpenses)}</span>
+            </div>
+            {/* Surplus */}
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-gray-500">Monthly surplus</span>
+              <span className={`font-semibold ${result.monthlySurplus >= 0 ? "text-teal-600" : "text-red-600"}`}>
+                {result.monthlySurplus >= 0 ? fmt(result.monthlySurplus) : `−${fmt(Math.abs(result.monthlySurplus))}`}
+              </span>
+            </div>
           </div>
           <div className="pt-1 border-t border-gray-100 flex items-center justify-between text-sm">
-            <span className="font-semibold text-gray-700">Est. savings rate</span>
+            <div>
+              <span className="font-semibold text-gray-700">Est. savings rate</span>
+              {result.monthlyTaxDeduction > 0 && (
+                <span className="ml-1 text-xs text-gray-400">of net income</span>
+              )}
+            </div>
             <span className={`font-extrabold text-base ${isNegative ? "text-red-600" : result.savingsRate >= result.expectedRate ? "text-teal-600" : "text-gray-900"}`}>
               ~{result.savingsRate}%
             </span>
           </div>
+          {/* Tax source note */}
+          {result.taxNote && (
+            <p className="text-xs text-gray-400 leading-relaxed">
+              Tax estimate: {result.taxNote}. OECD Taxing Wages 2023.
+            </p>
+          )}
         </div>
 
         {/* ─── PERCENTILE BLOCK ─── */}

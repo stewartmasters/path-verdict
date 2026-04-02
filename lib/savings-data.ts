@@ -1,4 +1,5 @@
 import { getCountry, getBenchmarkRateForIncome, getIncomeBandForIncome } from "./countries";
+import { estimateTax, type TaxEstimate } from "./tax";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -20,7 +21,11 @@ export interface PathResult {
   expectedRate: number;
   gap: number;
   percentile: number;
-  monthlyIncome: number;
+  monthlyIncome: number;       // gross monthly
+  netMonthlyIncome: number;    // after-tax take-home
+  monthlyTaxDeduction: number; // gross - net
+  taxEffectiveRate: number;    // 0–1, 0 if no profile
+  taxNote: string;             // source description
   monthlyRent: number;
   monthlyOtherExpenses: number;
   monthlyExpenses: number;
@@ -89,11 +94,16 @@ export function calculatePath(input: PathInput): PathResult {
   const country = getCountry(input.countrySlug);
   if (!country) throw new Error(`Unknown country: ${input.countrySlug}`);
 
-  const incomeBand      = getIncomeBandForIncome(country, input.annualIncome);
-  const monthlyIncome   = input.annualIncome / 12;
-  const monthlyExpenses = input.monthlyRent + input.monthlyOtherExpenses;
-  const monthlySurplus  = monthlyIncome - monthlyExpenses;
-  const savingsRate     = (monthlySurplus / monthlyIncome) * 100;
+  const incomeBand       = getIncomeBandForIncome(country, input.annualIncome);
+  const taxEst: TaxEstimate | null = estimateTax(input.annualIncome, input.countrySlug);
+  const grossMonthly     = input.annualIncome / 12;
+  const netMonthlyIncome = taxEst ? taxEst.netMonthly : grossMonthly;
+  const monthlyIncome    = grossMonthly; // kept for display
+  const monthlyExpenses  = input.monthlyRent + input.monthlyOtherExpenses;
+  const monthlySurplus   = netMonthlyIncome - monthlyExpenses;
+  // Savings rate as % of net (disposable) income — consistent with how
+  // household expenditure surveys (BLS CEX, ONS LCF, etc.) measure saving.
+  const savingsRate      = (monthlySurplus / netMonthlyIncome) * 100;
 
   const baseExpected    = getBenchmarkRateForIncome(country, input.annualIncome);
   const ageModifier     = input.ageBandSlug ? (AGE_MODIFIERS[input.ageBandSlug] ?? 0) : 0;
@@ -110,7 +120,11 @@ export function calculatePath(input: PathInput): PathResult {
     expectedRate:         Math.round(expectedRate * 10) / 10,
     gap:                  Math.round(gap * 10) / 10,
     percentile,
-    monthlyIncome:        Math.round(monthlyIncome),
+    monthlyIncome:        Math.round(grossMonthly),
+    netMonthlyIncome:     Math.round(netMonthlyIncome),
+    monthlyTaxDeduction:  taxEst ? taxEst.monthlyDeduction : 0,
+    taxEffectiveRate:     taxEst ? taxEst.effectiveRate : 0,
+    taxNote:              taxEst ? taxEst.note : "",
     monthlyRent:          input.monthlyRent,
     monthlyOtherExpenses: input.monthlyOtherExpenses,
     monthlyExpenses:      Math.round(monthlyExpenses),
