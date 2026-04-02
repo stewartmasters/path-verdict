@@ -49,7 +49,7 @@ export default function CookieConsent() {
         <p className="text-sm text-gray-600 flex-1 leading-relaxed">
           We use analytics cookies to understand how people use this site. No personal data is
           collected without consent.{" "}
-          <Link href="/privacy" className="text-orange-500 hover:underline font-medium">
+          <Link href="/privacy" className="text-teal-600 hover:underline font-medium">
             Privacy policy
           </Link>
         </p>
