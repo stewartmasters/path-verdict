@@ -41,11 +41,20 @@ export const metadata: Metadata = {
     description:
       "Find out if you're building wealth or falling behind. Benchmarked against real income and savings data. 30 seconds, no signup.",
     url: BASE_URL,
+    images: [
+      {
+        url: "https://pathverdict.com/og.svg",
+        width: 1200,
+        height: 630,
+        alt: "PathVerdict — Are You Financially On Track?",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "PathVerdict — Are You Financially On Track?",
     description: "Find out if you're financially on track in 30 seconds. Free, no signup.",
+    images: ["https://pathverdict.com/og.svg"],
   },
   robots: {
     index: true,
