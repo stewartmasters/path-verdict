@@ -23,7 +23,7 @@ export default function Navigation() {
             Blog
           </Link>
           <Link
-            href="/financial-position/new-york"
+            href="/financial-position"
             className="transition-colors hidden sm:block text-gray-500 hover:text-gray-900"
           >
             Cities
