@@ -18,8 +18,6 @@ import CityInternalLinks from "@/components/CityInternalLinks";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://pathverdict.com";
 
-export const dynamicParams = false;
-
 export async function generateStaticParams() {
   const params: { city: string; income: string }[] = [];
   for (const city of CITIES) {
