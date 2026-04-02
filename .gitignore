@@ -12,6 +12,7 @@ tsconfig.tsbuildinfo
 *.jpg
 *.jpeg
 *.svg
+!public/og.svg
 *.gif
 !public/logos/*.png
 !public/logos/*.svg
