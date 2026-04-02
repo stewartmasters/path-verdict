@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://pathverdict.com";
+
 export const metadata: Metadata = {
-  title: "Privacy Policy",
+  title: "Privacy Policy — PathVerdict",
   description: "How PathVerdict collects, uses, and protects your data.",
+  alternates: { canonical: `${BASE_URL}/privacy` },
 };
 
 const LAST_UPDATED = "27 March 2026";

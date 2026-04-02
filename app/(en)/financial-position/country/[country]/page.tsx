@@ -26,6 +26,8 @@ const URL_TO_COUNTRY_SLUG: Record<string, string> = Object.fromEntries(
   Object.entries(COUNTRY_URL_SLUGS).map(([k, v]) => [v, k])
 );
 
+export const dynamicParams = false;
+
 export async function generateStaticParams() {
   return Object.values(COUNTRY_URL_SLUGS).map((c) => ({ country: c }));
 }

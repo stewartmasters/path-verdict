@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   title: "How We Calculate Your Financial Position — PathVerdict Methodology",
   description:
     "PathVerdict benchmarks your savings rate against real household expenditure survey data. Here's exactly how the calculation works, what data we use, and what the numbers mean.",
-  alternates: { canonical: "/methodology" },
+  alternates: { canonical: `${process.env.NEXT_PUBLIC_BASE_URL || "https://pathverdict.com"}/methodology` },
 };
 
 const SECTIONS = [

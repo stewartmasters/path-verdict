@@ -6,6 +6,8 @@ import { getAllMarkdownSlugs, getMarkdownPost } from "@/lib/markdown";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://pathverdict.com";
 
+export const dynamicParams = false;
+
 export async function generateStaticParams() {
   const staticParams = BLOG_POSTS.map((p) => ({ slug: p.slug }));
   const staticSlugs = new Set(BLOG_POSTS.map((p) => p.slug));
