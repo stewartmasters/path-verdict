@@ -690,6 +690,103 @@ export const CITIES: CityData[] = [
     savingsContext: "Christchurch's lower costs relative to Auckland and Wellington give mid-income earners the best savings outlook of New Zealand's main centres.",
     nearbySlug: ["wellington", "auckland", "sydney"],
   },
+  // ── Switzerland ─────────────────────────────────────────────────────────────
+  {
+    slug: "zurich", name: "Zurich", countrySlug: "ch", costTier: "very-high",
+    medianRent: 2500, typicalOther: 2200,
+    defaultIncomeBand: "band-4",
+    rentContext: "Zurich median rent is around CHF 2,500/month for a 1-bed, making it one of Europe's most expensive rental markets.",
+    savingsContext: "Zurich's very high salaries enable strong savings despite high costs — mid-income earners often outpace European peers.",
+    nearbySlug: ["geneva", "vienna", "munich"],
+  },
+
+  // ── Austria ──────────────────────────────────────────────────────────────────
+  {
+    slug: "vienna", name: "Vienna", countrySlug: "at", costTier: "high",
+    medianRent: 1100, typicalOther: 1400,
+    defaultIncomeBand: "band-3",
+    rentContext: "Vienna median rent is approximately €1,100/month, relatively affordable for a major European capital.",
+    savingsContext: "Vienna earners benefit from moderate rents and strong social infrastructure, supporting above-average savings rates.",
+    nearbySlug: ["munich", "zurich", "prague"],
+  },
+
+  // ── Norway ───────────────────────────────────────────────────────────────────
+  {
+    slug: "oslo", name: "Oslo", countrySlug: "no", costTier: "very-high",
+    medianRent: 13500, typicalOther: 14000,
+    defaultIncomeBand: "band-3",
+    rentContext: "Oslo median rent is approximately 13,500 kr/month, reflecting Norway's high overall cost of living.",
+    savingsContext: "Oslo's very high income levels partially offset elevated costs — mid-income earners achieve savings rates comparable to Stockholm.",
+    nearbySlug: ["stockholm", "copenhagen", "london"],
+  },
+
+  // ── Portugal ─────────────────────────────────────────────────────────────────
+  {
+    slug: "lisbon", name: "Lisbon", countrySlug: "pt", costTier: "high",
+    medianRent: 1200, typicalOther: 900,
+    defaultIncomeBand: "band-3",
+    rentContext: "Lisbon median rent reached €1,200/month in 2024, up over 60% in five years driven by tourism and remote worker demand.",
+    savingsContext: "Lisbon earners face a growing affordability squeeze — rising rents against a relatively low local wage base compress savings rates.",
+    nearbySlug: ["madrid", "barcelona", "porto"],
+  },
+
+  // ── Italy ────────────────────────────────────────────────────────────────────
+  {
+    slug: "milan", name: "Milan", countrySlug: "it", costTier: "high",
+    medianRent: 1600, typicalOther: 1300,
+    defaultIncomeBand: "band-3",
+    rentContext: "Milan median rent is around €1,600/month for a 1-bed, the highest in Italy and increasingly competitive with northern European cities.",
+    savingsContext: "Milan is Italy's highest-income city, but rising rents have eroded the savings advantage for mid-income earners.",
+    nearbySlug: ["zurich", "paris", "rome"],
+  },
+  {
+    slug: "rome", name: "Rome", countrySlug: "it", costTier: "high",
+    medianRent: 1200, typicalOther: 1200,
+    defaultIncomeBand: "band-3",
+    rentContext: "Rome median rent is around €1,200/month, lower than Milan but high relative to local salaries.",
+    savingsContext: "Rome's income-to-cost ratio is weaker than Milan — lower wages with moderate but still significant housing costs.",
+    nearbySlug: ["milan", "madrid", "lisbon"],
+  },
+
+  // ── Belgium ──────────────────────────────────────────────────────────────────
+  {
+    slug: "brussels", name: "Brussels", countrySlug: "be", costTier: "high",
+    medianRent: 1100, typicalOther: 1300,
+    defaultIncomeBand: "band-3",
+    rentContext: "Brussels median rent is around €1,100/month, moderate for a capital city given Belgium's strong wage levels.",
+    savingsContext: "Brussels earners benefit from high institutional and EU-sector salaries, supporting strong savings rates at upper income bands.",
+    nearbySlug: ["amsterdam", "paris", "london"],
+  },
+
+  // ── Czech Republic ───────────────────────────────────────────────────────────
+  {
+    slug: "prague", name: "Prague", countrySlug: "cz", costTier: "high",
+    medianRent: 22000, typicalOther: 18000,
+    defaultIncomeBand: "band-3",
+    rentContext: "Prague median rent is approximately 22,000 Kč/month, having doubled since 2019 as demand from tech workers and foreign investment surged.",
+    savingsContext: "Prague's rapid rent inflation has outpaced wage growth, compressing savings rates significantly for mid-income earners.",
+    nearbySlug: ["vienna", "warsaw", "berlin"],
+  },
+
+  // ── Singapore ────────────────────────────────────────────────────────────────
+  {
+    slug: "singapore", name: "Singapore", countrySlug: "sg", costTier: "very-high",
+    medianRent: 3500, typicalOther: 2500,
+    defaultIncomeBand: "band-4",
+    rentContext: "Singapore median private rental is around S$3,500/month; HDB flats are cheaper but subject to occupancy restrictions for non-citizens.",
+    savingsContext: "Singapore's mandatory CPF contributions mean effective savings rates are high, though the cost of living for renters is significant.",
+    nearbySlug: ["sydney", "hong-kong", "kuala-lumpur"],
+  },
+
+  // ── UAE ──────────────────────────────────────────────────────────────────────
+  {
+    slug: "dubai", name: "Dubai", countrySlug: "ae", costTier: "very-high",
+    medianRent: 8000, typicalOther: 9000,
+    defaultIncomeBand: "band-3",
+    rentContext: "Dubai median apartment rent is approximately AED 8,000/month, with strong demand from expat professionals driving prices higher.",
+    savingsContext: "Dubai's zero income tax significantly boosts take-home pay, and high-earners can save substantially — but mid-income expats face high living costs.",
+    nearbySlug: ["singapore", "london", "new-york"],
+  },
 ];
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
