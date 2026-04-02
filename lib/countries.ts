@@ -953,6 +953,56 @@ export const COUNTRIES: CountryConfig[] = [
     ],
   },
 
+  // ── Poland ─────────────────────────────────────────────────────────────────
+  {
+    slug: "pl",
+    label: "Poland",
+    flag: "🇵🇱",
+    currency: "PLN",
+    currencySymbol: "zł",
+    currencyPosition: "after",
+    dataSource: "GUS (Statistics Poland) HBS 2022",
+    dataYear: 2022,
+    rentSliderMin: 0,
+    rentSliderMax: 20000,
+    rentSliderStep: 200,
+    rentSliderDefault: 3500,
+    expenseSliderMax: 18000,
+    expenseSliderStep: 200,
+    expenseSliderDefault: 3800,
+    incomeSliderMin: 30000,
+    incomeSliderMax: 600000,
+    incomeSliderStep: 5000,
+    incomeSliderDefault: 75000,
+    incomeBands: makeBands("zł", "after", [
+      [25000,  45000,  35000],
+      [45000,  65000,  55000],
+      [65000,  90000,  77500],
+      [90000,  130000, 110000],
+      [130000, 190000, 160000],
+      [190000, 280000, 235000],
+      [280000, Infinity, 370000],
+    ]),
+    expenseBands: makeExpenseBands("zł", "after", [
+      [0,     1500, 1100],
+      [1500,  2500, 2000],
+      [2500,  3500, 3000],
+      [3500,  5000, 4250],
+      [5000,  7000, 6000],
+      [7000,  Infinity, 9500],
+    ]),
+    benchmarks: [
+      // GUS HBS 2022: Poland household savings ~4-5% OECD aggregate.
+      { incomeBandSlug: "band-1", expectedRate: 0.01, source: "GUS HBS 2022 Q1-Q2", year: 2022 },
+      { incomeBandSlug: "band-2", expectedRate: 0.04, source: "GUS HBS 2022 Q2-Q3", year: 2022 },
+      { incomeBandSlug: "band-3", expectedRate: 0.08, source: "GUS HBS 2022 Q3",    year: 2022 },
+      { incomeBandSlug: "band-4", expectedRate: 0.13, source: "GUS HBS 2022 Q4",    year: 2022 },
+      { incomeBandSlug: "band-5", expectedRate: 0.19, source: "GUS HBS 2022 Q4-Q5", year: 2022 },
+      { incomeBandSlug: "band-6", expectedRate: 0.26, source: "GUS HBS 2022 Q5",    year: 2022 },
+      { incomeBandSlug: "band-7", expectedRate: 0.34, source: "GUS HBS 2022 Q5+",   year: 2022 },
+    ],
+  },
+
   // ── Czech Republic ─────────────────────────────────────────────────────────
   {
     slug: "cz",

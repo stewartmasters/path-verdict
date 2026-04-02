@@ -758,6 +758,16 @@ export const CITIES: CityData[] = [
     nearbySlug: ["amsterdam", "paris", "london"],
   },
 
+  // ── Poland ───────────────────────────────────────────────────────────────────
+  {
+    slug: "warsaw", name: "Warsaw", countrySlug: "pl", costTier: "high",
+    medianRent: 4000, typicalOther: 3500,
+    defaultIncomeBand: "band-3",
+    rentContext: "Warsaw median rent has climbed to approximately 4,000 zł/month, a near-doubling since 2020 driven by rapid urbanisation and tech sector growth.",
+    savingsContext: "Warsaw's tech-driven wage growth is strong, but inflation and rent increases have compressed savings rates for mid-income earners.",
+    nearbySlug: ["prague", "berlin", "vienna"],
+  },
+
   // ── Czech Republic ───────────────────────────────────────────────────────────
   {
     slug: "prague", name: "Prague", countrySlug: "cz", costTier: "high",
