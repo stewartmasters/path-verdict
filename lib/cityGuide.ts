@@ -38,6 +38,28 @@ export function getAllCityGuideSlugs(): { slug: string }[] {
   return slugs;
 }
 
+export function getAllCityGuides(): BlogPost[] {
+  const posts: BlogPost[] = [];
+  for (const file of getFiles()) {
+    const raw = fs.readFileSync(path.join(CONTENT_DIR, file), "utf-8");
+    const { data, content } = matter(raw);
+    if (data.published === false) continue;
+    const slug = data.slug ?? file.replace(/\.md$/, "");
+    if (!slug) continue;
+    posts.push({
+      slug,
+      title: data.title ?? slug.replace(/-/g, " "),
+      description: data.description ?? "",
+      date: data.date ?? new Date().toISOString().slice(0, 10),
+      readTime: data.readTime ?? estimateReadTime(content),
+      content: "",
+      primaryKeyword: data.keyword,
+      cluster: data.cluster,
+    });
+  }
+  return posts.sort((a, b) => b.date.localeCompare(a.date));
+}
+
 export function getCityGuidePost(slug: string): BlogPost | null {
   if (!fs.existsSync(CONTENT_DIR)) return null;
   const filePath = path.join(CONTENT_DIR, `${slug}.md`);
