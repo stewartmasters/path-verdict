@@ -366,7 +366,7 @@ export default function PathResultComponent({ result, onReset, onEdit, resetLabe
                 track("email_captured", { verdict: result.verdict });
                 setEmailSent(true);
               }}
-              className="flex gap-2"
+              className="flex flex-col sm:flex-row gap-2"
             >
               <input type="hidden" name="form-name" value="path-leads" />
               <input type="hidden" name="verdict" value={result.verdict} />
@@ -381,7 +381,7 @@ export default function PathResultComponent({ result, onReset, onEdit, resetLabe
               />
               <button
                 type="submit"
-                className="bg-gray-900 text-white text-sm font-semibold px-4 py-2.5 rounded-xl hover:bg-gray-800 transition-colors whitespace-nowrap"
+                className="bg-gray-900 text-white text-sm font-semibold px-4 py-2.5 rounded-xl hover:bg-gray-800 transition-colors whitespace-nowrap sm:flex-shrink-0"
               >
                 {tr.remindMe}
               </button>
