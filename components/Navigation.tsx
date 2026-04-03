@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import LanguageSelect from "./LanguageSelect";
 
 export default function Navigation() {
   return (
@@ -28,6 +29,7 @@ export default function Navigation() {
           >
             Cities
           </Link>
+          <LanguageSelect />
           <Link
             href="/#path-tool"
             className="bg-teal-600 text-white px-3 sm:px-4 py-1.5 rounded-full text-xs sm:text-sm font-semibold hover:bg-teal-700 transition-colors flex-shrink-0 whitespace-nowrap"
