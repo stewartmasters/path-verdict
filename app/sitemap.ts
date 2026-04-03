@@ -3,6 +3,7 @@ import { CITIES } from "@/lib/cities";
 import { COUNTRIES, getCountry, incomeSlugFromBand } from "@/lib/countries";
 import { BLOG_POSTS } from "@/data/blog-posts-path";
 import { getAllMarkdownPosts } from "@/lib/markdown";
+import { getAllEsCityGuideSlugs } from "@/lib/cityGuide";
 
 const COUNTRY_URL_SLUGS: Record<string, string> = {
   us: "united-states", gb: "united-kingdom", de: "germany",
@@ -84,13 +85,28 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority:        0.75,
     }));
 
+  // ES locale routes
+  const esStaticRoutes: MetadataRoute.Sitemap = [
+    { url: `${BASE_URL}/es`,              lastModified: now, changeFrequency: "weekly",  priority: 0.9 },
+    { url: `${BASE_URL}/es/guia-ciudades`, lastModified: now, changeFrequency: "weekly",  priority: 0.85 },
+  ];
+
+  const esCityGuideRoutes: MetadataRoute.Sitemap = getAllEsCityGuideSlugs().map(({ slug }) => ({
+    url:             `${BASE_URL}/es/guia-ciudades/${slug}`,
+    lastModified:    now,
+    changeFrequency: "monthly" as const,
+    priority:        0.8,
+  }));
+
   return [
     ...staticRoutes,
+    ...esStaticRoutes,
     ...countryRoutes,
     ...financialPositionRoutes,
     ...incomeRoutes,
     ...affordabilityRoutes,
     ...staticBlogRoutes,
     ...markdownBlogRoutes,
+    ...esCityGuideRoutes,
   ];
 }
