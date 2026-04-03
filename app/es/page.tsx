@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getAllEsCityGuideSlugs, getAllCityGuides } from "@/lib/cityGuide";
+import { getAllEsCityGuideSlugs } from "@/lib/cityGuide";
+import PathTool from "@/components/PathTool";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://pathverdict.com";
 
@@ -23,19 +24,17 @@ export default function EsHomePage() {
 
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10 sm:py-16">
-      <div className="mb-10 space-y-4">
+      <div className="mb-10 space-y-3">
         <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 leading-tight tracking-tight">
           ¿Estás en el camino financiero correcto?
         </h1>
         <p className="text-lg text-gray-500 leading-relaxed">
           Compara tus ahorros con datos reales de tu ciudad. Sin registro, resultado en 30 segundos.
         </p>
-        <Link
-          href="/"
-          className="inline-block bg-teal-600 hover:bg-teal-700 text-white font-bold px-6 py-3 rounded-xl transition-colors"
-        >
-          Usar la calculadora →
-        </Link>
+      </div>
+
+      <div id="path-tool" className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 mb-12">
+        <PathTool locale="es" />
       </div>
 
       {esSlugs.length > 0 && (

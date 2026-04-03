@@ -10,20 +10,17 @@ import {
 } from "@/lib/savings-data";
 import PathResultComponent from "./PathResult";
 import { track } from "@/lib/analytics";
-
-const INVEST_OPTIONS: { value: InvestsOption; label: string }[] = [
-  { value: "yes",       label: "Yes — consistently" },
-  { value: "sometimes", label: "Sometimes" },
-  { value: "no",        label: "No" },
-];
+import { t, type Locale } from "@/lib/i18n";
 
 interface Props {
   defaultCountry?: string;
   defaultRent?:    number;
   defaultIncome?:  number;
+  locale?:         Locale;
 }
 
-export default function PathTool({ defaultCountry, defaultRent, defaultIncome }: Props = {}) {
+export default function PathTool({ defaultCountry, defaultRent, defaultIncome, locale = "en" }: Props = {}) {
+  const tr = t(locale);
   const [countrySlug, setCountrySlug]     = useState(defaultCountry ?? "us");
   const [annualIncome, setAnnualIncome]   = useState<number | null>(defaultIncome ?? null);
   const [monthlyRent, setMonthlyRent]     = useState<number | null>(defaultRent ?? null);
@@ -78,8 +75,14 @@ export default function PathTool({ defaultCountry, defaultRent, defaultIncome }:
     track("edit_inputs");
   };
 
+  const investOptions: { value: InvestsOption; label: string }[] = [
+    { value: "yes",       label: tr.investYes },
+    { value: "sometimes", label: tr.investSometimes },
+    { value: "no",        label: tr.investNo },
+  ];
+
   if (result) {
-    return <PathResultComponent result={result} onReset={handleReset} onEdit={handleEdit} />;
+    return <PathResultComponent result={result} onReset={handleReset} onEdit={handleEdit} locale={locale} />;
   }
 
   const sym = country.currencySymbol;
@@ -104,7 +107,7 @@ export default function PathTool({ defaultCountry, defaultRent, defaultIncome }:
 
       {/* Country — compact header row */}
       <div className="flex items-center justify-between gap-3 pb-1 border-b border-gray-100">
-        <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Country</span>
+        <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">{tr.country}</span>
         <select
           value={countrySlug}
           onChange={(e) => handleCountryChange(e.target.value)}
@@ -121,7 +124,7 @@ export default function PathTool({ defaultCountry, defaultRent, defaultIncome }:
       {/* Income slider */}
       <div className="space-y-2">
         <div className="flex justify-between items-center">
-          <label className="block text-sm font-semibold text-gray-700">Annual income (gross)</label>
+          <label className="block text-sm font-semibold text-gray-700">{tr.annualIncome}</label>
           <span className="text-sm font-bold text-teal-600">
             {isIncomeAtMax
               ? `${pos === "before" ? `${sym}${incomeMax.toLocaleString()}` : `${incomeMax.toLocaleString()}${sym}`}+`
@@ -130,7 +133,7 @@ export default function PathTool({ defaultCountry, defaultRent, defaultIncome }:
         </div>
         <input
           type="range"
-          aria-label="Annual income (gross)"
+          aria-label={tr.annualIncome}
           min={country.incomeSliderMin}
           max={incomeMax}
           step={country.incomeSliderStep}
@@ -148,14 +151,14 @@ export default function PathTool({ defaultCountry, defaultRent, defaultIncome }:
       {/* Rent slider */}
       <div className="space-y-2">
         <div className="flex justify-between items-center">
-          <label className="block text-sm font-semibold text-gray-700">Monthly rent or mortgage</label>
+          <label className="block text-sm font-semibold text-gray-700">{tr.monthlyRent}</label>
           <span className="text-sm font-bold text-teal-600">
             {isAtMax ? `${fmtRent(rentMax).replace("/mo", "")}+/mo` : fmtRent(rentValue)}
           </span>
         </div>
         <input
           type="range"
-          aria-label="Monthly rent or mortgage"
+          aria-label={tr.monthlyRent}
           min={country.rentSliderMin}
           max={rentMax}
           step={country.rentSliderStep}
@@ -174,8 +177,8 @@ export default function PathTool({ defaultCountry, defaultRent, defaultIncome }:
       <div className="space-y-2">
         <div className="flex justify-between items-center">
           <div>
-            <label className="block text-sm font-semibold text-gray-700">Other monthly expenses</label>
-            <p className="text-xs text-gray-400 mt-0.5">Food, transport, subscriptions, going out — everything except rent</p>
+            <label className="block text-sm font-semibold text-gray-700">{tr.otherExpenses}</label>
+            <p className="text-xs text-gray-400 mt-0.5">{tr.otherExpensesSub}</p>
           </div>
           <span className="text-sm font-bold text-teal-600 flex-shrink-0 ml-3">
             {isExpenseAtMax
@@ -185,7 +188,7 @@ export default function PathTool({ defaultCountry, defaultRent, defaultIncome }:
         </div>
         <input
           type="range"
-          aria-label="Other monthly expenses"
+          aria-label={tr.otherExpenses}
           min={0}
           max={expenseMax}
           step={country.expenseSliderStep}
@@ -204,11 +207,11 @@ export default function PathTool({ defaultCountry, defaultRent, defaultIncome }:
       <div className="space-y-2">
         <div className="flex items-center justify-between">
           <label className="block text-sm font-semibold text-gray-700">
-            Age <span className="text-gray-400 font-normal">(optional — improves benchmark)</span>
+            {tr.age} <span className="text-gray-400 font-normal">{tr.ageOptional}</span>
           </label>
           {ageBand && (
             <button type="button" onClick={() => setAgeBand("")} className="text-xs text-gray-400 hover:text-gray-600 transition-colors">
-              Clear
+              {tr.clear}
             </button>
           )}
         </div>
@@ -233,10 +236,10 @@ export default function PathTool({ defaultCountry, defaultRent, defaultIncome }:
       {/* Invest — optional */}
       <div className="space-y-2">
         <label className="block text-sm font-semibold text-gray-700">
-          Do you invest regularly? <span className="text-gray-400 font-normal">(optional)</span>
+          {tr.investsLabel} <span className="text-gray-400 font-normal">{tr.investsOptional}</span>
         </label>
         <div className="flex flex-wrap gap-2">
-          {INVEST_OPTIONS.map((opt) => (
+          {investOptions.map((opt) => (
             <button
               key={opt.value}
               type="button"
@@ -259,11 +262,11 @@ export default function PathTool({ defaultCountry, defaultRent, defaultIncome }:
         type="submit"
         className="w-full bg-teal-600 hover:bg-teal-700 text-white font-bold py-4 px-6 rounded-xl transition-colors text-base shadow-sm shadow-teal-100"
       >
-        Get my verdict →
+        {tr.cta}
       </button>
 
       <p className="text-xs text-gray-400 text-center">
-        No signup required. Results are instant and private.
+        {tr.noSignup}
       </p>
     </form>
   );
