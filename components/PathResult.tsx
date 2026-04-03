@@ -7,6 +7,7 @@ import {
   AGE_BANDS,
   getInsightLine,
   getVerdictCopy,
+  getVerdictBadgeLabel,
   buildIdentityCard,
   formatAmount,
 } from "@/lib/savings-data";
@@ -38,9 +39,9 @@ export default function PathResultComponent({ result, onReset, onEdit, resetLabe
   const [emailSent, setEmailSent] = useState(false);
 
   const config = VERDICT_CONFIG[result.verdict];
-  const verdictCopy = getVerdictCopy(result);
-  const insightLine = getInsightLine(result);
-  const identityCard = buildIdentityCard(result);
+  const verdictCopy = getVerdictCopy(result, locale);
+  const insightLine = getInsightLine(result, locale);
+  const identityCard = buildIdentityCard(result, locale);
   const country = getCountry(result.countrySlug);
   const incomeBandLabel = result.incomeBandLabel;
   const ageBandLabel = result.ageBandSlug ? AGE_BANDS.find((b) => b.slug === result.ageBandSlug)?.label : null;
@@ -74,7 +75,7 @@ export default function PathResultComponent({ result, onReset, onEdit, resetLabe
   const linkedinUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(pageUrl)}`;
   const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(identityCard.shareText + "\n\n" + pageUrl)}`;
 
-  const MONTH_YEAR = new Date().toLocaleDateString("en-US", { month: "long", year: "numeric" });
+  const MONTH_YEAR = new Date().toLocaleDateString(locale === "es" ? "es-ES" : "en-US", { month: "long", year: "numeric" });
 
   return (
     <div className="rounded-2xl border border-gray-200 bg-white overflow-hidden shadow-sm">
@@ -83,10 +84,10 @@ export default function PathResultComponent({ result, onReset, onEdit, resetLabe
       <div className="px-5 py-3 bg-gray-50 border-b border-gray-100 flex items-center justify-between gap-3 flex-wrap">
         <div className="flex items-center gap-2 flex-wrap">
           <span className={`text-xs font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full ${config.badge}`}>
-            {config.badgeLabel}
+            {getVerdictBadgeLabel(result.verdict, locale)}
           </span>
           {ageBandLabel && (
-            <span className="text-xs text-gray-400">Age {ageBandLabel}</span>
+            <span className="text-xs text-gray-400">{tr.ageLabel} {ageBandLabel}</span>
           )}
         </div>
         <div className="flex items-center gap-3">
@@ -173,7 +174,7 @@ export default function PathResultComponent({ result, onReset, onEdit, resetLabe
                 <span className="text-gray-400">
                   {tr.taxContributions}
                   <span className="ml-1 text-xs text-gray-300">
-                    (~{Math.round(result.taxEffectiveRate * 100)}% effective)
+                    {tr.effectiveRate(Math.round(result.taxEffectiveRate * 100))}
                   </span>
                 </span>
                 <span className="font-semibold text-gray-400">−{fmt(result.monthlyTaxDeduction)}</span>
@@ -215,7 +216,7 @@ export default function PathResultComponent({ result, onReset, onEdit, resetLabe
           {/* Tax source note */}
           {result.taxNote && (
             <p className="text-xs text-gray-400 leading-relaxed">
-              Tax estimate: {result.taxNote}. OECD Taxing Wages 2023.
+              {tr.taxEstimateNote(result.taxNote)}
             </p>
           )}
         </div>
@@ -295,7 +296,7 @@ export default function PathResultComponent({ result, onReset, onEdit, resetLabe
           </div>
 
           {/* Identity card — tap to copy */}
-          <ShareCard card={identityCard} onClick={handleCopyCard} copied={copiedCard} />
+          <ShareCard card={identityCard} onClick={handleCopyCard} copied={copiedCard} locale={locale} />
 
           {/* Primary CTA */}
           <button

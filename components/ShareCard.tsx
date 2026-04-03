@@ -1,12 +1,15 @@
 import { type IdentityCard } from "@/lib/savings-data";
+import { t, type Locale } from "@/lib/i18n";
 
 interface Props {
   card: IdentityCard;
   onClick?: () => void;
   copied?: boolean;
+  locale?: Locale;
 }
 
-export default function ShareCard({ card, onClick, copied }: Props) {
+export default function ShareCard({ card, onClick, copied, locale = "en" }: Props) {
+  const tr = t(locale);
   return (
     <div
       onClick={onClick}
@@ -25,9 +28,9 @@ export default function ShareCard({ card, onClick, copied }: Props) {
             PathVerdict
           </span>
           {copied ? (
-            <span className="text-[10px] font-bold text-teal-600 uppercase tracking-wider">✓ Copied</span>
+            <span className="text-[10px] font-bold text-teal-600 uppercase tracking-wider">{tr.cardCopied}</span>
           ) : (
-            <span className="text-[10px] font-medium text-gray-300 uppercase tracking-wider">tap to copy</span>
+            <span className="text-[10px] font-medium text-gray-300 uppercase tracking-wider">{tr.tapToCopy}</span>
           )}
         </div>
 
@@ -50,7 +53,7 @@ export default function ShareCard({ card, onClick, copied }: Props) {
         <div className="flex items-center justify-between border-t border-gray-100 pt-2.5">
           <span className="text-[10px] text-gray-300 tracking-wide">pathverdict.com</span>
           <span className="text-[10px] font-semibold text-teal-600 tracking-wide">
-            Check yours →
+            {tr.checkYours}
           </span>
         </div>
       </div>

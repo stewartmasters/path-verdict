@@ -185,77 +185,112 @@ export function deriveIdentity(result: PathResult): FinancialIdentity {
   return "quietly-ahead";
 }
 
-export function buildIdentityCard(result: PathResult): IdentityCard {
+export function buildIdentityCard(result: PathResult, locale: "en" | "es" = "en"): IdentityCard {
   const identity  = deriveIdentity(result);
   const { savingsRate, expectedRate, gap, percentile } = result;
   const absGap    = Math.abs(gap).toFixed(1);
   const absSaving = Math.abs(savingsRate).toFixed(1);
   const gapFmt    = gap.toFixed(1);
 
+  const STYLE: Record<FinancialIdentity, Pick<IdentityCard, "borderClass" | "bgBarClass" | "accentColor">> = {
+    "running-on-fumes":  { borderClass: "border-red-300",     bgBarClass: "bg-red-300",     accentColor: "#fca5a5" },
+    "comfortable-slide": { borderClass: "border-orange-300",  bgBarClass: "bg-orange-300",  accentColor: "#fdba74" },
+    "stretched-thin":    { borderClass: "border-amber-300",   bgBarClass: "bg-amber-300",   accentColor: "#fcd34d" },
+    "treading-water":    { borderClass: "border-yellow-300",  bgBarClass: "bg-yellow-300",  accentColor: "#fde68a" },
+    "holding-the-line":  { borderClass: "border-teal-300",    bgBarClass: "bg-teal-300",    accentColor: "#5eead4" },
+    "quietly-ahead":     { borderClass: "border-emerald-300", bgBarClass: "bg-emerald-300", accentColor: "#6ee7b7" },
+    "the-compounder":    { borderClass: "border-emerald-500", bgBarClass: "bg-emerald-500", accentColor: "#10b981" },
+  };
+
+  if (locale === "es") {
+    const comparison = percentile >= 50
+      ? `Top ${100 - percentile}% de ahorradores en este nivel de ingresos`
+      : `El ${percentile}% inferior de ahorradores en este nivel de ingresos`;
+
+    const ES_COPY: Record<FinancialIdentity, Pick<IdentityCard, "label" | "statLine" | "shareText">> = {
+      "running-on-fumes": {
+        label:     "Al límite",
+        statLine:  `Gastando un ${absSaving}% más de lo que ingreso`,
+        shareText: `Estoy gastando más de lo que ingreso. PathVerdict me sitúa en el ${percentile}% inferior de ahorradores. Verlo en números es diferente a saberlo.\npathverdict.com`,
+      },
+      "comfortable-slide": {
+        label:     "La caída cómoda",
+        statLine:  `Ahorrando el ${savingsRate}% · Esperado ${expectedRate}%`,
+        shareText: `Gano bien. Ahorro el ${savingsRate}%. Las personas con mis ingresos ahorran el ${expectedRate}%. La diferencia son ${absGap} puntos y no se cierra sola.\npathverdict.com`,
+      },
+      "stretched-thin": {
+        label:     "Al límite del esfuerzo",
+        statLine:  `Ahorrando el ${savingsRate}% · Diferencia de ${absGap} puntos`,
+        shareText: `Ahorrando el ${savingsRate}% cuando la referencia es el ${expectedRate}%. La diferencia no es pereza — es el nivel de gastos. Merece verse con claridad.\npathverdict.com`,
+      },
+      "treading-water": {
+        label:     "Aguantando el tipo",
+        statLine:  `Ahorrando el ${savingsRate}% · ${absGap} puntos por debajo`,
+        shareText: `Técnicamente ahorro. Pero no avanzo. Estoy ${absGap} puntos por debajo de donde debería estar. ¿Dónde estás tú?\npathverdict.com`,
+      },
+      "holding-the-line": {
+        label:     "Manteniéndose firme",
+        statLine:  `Ahorrando el ${savingsRate}% · Justo en la referencia`,
+        shareText: `Estoy en camino. No por delante. Ahorrando el ${savingsRate}% — justo en la referencia para mi nivel de ingresos. La mayoría no está aquí.\npathverdict.com`,
+      },
+      "quietly-ahead": {
+        label:     "Silenciosamente adelantado",
+        statLine:  `Ahorrando el ${savingsRate}% · ${gapFmt} puntos por delante`,
+        shareText: `Ahorrando el ${savingsRate}% cuando las personas con mis ingresos ahorran el ${expectedRate}%. No esperaba esa diferencia.\npathverdict.com`,
+      },
+      "the-compounder": {
+        label:     "El inversor constante",
+        statLine:  `Ahorrando el ${savingsRate}% · Invirtiendo regularmente`,
+        shareText: `Ahorrando el ${savingsRate}%. Invirtiendo de forma constante. ${gapFmt} puntos por encima de la referencia. Las matemáticas hacen su trabajo.\npathverdict.com`,
+      },
+    };
+
+    return { identity, comparison, ...STYLE[identity], ...ES_COPY[identity] };
+  }
+
   const comparison = percentile >= 50
     ? `Top ${100 - percentile}% of savers at this income level`
     : `Bottom ${percentile}% of savers at this income level`;
 
-  const CONFIGS: Record<FinancialIdentity, Omit<IdentityCard, "identity" | "comparison">> = {
+  const EN_COPY: Record<FinancialIdentity, Pick<IdentityCard, "label" | "statLine" | "shareText">> = {
     "running-on-fumes": {
-      label:       "Running on Fumes",
-      statLine:    `Spending ${absSaving}% more than I earn`,
-      shareText:   `I'm spending more than I earn. PathVerdict puts me in the bottom ${percentile}% of savers. Seeing the number is different to knowing it.\npathverdict.com`,
-      borderClass: "border-red-300",
-      bgBarClass:  "bg-red-300",
-      accentColor: "#fca5a5",
+      label:     "Running on Fumes",
+      statLine:  `Spending ${absSaving}% more than I earn`,
+      shareText: `I'm spending more than I earn. PathVerdict puts me in the bottom ${percentile}% of savers. Seeing the number is different to knowing it.\npathverdict.com`,
     },
     "comfortable-slide": {
-      label:       "The Comfortable Slide",
-      statLine:    `Saving ${savingsRate}% · Expected ${expectedRate}%`,
-      shareText:   `I earn well. I save ${savingsRate}%. People at my income save ${expectedRate}%. The gap is ${absGap} points and it doesn't close itself.\npathverdict.com`,
-      borderClass: "border-orange-300",
-      bgBarClass:  "bg-orange-300",
-      accentColor: "#fdba74",
+      label:     "The Comfortable Slide",
+      statLine:  `Saving ${savingsRate}% · Expected ${expectedRate}%`,
+      shareText: `I earn well. I save ${savingsRate}%. People at my income save ${expectedRate}%. The gap is ${absGap} points and it doesn't close itself.\npathverdict.com`,
     },
     "stretched-thin": {
-      label:       "Stretched Thin",
-      statLine:    `Saving ${savingsRate}% · Gap of ${absGap} points`,
-      shareText:   `Saving ${savingsRate}% when the benchmark is ${expectedRate}%. The gap's not laziness — it's the cost base. Still worth seeing it clearly.\npathverdict.com`,
-      borderClass: "border-amber-300",
-      bgBarClass:  "bg-amber-300",
-      accentColor: "#fcd34d",
+      label:     "Stretched Thin",
+      statLine:  `Saving ${savingsRate}% · Gap of ${absGap} points`,
+      shareText: `Saving ${savingsRate}% when the benchmark is ${expectedRate}%. The gap's not laziness — it's the cost base. Still worth seeing it clearly.\npathverdict.com`,
     },
     "treading-water": {
-      label:       "Treading Water",
-      statLine:    `Saving ${savingsRate}% · ${absGap} points short`,
-      shareText:   `Technically saving. Not building. I'm ${absGap} points below where I should be for my income. Curious where you are?\npathverdict.com`,
-      borderClass: "border-yellow-300",
-      bgBarClass:  "bg-yellow-300",
-      accentColor: "#fde68a",
+      label:     "Treading Water",
+      statLine:  `Saving ${savingsRate}% · ${absGap} points short`,
+      shareText: `Technically saving. Not building. I'm ${absGap} points below where I should be for my income. Curious where you are?\npathverdict.com`,
     },
     "holding-the-line": {
-      label:       "Holding the Line",
-      statLine:    `Saving ${savingsRate}% · Right at benchmark`,
-      shareText:   `I'm on track. Not ahead. Saving ${savingsRate}% — right at the benchmark for my income level. Most people aren't here.\npathverdict.com`,
-      borderClass: "border-teal-300",
-      bgBarClass:  "bg-teal-300",
-      accentColor: "#5eead4",
+      label:     "Holding the Line",
+      statLine:  `Saving ${savingsRate}% · Right at benchmark`,
+      shareText: `I'm on track. Not ahead. Saving ${savingsRate}% — right at the benchmark for my income level. Most people aren't here.\npathverdict.com`,
     },
     "quietly-ahead": {
-      label:       "Quietly Ahead",
-      statLine:    `Saving ${savingsRate}% · ${gapFmt} points ahead`,
-      shareText:   `Saving ${savingsRate}% when people at my income save ${expectedRate}%. I didn't expect that gap.\npathverdict.com`,
-      borderClass: "border-emerald-300",
-      bgBarClass:  "bg-emerald-300",
-      accentColor: "#6ee7b7",
+      label:     "Quietly Ahead",
+      statLine:  `Saving ${savingsRate}% · ${gapFmt} points ahead`,
+      shareText: `Saving ${savingsRate}% when people at my income save ${expectedRate}%. I didn't expect that gap.\npathverdict.com`,
     },
     "the-compounder": {
-      label:       "The Compounder",
-      statLine:    `Saving ${savingsRate}% · Investing regularly`,
-      shareText:   `Saving ${savingsRate}%. Investing consistently. ${gapFmt} points above benchmark. The math is doing what it's supposed to.\npathverdict.com`,
-      borderClass: "border-emerald-500",
-      bgBarClass:  "bg-emerald-500",
-      accentColor: "#10b981",
+      label:     "The Compounder",
+      statLine:  `Saving ${savingsRate}% · Investing regularly`,
+      shareText: `Saving ${savingsRate}%. Investing consistently. ${gapFmt} points above benchmark. The math is doing what it's supposed to.\npathverdict.com`,
     },
   };
 
-  return { identity, comparison, ...CONFIGS[identity] };
+  return { identity, comparison, ...STYLE[identity], ...EN_COPY[identity] };
 }
 
 // ─── Currency formatting ─────────────────────────────────────────────────────
@@ -317,6 +352,19 @@ export const VERDICT_CONFIG: Record<VerdictTier, VerdictConfig> = {
   },
 };
 
+const VERDICT_BADGE_LABELS_ES: Record<VerdictTier, string> = {
+  "critical":       "Crítico",
+  "falling-behind": "Retrasado",
+  "under-saving":   "Ahorro insuficiente",
+  "on-track":       "En camino",
+  "ahead":          "Por delante",
+};
+
+export function getVerdictBadgeLabel(verdict: VerdictTier, locale: "en" | "es" = "en"): string {
+  if (locale === "es") return VERDICT_BADGE_LABELS_ES[verdict];
+  return VERDICT_CONFIG[verdict].badgeLabel;
+}
+
 // ─── Dynamic verdict copy (uses actual numbers) ───────────────────────────────
 
 export interface VerdictCopy {
@@ -325,9 +373,46 @@ export interface VerdictCopy {
   heroSub: string;
 }
 
-export function getVerdictCopy(result: PathResult): VerdictCopy {
+export function getVerdictCopy(result: PathResult, locale: "en" | "es" = "en"): VerdictCopy {
   const { verdict, savingsRate, expectedRate, gap } = result;
   const absGap = Math.abs(gap).toFixed(1);
+
+  if (locale === "es") {
+    switch (verdict) {
+      case "critical":
+        return {
+          shortAnswer: "Estás gastando más de lo que ganas.",
+          headline:    "Tus gastos superan tus ingresos.",
+          heroSub:     `Tu tasa de ahorro es del ${savingsRate}% — estás gastando un ${Math.abs(savingsRate).toFixed(1)}% más de lo que ingresas. El déficit crece cada mes.`,
+        };
+      case "falling-behind":
+        return {
+          shortAnswer: "Te estás quedando atrás financieramente.",
+          headline:    `Ahorras el ${savingsRate}% — se espera el ${expectedRate}%.`,
+          heroSub:     `Eso es una diferencia de ${absGap} puntos. Las personas con tus ingresos suelen ahorrar el ${expectedRate}% o más.`,
+        };
+      case "under-saving":
+        return {
+          shortAnswer: "Ahorras, pero no lo suficiente.",
+          headline:    `Ahorras el ${savingsRate}% — tu referencia es el ${expectedRate}%.`,
+          heroSub:     `Te faltan ${absGap} puntos para el benchmark de tu nivel de ingresos. No estás retrasado, pero tampoco construyes un colchón real.`,
+        };
+      case "on-track":
+        return {
+          shortAnswer: "Estás en camino financieramente.",
+          headline:    `Ahorras el ${savingsRate}% — referencia: ${expectedRate}%.`,
+          heroSub:     gap >= 0
+            ? `Estás ${gap.toFixed(1)} puntos por encima de tu referencia de ingresos. Avanzas, no solo sobrevives.`
+            : `Estás ${absGap} puntos por debajo de la referencia, pero dentro del margen. En camino para tu perfil.`,
+        };
+      case "ahead":
+        return {
+          shortAnswer: "Estás por delante de tus comparables.",
+          headline:    `Ahorras el ${savingsRate}% — ${gap.toFixed(1)} puntos por encima de la referencia.`,
+          heroSub:     `La referencia para tu nivel de ingresos es el ${expectedRate}%. Estás significativamente por delante.`,
+        };
+    }
+  }
 
   switch (verdict) {
     case "critical":
@@ -367,9 +452,30 @@ export function getVerdictCopy(result: PathResult): VerdictCopy {
 
 // ─── Insight copy (position statements, not advice) ──────────────────────────
 
-export function getInsightLine(result: PathResult): string {
+export function getInsightLine(result: PathResult, locale: "en" | "es" = "en"): string {
   const { verdict, savingsRate, expectedRate, gap, invests } = result;
   const absGap = Math.abs(gap).toFixed(1);
+
+  if (locale === "es") {
+    const investNote = invests === "no"
+      ? " Además, no tienes respaldo de inversiones."
+      : invests === "yes"
+      ? " Tu hábito inversor compensa esto parcialmente."
+      : "";
+    switch (verdict) {
+      case "critical":
+        return `Tienes un déficit mensual del ${Math.abs(savingsRate).toFixed(1)}%. Es una brecha estructural: tus gastos superan tus ingresos.${investNote}`;
+      case "falling-behind":
+        return `Ahorras el ${savingsRate}% cuando las personas con tus ingresos ahorran el ${expectedRate}%. Esa diferencia de ${absGap} puntos es${investNote ? " significativa." + investNote : " significativa."}`;
+      case "under-saving":
+        return `Ahorras el ${savingsRate}% — ${absGap} puntos por debajo del benchmark del ${expectedRate}% para tu nivel de ingresos.${invests === "yes" ? " Que inviertas compensa esto parcialmente, reflejado en tu benchmark ajustado." : ""}`;
+      case "on-track":
+        return `Ahorras el ${savingsRate}% — dentro del rango del benchmark del ${expectedRate}% para tu perfil de ingresos.${invests === "yes" ? " Tu hábito inversor refuerza esta posición." : ""}`;
+      case "ahead":
+        return `Ahorras el ${savingsRate}% frente a una referencia del ${expectedRate}%. La mayoría de las personas con tus ingresos ahorran bastante menos.${invests === "yes" ? " Combinado con inversión regular, es una posición financiera sólida." : ""}`;
+    }
+  }
+
   const investNote = invests === "no"
     ? " You also have no investment buffer."
     : invests === "yes"

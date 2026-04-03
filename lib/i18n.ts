@@ -68,6 +68,12 @@ export const TRANSLATIONS = {
     savesMoreThan: (pct: number) => `You save more than roughly ${pct}% of people across income levels.`,
     topPercent: (pct: number) => `Top ${100 - pct}% of savers`,
     bottomPercent: (pct: number) => `Bottom ${pct}% of savers`,
+    ageLabel: "Age",
+    effectiveRate: (pct: number) => `(~${pct}% effective)`,
+    taxEstimateNote: (note: string) => `Tax estimate: ${note}. OECD Taxing Wages 2023.`,
+    tapToCopy: "tap to copy",
+    cardCopied: "✓ Copied",
+    checkYours: "Check yours →",
   },
   es: {
     // PathTool
@@ -135,7 +141,13 @@ export const TRANSLATIONS = {
     savesLessThan: (pct: number) => `Ahorras menos que aproximadamente el ${100 - pct}% de las personas con distintos niveles de ingresos.`,
     savesMoreThan: (pct: number) => `Ahorras más que aproximadamente el ${pct}% de las personas con distintos niveles de ingresos.`,
     topPercent: (pct: number) => `Top ${100 - pct}% de ahorradores`,
-    bottomPercent: (pct: number) => `Bottom ${pct}% de ahorradores`,
+    bottomPercent: (pct: number) => `El ${pct}% inferior de ahorradores`,
+    ageLabel: "Edad",
+    effectiveRate: (pct: number) => `(~${pct}% efectivo)`,
+    taxEstimateNote: (note: string) => `Estimación fiscal: ${note}. OCDE Taxing Wages 2023.`,
+    tapToCopy: "toca para copiar",
+    cardCopied: "✓ Copiado",
+    checkYours: "Comprueba el tuyo →",
   },
 } as const satisfies Record<Locale, Record<string, unknown>>;
 
