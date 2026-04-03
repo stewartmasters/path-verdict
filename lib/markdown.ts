@@ -22,6 +22,8 @@ function getFiles(): string[] {
   return fs.readdirSync(CONTENT_DIR).filter((f) => f.endsWith(".md"));
 }
 
+const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD at build time
+
 export function getAllMarkdownPosts(): BlogPost[] {
   const posts: BlogPost[] = [];
   for (const file of getFiles()) {
@@ -29,6 +31,7 @@ export function getAllMarkdownPosts(): BlogPost[] {
     const { data, content } = matter(raw);
     if (data.published === false) continue;
     if (!data.slug || !data.title || !data.date) continue;
+    if (String(data.date) > today) continue; // hide future-dated posts
     posts.push({
       slug:           data.slug,
       title:          data.title,
@@ -48,6 +51,7 @@ export function getMarkdownPost(slug: string): BlogPost | null {
     const raw = fs.readFileSync(path.join(CONTENT_DIR, file), "utf-8");
     const { data, content } = matter(raw);
     if (data.slug !== slug || data.published === false) continue;
+    if (String(data.date) > today) continue;
     return {
       slug:           data.slug,
       title:          data.title,
@@ -67,7 +71,7 @@ export function getAllMarkdownSlugs(): string[] {
   for (const file of getFiles()) {
     const raw = fs.readFileSync(path.join(CONTENT_DIR, file), "utf-8");
     const { data } = matter(raw);
-    if (data.slug && data.published !== false) slugs.push(data.slug);
+    if (data.slug && data.published !== false && String(data.date) <= today) slugs.push(data.slug);
   }
   return slugs;
 }
